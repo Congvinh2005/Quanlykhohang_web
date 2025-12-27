@@ -183,18 +183,40 @@
         // Hiển thị form nhập Excel - Giữ nguyên
         function import_form(){
             $this->view('Master',[
-                'page' => 'Nhacungcap_import_v'
+                'page' => 'Nhacungcap_up_v'
             ]);
         }
 
         // Xử lý nhập Excel - Sửa redirect về danhsach
-        function import(){
-            if(isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK){
-                // ... logic import
-                echo "<script>alert('Nhập thành công: ".$imported." dòng, bỏ qua: ".$skipped." dòng.'); window.location='http://localhost/QLSP/Nhacungcap/danhsach';</script>"; // Chuyển hướng về danhsach
-            } else {
-                echo "<script>alert('Vui lòng chọn file Excel!'); window.location='http://localhost/QLSP/Nhacungcap/import_form';</script>";
+            function up_l(){
+            if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
+                echo "<script>alert('Upload file lỗi')</script>";
+                return;
             }
+
+            $file = $_FILES['txtfile']['tmp_name'];
+
+            $objReader = PHPExcel_IOFactory::createReaderForFile($file);
+            $objExcel  = $objReader->load($file);
+
+            $sheet     = $objExcel->getSheet(0);
+            $sheetData = $sheet->toArray(null,true,true,true);
+
+            for($i = 2; $i <= count($sheetData); $i++){
+
+                $mancc   = trim((string)$sheetData[$i]['A']);
+                $tenncc = trim((string)$sheetData[$i]['B']);
+                $diachi     = trim((string)$sheetData[$i]['C']);
+                $dienthoai  = trim((string)$sheetData[$i]['D']);
+
+                if($mancc == '') continue;
+                if(!$this->ncc->Nhacungcap_ins($mancc,$tenncc,$diachi,$dienthoai)){
+                    die(mysqli_error($this->ncc->con));
+                }
+            }
+
+            echo "<script>alert('Upload nhà cung cấp thành công!')</script>";
+            $this->view('Master',['page'=>'Nhacungcap_up_v']);
         }
 
         // Tải mẫu Excel (chỉ header) - Giữ nguyên

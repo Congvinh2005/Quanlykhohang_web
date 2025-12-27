@@ -13,6 +13,14 @@
             // Hàm mặc định - hiển thị danh sách sản phẩm
             $this->danhsach();
         }
+        function danhsach(){
+            $result = $this->sp->Sanpham_getAll();
+            
+            $this->view('Master',[
+                'page' => 'Danhsachsanpham_v',
+                'dulieu' => $result
+            ]);
+        }
         
         function form_them(){
             // Lấy danh sách nhà cung cấp cho dropdown
@@ -258,13 +266,6 @@
                 echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Sanpham/danhsach';</script>"; // Quay lại trang danh sách
         }
         
-        function danhsach(){
-            $result = $this->sp->Sanpham_getAll();
-            
-            $this->view('Master',[
-                'page' => 'Danhsachsanpham_v',
-                'dulieu' => $result
-            ]);
-        }
+        
     }
 ?>

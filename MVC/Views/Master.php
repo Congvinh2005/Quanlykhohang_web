@@ -72,7 +72,7 @@
                     <?php 
                         if($current == 'home') echo 'Dashboard';
                         elseif(strpos($current, 'Sanpham') !== false) echo 'Sản phẩm';
-                        elseif(strpos($current, 'Nhacungcap') !== false) echo 'Đối tác';
+                        elseif(strpos($current, 'Nhacungcap') !== false) echo 'Nhà cung cấp';
                         else echo 'Quản trị hệ thống';
                     ?>
                 </div>
