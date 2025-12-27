@@ -18,9 +18,10 @@
         
         // Hàm tìm kiếm sản phẩm (kèm tên nhà cung cấp)
         function Sanpham_find($masp, $tensp){
-            $sql = "SELECT s.*, n.tenncc FROM sanpham2 s 
+            $sql = "SELECT s.*, n.tenncc FROM sanpham2 s
                     LEFT JOIN nhacungcap n ON s.mancc = n.mancc
-                    WHERE s.masp LIKE '%$masp%' AND s.tensp LIKE '%$tensp%'";
+                    WHERE s.masp LIKE '%$masp%' AND s.tensp LIKE '%$tensp%'
+                    ORDER BY LENGTH(s.masp), s.masp";
             return mysqli_query($this->con, $sql);
         }
         
@@ -39,16 +40,18 @@
         
         // Hàm lấy tất cả sản phẩm với thông tin nhà cung cấp
         function Sanpham_getAll(){
-            $sql = "SELECT s.*, n.tenncc FROM sanpham2 s 
-                    LEFT JOIN nhacungcap n ON s.mancc = n.mancc";
+            $sql = "SELECT s.*, n.tenncc FROM sanpham2 s
+                    LEFT JOIN nhacungcap n ON s.mancc = n.mancc
+                    ORDER BY LENGTH(s.masp), s.masp";
             return mysqli_query($this->con, $sql);
         }
         
         // Hàm lấy chi tiết sản phẩm
         function Sanpham_getById($masp){
-            $sql = "SELECT s.*, n.tenncc FROM sanpham2 s 
-                    LEFT JOIN nhacungcap n ON s.mancc = n.mancc 
-                    WHERE s.masp = '$masp'";
+            $sql = "SELECT s.*, n.tenncc FROM sanpham2 s
+                    LEFT JOIN nhacungcap n ON s.mancc = n.mancc
+                    WHERE s.masp = '$masp'
+                    ORDER BY LENGTH(s.masp), s.masp";
             return mysqli_query($this->con, $sql);
         }
     }

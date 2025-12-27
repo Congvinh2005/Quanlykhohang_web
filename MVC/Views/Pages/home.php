@@ -10,7 +10,7 @@
     </div>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:24px;">
-        <a href="?url=Sanpham" class="card"
+        <a href="http://localhost/QLSP/Sanpham/danhsach" class="card"
             style="text-decoration:none;transition:0.3s;display:flex;align-items:center;gap:20px;margin:0;cursor:pointer">
             <div
                 style="width:60px;height:60px;border-radius:15px;background:#eff6ff;display:flex;align-items:center;justify-content:center;color:#4361ee;font-size:24px">
@@ -23,7 +23,7 @@
             <div style="margin-left:auto;color:#cbd5e1"><i class="fa-solid fa-chevron-right"></i></div>
         </a>
 
-        <a href="?url=Nhacungcap" class="card"
+        <a href="http://localhost/QLSP/Nhacungcap/danhsach" class="card"
             style="text-decoration:none;transition:0.3s;display:flex;align-items:center;gap:20px;margin:0;cursor:pointer">
             <div
                 style="width:60px;height:60px;border-radius:15px;background:#ecfdf5;display:flex;align-items:center;justify-content:center;color:#10b981;font-size:24px">
@@ -36,7 +36,7 @@
             <div style="margin-left:auto;color:#cbd5e1"><i class="fa-solid fa-chevron-right"></i></div>
         </a>
 
-        <a href="?url=Sanpham/danhsach" class="card"
+        <a href="http://localhost/QLSP/Sanpham/Get_data" class="card"
             style="text-decoration:none;transition:0.3s;display:flex;align-items:center;gap:20px;margin:0;cursor:pointer">
             <div
                 style="width:60px;height:60px;border-radius:15px;background:#fff7ed;display:flex;align-items:center;justify-content:center;color:#f59e0b;font-size:24px">

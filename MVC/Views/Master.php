@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Sản Phẩm Pro</title>
+    <base href="/QLSP/">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet"
-        href="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Css/style.css?v=2'; ?>">
+        href="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/QLSP/Public/Css/style.css?v=2'; ?>">
 </head>
 
 <body>
@@ -19,43 +20,28 @@
             <?php $current = isset($data['page']) ? $data['page'] : ''; ?>
             <nav class="menu_left1">
                 <ul>
-                    <!-- <li>
-                        <a href="?url=Home" class="<?php echo ($current === 'home') ? 'active' : ''; ?>">
+                    <li>
+                        <a href="http://localhost/QLSP/Home"
+                            class="<?php echo ($current === 'home') ? 'active' : ''; ?>">
                             <i class="fa-solid fa-chart-pie"></i> Tổng quan
                         </a>
                     </li>
-                    <li> -->
-                    <a href="?url=Sanpham"
-                        class="<?php echo (in_array($current, ['Sanpham_v','Sanpham_sua'])) ? 'active' : ''; ?>">
-                        <i class="fa-solid fa-box-open"></i> Quản lý Sản phẩm
-                    </a>
-                    </li>
-                    <!-- <li>
-                        <a href="?url=Sanpham"
-                            class="<?php echo (in_array($current, ['Sanpham_v','Sanpham_sua'])) ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-box-open"></i> Quản lý người dùng
-                        </a>
-                    </li>
+
+
                     <li>
-                        <a href="?url=Sanpham"
-                            class="<?php echo (in_array($current, ['Sanpham_v','Sanpham_sua'])) ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-box-open"></i> Quản lý lý thực đơn
-                        </a>
-                    </li>
-                    <li>
-                        <a href="?url=Sanpham"
-                            class="<?php echo (in_array($current, ['Sanpham_v','Sanpham_sua'])) ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-box-open"></i> Quản lý lý bàn
-                        </a>
-                    </li> -->
-                    <li>
-                        <a href="?url=Sanpham/danhsach"
+                        <a href="http://localhost/QLSP/Sanpham/danhsach"
                             class="<?php echo ($current === 'Danhsachsanpham_v') ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-list-ul"></i> Danh sách SP
+                            <i class="fa-solid fa-list-ul"></i> Quản lý sản phẩm
                         </a>
                     </li>
                     <li>
-                        <a href="?url=Nhacungcap"
+                        <a href="http://localhost/QLSP/Nhacungcap/danhsach"
+                            class="<?php echo ($current === 'Danhsachnhacungcap_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-truck-fast"></i> Quản lý nhà cung cấp
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost/QLSP/Nhacungcap"
                             class="<?php echo (in_array($current, ['Nhacungcap_v','Nhacungcap_sua'])) ? 'active' : ''; ?>">
                             <i class="fa-solid fa-truck-fast"></i> Nhà cung cấp
                         </a>
@@ -63,14 +49,14 @@
                     </li>
 
                     <li>
-                        <a href="?url=Nhacungcap"
+                        <a href="http://localhost/QLSP/Nhacungcap/export"
                             class="<?php echo (in_array($current, ['Nhacungcap_v','Nhacungcap_sua'])) ? 'active' : ''; ?>">
                             <i class="fa-solid fa-file-excel"></i>Xuất exel 📥
                         </a>
 
                     </li>
                     <li>
-                        <a href="?url=Nhacungcap"
+                        <a href="http://localhost/QLSP/Nhacungcap/import"
                             class="<?php echo (in_array($current, ['Nhacungcap_v','Nhacungcap_sua'])) ? 'active' : ''; ?>">
                             <i class="fa-solid fa-cloud-arrow-up"></i> Upload exel 🔍
                         </a>

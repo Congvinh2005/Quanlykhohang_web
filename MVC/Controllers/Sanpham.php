@@ -10,6 +10,11 @@
         }
         
         function Get_data(){
+            // Hàm mặc định - hiển thị danh sách sản phẩm
+            $this->danhsach();
+        }
+        
+        function form_them(){
             // Lấy danh sách nhà cung cấp cho dropdown
             $dsncc = $this->ncc->Nhacungcap_find('', '');
             // Lấy toàn bộ sản phẩm
@@ -17,6 +22,24 @@
             
             $this->view('Master',[
                 'page' => 'Sanpham_v',
+                'Masanpham' => '',
+                'Tensanpham' => '',
+                'Gia' => '',
+                'Soluong' => '',
+                'mancc' => '',
+                'dsncc' => $dsncc,
+                'dulieu' => $result
+            ]);
+        }
+
+          function themmoi(){
+             // Lấy danh sách nhà cung cấp cho dropdown
+            $dsncc = $this->ncc->Nhacungcap_find('', '');
+            // Lấy toàn bộ sản phẩm
+            $result = $this->sp->Sanpham_find('', '');
+            
+            $this->view('Master',[
+                'page' => 'Sanpham_v', // View thêm mới
                 'Masanpham' => '',
                 'Tensanpham' => '',
                 'Gia' => '',
@@ -38,35 +61,31 @@
                 // Kiểm tra dữ liệu rỗng
                 if($masp == ''){
                     echo "<script>alert('Mã sản phẩm không được rỗng!')</script>";
+                    $this->form_them();
                 } else if($tensp == ''){
                     echo "<script>alert('Tên sản phẩm không được rỗng!')</script>";
+                    $this->form_them();
                 } else {
                     // Kiểm tra trùng mã sản phẩm
                     $kq1 = $this->sp->checktrungMaSP($masp);
                     if($kq1){
                         echo "<script>alert('Mã sản phẩm đã tồn tại! Vui lòng nhập mã khác.')</script>";
+                        $this->form_them();
                     } else {
                         $kq = $this->sp->sanpham_ins($masp, $tensp, $gia, $soluong, $mancc);
-                        if($kq)
+                        if($kq) {
                             echo "<script>alert('Thêm mới thành công!')</script>";
-                        else
+                            // Quay về danh sách sau khi thêm thành công
+                            $this->danhsach();
+                        } else {
                             echo "<script>alert('Thêm mới thất bại!')</script>";
+                            $this->form_them();
+                        }
                     }
                 }
-
-                // Gọi lại giao diện
-                $dsncc = $this->ncc->Nhacungcap_find('', '');
-                $result = $this->sp->Sanpham_find('', '');
-                $this->view('Master',[
-                    'page' => 'Sanpham_v',
-                    'Masanpham' => $masp,
-                    'Tensanpham' => $tensp,
-                    'Gia' => $gia,
-                    'Soluong' => $soluong,
-                    'mancc' => $mancc,
-                    'dsncc' => $dsncc,
-                    'dulieu' => $result
-                ]);
+            } else {
+                // Hiển thị form thêm mới
+                $this->form_them();
             }
         }
         
@@ -76,16 +95,11 @@
                 $tensp = $_POST['txtTensanpham'];
                 
                 $result = $this->sp->Sanpham_find($masp, $tensp);
-                $dsncc = $this->ncc->Nhacungcap_find('', '');
                 
                 $this->view('Master',[
-                    'page' => 'Sanpham_v',
+                    'page' => 'Danhsachsanpham_v',
                     'Masanpham' => $masp,
                     'Tensanpham' => $tensp,
-                    'Gia' => '',
-                    'Soluong' => '',
-                    'mancc' => '',
-                    'dsncc' => $dsncc,
                     'dulieu' => $result
                 ]);
             }
@@ -164,40 +178,42 @@
         // Hiển thị form nhập Excel
         function import_form(){
             $this->view('Master',[
-                'page' => 'Sanpham_import_v'
+                'page' => 'Sanpham_up_v'
             ]);
         }
 
         // Xử lý nhập Excel
-        function import(){
-            if(isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK){
-                $tmp = $_FILES['file']['tmp_name'];
-                try{
-                    $excel = PHPExcel_IOFactory::load($tmp);
-                    $sheet = $excel->getActiveSheet();
-                    $highestRow = $sheet->getHighestRow();
-                    $imported = 0; $skipped = 0;
-                    for($row = 2; $row <= $highestRow; $row++){
-                        $masp = trim($sheet->getCell('A'.$row)->getValue());
-                        $tensp = trim($sheet->getCell('B'.$row)->getValue());
-                        $gia = trim($sheet->getCell('C'.$row)->getValue());
-                        $soluong = trim($sheet->getCell('D'.$row)->getValue());
-                        $mancc = trim($sheet->getCell('E'.$row)->getValue());
-                        if($masp !== ''){
-                            if(!$this->sp->checktrungMaSP($masp) && $this->ncc->checktrungMaNCC($mancc)){
-                                if($this->sp->sanpham_ins($masp,$tensp,$gia,$soluong,$mancc)) $imported++; else $skipped++;
-                            } else { $skipped++; }
-                        }
-                    }
-                    echo "<script>alert('Nhập thành công: ".$imported." dòng, bỏ qua: ".$skipped." dòng.'); window.location='?url=Sanpham/Get_data';</script>";
-                }catch(Exception $e){
-                    echo "<script>alert('Lỗi đọc file Excel!'); window.location='?url=Sanpham/import_form';</script>";
-                }
-            } else {
-                echo "<script>alert('Vui lòng chọn file Excel!'); window.location='?url=Sanpham/import_form';</script>";
+            function up_l(){
+            if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
+                echo "<script>alert('Upload file lỗi')</script>";
+                return;
             }
-        }
 
+            $file = $_FILES['txtfile']['tmp_name'];
+
+            $objReader = PHPExcel_IOFactory::createReaderForFile($file);
+            $objExcel  = $objReader->load($file);
+
+            $sheet     = $objExcel->getSheet(0);
+            $sheetData = $sheet->toArray(null,true,true,true);
+
+            for($i = 2; $i <= count($sheetData); $i++){
+
+                $masp   = trim((string)$sheetData[$i]['A']);
+                $tensp = trim((string)$sheetData[$i]['B']);
+                $gia     = trim((string)$sheetData[$i]['C']);
+                $soluong  = trim((string)$sheetData[$i]['D']);
+                $mancc    = trim((string)$sheetData[$i]['E']);
+
+                if($masp == '') continue;
+                if(!$this->sp->Sanpham_ins($masp,$tensp,$gia,$soluong,$mancc)){
+                    die(mysqli_error($this->sp->con));
+                }
+            }
+
+            echo "<script>alert('Upload sản phẩm thành công!')</script>";
+            $this->view('Master',['page'=>'Sanpham_up_v']);
+        }
         // Tải mẫu Excel (chỉ header)
         function template(){
             $excel = new PHPExcel();
@@ -237,9 +253,9 @@
         function xoa($masp){
             $kq = $this->sp->Sanpham_delete($masp);
             if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='?url=Sanpham/Get_data';</script>";
+                echo "<script>alert('Xóa thành công!'); window.location='http://localhost/QLSP/Sanpham/danhsach';</script>"; // Chuyển về trang danh sách
             else
-                echo "<script>alert('Xóa thất bại!');</script>";
+                echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Sanpham/danhsach';</script>"; // Quay lại trang danh sách
         }
         
         function danhsach(){

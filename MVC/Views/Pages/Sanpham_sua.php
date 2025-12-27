@@ -109,6 +109,18 @@
         color: var(--muted)
     }
 
+    .btn-back {
+        background: #6b7280;
+        padding: 8px 15px;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     @media (max-width:720px) {
         form {
             grid-template-columns: 1fr
@@ -130,7 +142,7 @@
         <h1>Sửa thông tin Sản phẩm</h1>
         <p class="lead">Cập nhật thông tin sản phẩm.</p>
 
-        <form method="post" action="?url=Sanpham/update">
+        <form method="post" action="http://localhost/QLSP/Sanpham/update">
             <div>
                 <label for="productId">Mã sản phẩm *</label>
                 <input type="text" id="productId" name="txtMasanpham" readonly
@@ -172,8 +184,8 @@ if(isset($data['dsncc'])){
             </div>
 
             <div class="actions">
-                <a href="?url=Sanpham/Get_data" class="btn-ghost"
-                    style="text-decoration:none;display:inline-flex;align-items:center;">Quay lại</a>
+                <a href="http://localhost/QLSP/Sanpham/danhsach" class="btn-back"><i
+                        class="fa-solid fa-arrow-left"></i> Quay lại</a>
                 <button type="submit" class="btn-primary" name="btnCapnhat">Cập nhật</button>
             </div>
         </form>

@@ -18,7 +18,7 @@
         
         // Hàm tìm kiếm nhà cung cấp
         function Nhacungcap_find($mancc, $tenncc){
-            $sql = "SELECT * FROM nhacungcap WHERE mancc LIKE '%$mancc%' AND tenncc LIKE '%$tenncc%'";
+            $sql = "SELECT * FROM nhacungcap WHERE mancc LIKE '%$mancc%' AND tenncc LIKE '%$tenncc%' ORDER BY LENGTH(mancc), mancc";
             return mysqli_query($this->con, $sql);
         }
         
@@ -37,7 +37,7 @@
         
         // Hàm lấy tất cả nhà cung cấp
         function Nhacungcap_getAll(){
-            $sql = "SELECT * FROM nhacungcap";
+            $sql = "SELECT * FROM nhacungcap ORDER BY LENGTH(mancc), mancc";
             return mysqli_query($this->con, $sql);
         }
     }

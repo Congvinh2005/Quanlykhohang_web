@@ -113,6 +113,18 @@
         color: var(--muted)
     }
 
+    .btn-back {
+        background: #6b7280;
+        padding: 8px 15px;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     @media (max-width:720px) {
         form {
             grid-template-columns: 1fr
@@ -134,7 +146,7 @@
         <h1>Sửa thông tin Nhà cung cấp</h1>
         <p class="lead">Cập nhật thông tin nhà cung cấp.</p>
 
-        <form method="post" action="?url=Nhacungcap/update">
+        <form method="post" action="http://localhost/QLSP/Nhacungcap/update">
             <div>
                 <label for="nccId">Mã nhà cung cấp *</label>
                 <input type="text" id="nccId" name="txtMancc" readonly value="<?php echo $data['mancc'] ?>" />
@@ -156,8 +168,8 @@
             </div>
 
             <div class="actions">
-                <a href="?url=Nhacungcap/Get_data" class="btn-ghost"
-                    style="text-decoration:none;display:inline-flex;align-items:center;">Quay lại</a>
+                <a href="http://localhost/QLSP/Nhacungcap/danhsach" class="btn-back"><i
+                        class="fa-solid fa-arrow-left"></i> Quay lại</a>
                 <button type="submit" class="btn-primary" name="btnCapnhat">Cập nhật</button>
             </div>
         </form>
