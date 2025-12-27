@@ -2,9 +2,8 @@
 <html lang="vi">
 
 <body>
-
     <style>
-    /* Custom styles for the actions */
+    /* Reuse styles similar to Danhsachsanpham */
     .btn-create {
         background: #10b981;
         /* Màu xanh lá cây */
@@ -201,61 +200,58 @@
     <div class="card">
         <div class="actions-top">
             <div>
-                <h1><i class="fa-solid fa-box-open"></i> Quản lý Sản phẩm</h1>
-                <p class="lead">Tra cứu và cập nhật dữ liệu kho hàng.</p>
+                <h1><i class="fa-solid fa-user"></i> Quản lý Users</h1>
+                <p class="lead">Tạo, sửa, xóa tài khoản người dùng.</p>
             </div>
             <div class="actions">
-                <a href="http://localhost/QLSP/Sanpham/themmoi" class="btn-create"><i class="fa-solid fa-plus"></i>
+                <a href="http://localhost/QLSP/Users/themmoi" class="btn-create"><i class="fa-solid fa-plus"></i>
                     Thêm mới</a>
-                <a href="http://localhost/QLSP/Sanpham/import_form" class="btn-ghost"><i
+                <a href="http://localhost/QLSP/Users/import_form" class="btn-ghost"><i
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
-                <a href="http://localhost/QLSP/Sanpham/export" class="btn-excel"><i class="fa-solid fa-file-excel"></i>
-                    Xuất
+                <a href="http://localhost/QLSP/Users/export" class="btn-excel"><i class="fa-solid fa-download"></i> Xuất
                     Excel</a>
             </div>
         </div>
 
-        <form method="post" action="http://localhost/QLSP/Sanpham/tim" class="form-search"
+        <form method="post" action="http://localhost/QLSP/Users/tim" class="form-search"
             style="margin-bottom:30px;border:1px dashed #cbd5e1;padding:20px;border-radius:12px;background:#f8fafc">
             <div>
-                <label for="searchId">Mã sản phẩm</label>
-                <input type="text" id="searchId" name="txtMasanpham" placeholder="Nhập mã SP..."
-                    value="<?php echo isset($data['Masanpham']) ? htmlspecialchars($data['Masanpham']) : ''; ?>" />
+                <label for="searchId">Mã user</label>
+                <input type="text" id="searchId" name="txtMauser" placeholder="Nhập mã user..."
+                    value="<?php echo isset($data['ma_user'])?htmlspecialchars($data['ma_user']):'' ?>" />
             </div>
             <div>
-                <label for="searchName">Tên sản phẩm</label>
-                <input type="text" id="searchName" name="txtTensanpham" placeholder="Nhập tên SP..."
-                    value="<?php echo isset($data['Tensanpham']) ? htmlspecialchars($data['Tensanpham']) : ''; ?>" />
+                <label for="searchName">Tên user</label>
+                <input type="text" id="searchName" name="txtTenuser" placeholder="Nhập tên user..."
+                    value="<?php echo isset($data['ten_user'])?htmlspecialchars($data['ten_user']):'' ?>" />
             </div>
 
             <div class="actions" style="margin-top:0;">
                 <button type="submit" class="btn-primary" name="btnTim"><i class="fa-solid fa-search"></i> Tìm
                     kiếm</button>
-                <a href="http://localhost/QLSP/Sanpham/danhsach" class="btn-ghost">Làm mới</a>
+                <a href="http://localhost/QLSP/Users/danhsach" class="btn-ghost">Làm mới</a>
             </div>
         </form>
-    </div>
 
-    <div class="card">
         <h2><i class="fa-solid fa-list-ul"></i> Danh sách hiện tại</h2>
         <?php
-        // Reset con trỏ dữ liệu
-        if(isset($data['dulieu']) && is_a($data['dulieu'], 'mysqli_result')){
-             mysqli_data_seek($data['dulieu'], 0);
-        }
-
-        // Đảm bảo dữ liệu tồn tại
-        if(isset($data['dulieu'])){
-            // Giả định $data['dulieu'] là mysqli_result
-            // Reset con trỏ về đầu để có thể đếm và dùng lại bên dưới
-            if (is_object($data['dulieu'])) {
-                $count = mysqli_num_rows($data['dulieu']);
-                mysqli_data_seek($data['dulieu'], 0);
-            } else {
-                $count = 0;
+            // Reset con trỏ dữ liệu
+            if(isset($data['dulieu']) && is_a($data['dulieu'], 'mysqli_result')){
+                 mysqli_data_seek($data['dulieu'], 0);
             }
-        ?>
+
+            // Đảm bảo dữ liệu tồn tại
+            if(isset($data['dulieu'])){
+                // Giả định $data['dulieu'] là mysqli_result
+                // Reset con trỏ về đầu để có thể đếm và dùng lại bên dưới
+                if (is_object($data['dulieu'])) {
+                    $count = mysqli_num_rows($data['dulieu']);
+                    mysqli_data_seek($data['dulieu'], 0);
+                } else {
+                    $count = 0;
+                }
+            ?>
         <div style="margin:10px 0">
             <strong>Kết quả: <span id="resultCount" class="hint"></span></strong>
         </div>
@@ -264,15 +260,16 @@
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Mã SP</th>
-                        <th>Tên SP</th>
-                        <th>Giá</th>
-                        <th>SL</th>
-                        <th>Nhà cung cấp</th>
+                        <th>Mã User</th>
+                        <th>Tên người dùng</th>
+                        <th>Password</th>
+                        <th>Email</th>
+                        <th>Quyền</th>
+                        <th>Ngày tạo</th>
                         <th style="text-align:right">Thao tác</th>
                     </tr>
                 </thead>
-                <tbody id="spBody">
+                <tbody id="userBody">
                     <?php
                     // Render dữ liệu tĩnh ban đầu
                     if($count > 0) {
@@ -282,21 +279,19 @@
                     <tr>
                         <td><span style="font-weight:600;color:var(--accent)"><?php echo $serial++; ?></span>
                         </td>
-                        <td><?php echo htmlspecialchars($row['masp']) ?></td>
-                        <td><?php echo htmlspecialchars($row['tensp']) ?></td>
-                        <td><?php echo number_format($row['gia'], 0, ',', '.') ?> ₫</td>
-                        <td>
-                            <span
-                                style="background:<?php echo $row['soluong']>0?'#d1fae5':'#fee2e2'; ?>;color:<?php echo $row['soluong']>0?'#065f46':'#991b1b'; ?>;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">
-                                <?php echo htmlspecialchars($row['soluong']) ?>
-                            </span>
+                        <td><span
+                                style="font-weight:600;color:var(--accent)"><?php echo htmlspecialchars($row['ma_user']) ?></span>
                         </td>
-                        <td><?php echo isset($row['tenncc']) ? htmlspecialchars($row['tenncc']) : 'N/A' ?></td>
+                        <td><?php echo htmlspecialchars($row['ten_user']) ?></td>
+                        <td><?php echo htmlspecialchars($row['password']) ?></td>
+                        <td><?php echo htmlspecialchars($row['email']) ?></td>
+                        <td><?php echo htmlspecialchars($row['phan_quyen']) ?></td>
+                        <td><?php echo htmlspecialchars($row['ngay_tao']) ?></td>
                         <td style="text-align:right">
-                            <a href="http://localhost/QLSP/Sanpham/sua/<?php echo urlencode($row['masp']) ?>"><button
+                            <a href="http://localhost/QLSP/Users/sua/<?php echo urlencode($row['ma_user']) ?>"><button
                                     class="btn-edit">✏️
                                     Sửa</button></a>
-                            <a href="http://localhost/QLSP/Sanpham/xoa/<?php echo urlencode($row['masp']) ?>"
+                            <a href="http://localhost/QLSP/Users/xoa/<?php echo urlencode($row['ma_user']) ?>"
                                 onclick="return confirm('Bạn có chắc chắn muốn xoá không?')"><button
                                     class="btn-delete">🗑️
                                     Xóa</button></a>
@@ -319,8 +314,8 @@
         <?php if(isset($data['dulieu']) && mysqli_num_rows($data['dulieu']) === 0){ ?>
         <div class="hint">Không có kết quả phù hợp.</div>
         <?php } ?>
-
     </div>
+
 </body>
 
 </html>

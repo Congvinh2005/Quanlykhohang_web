@@ -257,11 +257,10 @@
             if(is_a($data['dulieu'], 'mysqli_result')){
                  mysqli_data_seek($data['dulieu'], 0);
             }
-            $count = 0;
+            $count = mysqli_num_rows($data['dulieu']); // Get total number of records
             ?>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0">
-                <strong>Kết quả:</strong>
-                <span id="resultCount" class="hint"></span>
+            <div style="margin:10px 0">
+                <strong>Kết quả: <span id="resultCount" class="hint"></span></strong>
             </div>
             <div class="table-container">
                 <table>

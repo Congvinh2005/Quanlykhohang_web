@@ -41,9 +41,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="http://localhost/QLSP/Nhacungcap"
-                            class="<?php echo (in_array($current, ['Nhacungcap_v','Nhacungcap_sua'])) ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-truck-fast"></i> Nhà cung cấp
+                        <a href="http://localhost/QLSP/Users/danhsach"
+                            class="<?php echo ($current === 'Danhsachusers_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-users"></i> Quản lý người dùng
                         </a>
 
                     </li>
@@ -73,6 +73,7 @@
                         if($current == 'home') echo 'Dashboard';
                         elseif(strpos($current, 'Sanpham') !== false) echo 'Sản phẩm';
                         elseif(strpos($current, 'Nhacungcap') !== false) echo 'Nhà cung cấp';
+                        elseif(strpos($current, 'Users') !== false) echo 'Người dùng';
                         else echo 'Quản trị hệ thống';
                     ?>
                 </div>
