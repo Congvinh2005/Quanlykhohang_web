@@ -51,6 +51,14 @@
                 if($mancc == ''){
                     echo "<script>alert('Mã nhà cung cấp không được rỗng!')</script>";
                 } else {
+                    // Kiểm tra số điện thoại có đúng 10 chữ số không nếu không để trống
+                    $dienthoai = trim($dienthoai); // Loại bỏ khoảng trắng
+                    if($dienthoai != '' && !preg_match('/^\d{10}$/', $dienthoai)){
+                        echo "<script>alert('Số điện thoại phải có đúng 10 chữ số!')</script>";
+                        $this->form_them();
+                        return;
+                    }
+
                     // Kiểm tra trùng mã nhà cung cấp
                     $kq1 = $this->ncc->checktrungMaNCC($mancc);
                     if($kq1){
@@ -61,13 +69,14 @@
                                 'tenncc' => $tenncc,
                                 'diachi' => $diachi,
                                 'dienthoai' => $dienthoai
+
                             ]);
                     } else {
                         $kq = $this->ncc->nhacungcap_ins($mancc, $tenncc, $diachi, $dienthoai);
                         if($kq) {
                             echo "<script>alert('Thêm mới thành công!');</script>";
-                            $this->danhsach(); 
-                            
+                            $this->danhsach();
+
                         } else {
                             echo "<script>alert('Thêm mới thất bại!');</script>";
                             $this->view('Master', [
@@ -80,7 +89,7 @@
                         }
                     }
                 }
-    
+
             }
         }
         
@@ -142,13 +151,21 @@
                 $tenncc = $_POST['txtTenncc'];
                 $diachi = $_POST['txtDiachi'];
                 $dienthoai = $_POST['txtDienthoai'];
-                
+
+                // Kiểm tra số điện thoại có đúng 10 chữ số không nếu không để trống
+                $dienthoai = trim($dienthoai); // Loại bỏ khoảng trắng
+                if($dienthoai != '' && !preg_match('/^\d{10}$/', $dienthoai)){
+                    echo "<script>alert('Số điện thoại phải có đúng 10 chữ số!')</script>";
+                    $this->sua($mancc);
+                    return;
+                }
+
                 $kq = $this->ncc->Nhacungcap_update($mancc, $tenncc, $diachi, $dienthoai);
                 if($kq)
                     echo "<script>alert('Cập nhật thành công!'); window.location='http://localhost/QLSP/Nhacungcap/danhsach';</script>";
                 else
                     echo "<script>alert('Cập nhật thất bại!');</script>";
-                    
+
                 // Nếu cập nhật thất bại, gọi lại view sửa để người dùng thử lại
                 if(!$kq){
                     $this->view('Master',[
@@ -170,9 +187,14 @@
                 echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Nhacungcap/danhsach';</script>"; // Quay lại trang danh sách
         }
 
-        // Xuất Excel danh sách nhà cung cấp
+        // Xuất Excel danh sách nhà cung cấp (theo tìm kiếm nếu có)
         function export(){
-            $data = $this->ncc->Nhacungcap_find('', '');
+            // Get search parameters from URL or POST
+            $mancc = $_GET['mancc'] ?? '';
+            $tenncc = $_GET['tenncc'] ?? '';
+
+            // Find data based on search parameters (if provided) or all records (if not)
+            $data = $this->ncc->Nhacungcap_find($mancc, $tenncc);
             $excel = new PHPExcel();
             $excel->getProperties()->setCreator("QLSP")->setTitle("Danh sách nhà cung cấp");
             $sheet = $excel->setActiveSheetIndex(0);
@@ -207,9 +229,48 @@
         }
 
         // Xử lý nhập Excel - Sửa redirect về danhsach
-            function up_l(){
+        //     function up_l(){
+        //     if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
+        //         echo "<script>alert('Upload file lỗi')</script>";
+        //         return;
+        //     }
+
+        //     $file = $_FILES['txtfile']['tmp_name'];
+
+        //     $objReader = PHPExcel_IOFactory::createReaderForFile($file);
+        //     $objExcel  = $objReader->load($file);
+
+        //     $sheet     = $objExcel->getSheet(0);
+        //     $sheetData = $sheet->toArray(null,true,true,true);
+
+        //     for($i = 2; $i <= count($sheetData); $i++){
+
+        //         $mancc   = trim((string)$sheetData[$i]['A']);
+        //         $tenncc = trim((string)$sheetData[$i]['B']);
+        //         $diachi     = trim((string)$sheetData[$i]['C']);
+        //         $dienthoai  = trim((string)$sheetData[$i]['D']);
+
+        //         // Kiểm tra số điện thoại có đúng 10 chữ số không nếu không để trống
+        //         if($dienthoai != '' && !preg_match('/^\d{10}$/', $dienthoai)){
+        //             echo "<script>alert('Số điện thoại ở dòng $i không đúng định dạng 10 chữ số. Dữ liệu không được nhập.')</script>";
+        //             return;
+        //         }
+
+        //         if($mancc == '') continue;
+        //         if(!$this->ncc->Nhacungcap_ins($mancc,$tenncc,$diachi,$dienthoai)){
+        //             die(mysqli_error($this->ncc->con));
+        //         }
+        //     }
+
+        //     echo "<script>alert('Upload nhà cung cấp thành công!')</script>";
+        //     $this->view('Master',['page'=>'Nhacungcap_up_v']);
+        // }
+
+
+                function up_l(){
             if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
                 echo "<script>alert('Upload file lỗi')</script>";
+                $this->view('Master',['page'=>'Nhacungcap_up_v']);
                 return;
             }
 
@@ -221,22 +282,48 @@
             $sheet     = $objExcel->getSheet(0);
             $sheetData = $sheet->toArray(null,true,true,true);
 
-            for($i = 2; $i <= count($sheetData); $i++){
+            $errors = [];
+            $rows   = [];
 
-                $mancc   = trim((string)$sheetData[$i]['A']);
-                $tenncc = trim((string)$sheetData[$i]['B']);
-                $diachi     = trim((string)$sheetData[$i]['C']);
-                $dienthoai  = trim((string)$sheetData[$i]['D']);
+            // 1️⃣ VALIDATE TRƯỚC
+            for($i = 2; $i <= count($sheetData); $i++){
+                $mancc     = trim((string)$sheetData[$i]['A']);
+                $tenncc    = trim((string)$sheetData[$i]['B']);
+                $diachi    = trim((string)$sheetData[$i]['C']);
+                $dienthoai = trim((string)$sheetData[$i]['D']);
 
                 if($mancc == '') continue;
-                if(!$this->ncc->Nhacungcap_ins($mancc,$tenncc,$diachi,$dienthoai)){
-                    die(mysqli_error($this->ncc->con));
+
+                if($dienthoai != '' && !preg_match('/^\d{10}$/', $dienthoai)){
+                    $errors[] = "Dòng $i: Số điện thoại phải đúng 10 chữ số";
+                }
+
+                if($this->ncc->checktrungMaNCC($mancc)){
+                    $errors[] = "Dòng $i: Mã NCC [$mancc] đã tồn tại";
+                }
+
+                $rows[] = [$mancc, $tenncc, $diachi, $dienthoai];
+            }
+
+            // ❌ Nếu có lỗi → dừng import
+            if(!empty($errors)){
+                echo "<script>alert('LỖI dữ liệu bảng không phù hợp:\\n" . implode("\\n", $errors) . "')</script>";
+                $this->view('Master',['page'=>'Nhacungcap_up_v']);
+                return;
+            }
+
+            // 2️⃣ INSERT SAU KHI HỢP LỆ
+            foreach($rows as $r){
+                if(!$this->ncc->Nhacungcap_ins($r[0], $r[1], $r[2], $r[3])){
+                    echo "<script>alert('Lỗi khi lưu dữ liệu!')</script>";
+                    $this->view('Master',['page'=>'Nhacungcap_up_v']);
+                    return;
                 }
             }
 
             echo "<script>alert('Upload nhà cung cấp thành công!')</script>";
             $this->view('Master',['page'=>'Nhacungcap_up_v']);
-        }
+        }   
 
         // Tải mẫu Excel (chỉ header) - Giữ nguyên
         function template(){

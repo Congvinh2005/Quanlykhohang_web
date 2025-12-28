@@ -13,6 +13,13 @@
             return (mysqli_num_rows($result) > 0);
         }
 
+        public function checktrungEmail($email, $ma_user)
+    {
+        $sql = "SELECT * FROM users 
+            WHERE email = '$email' 
+            AND ma_user != '$ma_user'";
+        return mysqli_query($this->con, $sql);
+    }
         // Tìm kiếm user
         function Users_find($ma_user, $ten_user){
             $sql = "SELECT * FROM users WHERE ma_user LIKE '%$ma_user%' AND ten_user LIKE '%$ten_user%' ORDER BY LENGTH(ma_user), ma_user";

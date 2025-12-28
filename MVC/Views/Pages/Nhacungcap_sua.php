@@ -159,7 +159,9 @@
 
             <div>
                 <label for="phone">Điện thoại</label>
-                <input type="tel" id="phone" name="txtDienthoai" value="<?php echo $data['dienthoai'] ?>" />
+                <input type="tel" id="phone" name="txtDienthoai" value="<?php echo $data['dienthoai'] ?>"
+                    maxlength="10" pattern="[0-9]{10}"
+                    title="Vui lòng nhập đúng 10 chữ số điện thoại" />
             </div>
 
             <div class="full">

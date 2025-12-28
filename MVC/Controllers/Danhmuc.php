@@ -40,41 +40,68 @@
             if(isset($_POST['btnLuu'])){
                 $ma_danh_muc = $_POST['txtMadanhmuc'];
                 $ten_danh_muc = $_POST['txtTendanhmuc'];
-                $image = $_POST['txtImage'];
+
+                // Xử lý upload hình ảnh
+                $image = '';
+                if(isset($_FILES['txtImage']) && $_FILES['txtImage']['error'] == 0) {
+                    $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                    $filename = $_FILES['txtImage']['name'];
+                    $filetmp = $_FILES['txtImage']['tmp_name'];
+                    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+                    if(in_array($ext, $allowed)) {
+                        $new_filename = 'dm_' . $ma_danh_muc . '_' . time() . '.' . $ext;
+                        $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/danhmuc/' . $new_filename;
+
+                        if(move_uploaded_file($filetmp, $upload_path)) {
+                            $image = '/qlsp/Public/Pictures/danhmuc/' . $new_filename;
+                        } else {
+                            echo "<script>alert('Upload hình ảnh thất bại!');</script>";
+                            $this->view('Master',[
+                                'page' => 'Danhmuc_v',
+                                'ma_danh_muc' => $ma_danh_muc,
+                                'ten_danh_muc' => $ten_danh_muc,
+                                'image' => ''
+                            ]);
+                            return;
+                        }
+                    } else {
+                        echo "<script>alert('Định dạng hình ảnh không hợp lệ!');</script>";
+                        $this->view('Master',[
+                            'page' => 'Danhmuc_v',
+                            'ma_danh_muc' => $ma_danh_muc,
+                            'ten_danh_muc' => $ten_danh_muc,
+                            'image' => ''
+                        ]);
+                        return;
+                    }
+                } else {
+                    // Nếu không có file upload mới, sử dụng giá trị từ form (trường text)
+                    $image = $_POST['txtImage'];
+                }
 
                 // Kiểm tra dữ liệu rỗng
                 if($ma_danh_muc == ''){
                     echo "<script>alert('Mã danh mục không được rỗng!')</script>";
+                    $this->form_them();
                 } else {
                     // Kiểm tra trùng mã danh mục
                     $kq1 = $this->dm->checktrungMaDanhmuc($ma_danh_muc);
                     if($kq1){
                         echo "<script>alert('Mã danh mục đã tồn tại! Vui lòng nhập mã khác.')</script>";
-                        $this ->view('Master',[
-                                'page' => 'Danhmuc_v',
-                                'ma_danh_muc' => $ma_danh_muc,
-                                'ten_danh_muc' => $ten_danh_muc,
-                                'image' => $image
-                            ]);
-                     
+                        $this->form_them();
                     } else {
                         $kq = $this->dm->danhmuc_ins($ma_danh_muc, $ten_danh_muc, $image);
                         if($kq) {
                             echo "<script>alert('Thêm mới thành công!');</script>";
                             $this->danhsach(); // Quay về danh sách sau khi thêm thành công
-
                         } else {
                             echo "<script>alert('Thêm mới thất bại!');</script>";
-                            $this ->view('Master',[
-                                'page' => 'Danhmuc_v',
-                                'ma_danh_muc' => $ma_danh_muc,
-                                'ten_danh_muc' => $ten_danh_muc,
-                                'image' => $image
-                            ]);
+                            $this->form_them();
                         }
                     }
                 }
-            }
+            } 
         }
 
         function tim(){
@@ -129,7 +156,43 @@
             if(isset($_POST['btnCapnhat'])){
                 $ma_danh_muc = $_POST['txtMadanhmuc'];
                 $ten_danh_muc = $_POST['txtTendanhmuc'];
-                $image = $_POST['txtImage'];
+
+                // Lấy hình ảnh hiện tại từ database trước
+                $current_record = $this->dm->Danhmuc_getById($ma_danh_muc);
+                $current_row = mysqli_fetch_array($current_record);
+                $image = $current_row['image']; // Giữ hình ảnh hiện tại mặc định
+
+                // Xử lý upload hình ảnh mới (nếu có)
+                if(isset($_FILES['txtImage']) && $_FILES['txtImage']['error'] == 0) {
+                    $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                    $filename = $_FILES['txtImage']['name'];
+                    $filetmp = $_FILES['txtImage']['tmp_name'];
+                    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+                    if(in_array($ext, $allowed)) {
+                        $new_filename = 'dm_' . $ma_danh_muc . '_' . time() . '.' . $ext;
+                        $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/danhmuc/' . $new_filename;
+
+                        if(move_uploaded_file($filetmp, $upload_path)) {
+                            // Xóa hình ảnh cũ nếu tồn tại
+                            $old_image_path = $_SERVER['DOCUMENT_ROOT'] . $current_row['image'];
+                            if(!empty($current_row['image']) && file_exists($old_image_path) && strpos($old_image_path, '/Public/Pictures/danhmuc/') !== false) {
+                                unlink($old_image_path);
+                            }
+
+                            $image = '/qlsp/Public/Pictures/danhmuc/' . $new_filename;
+                        } else {
+                            echo "<script>alert('Upload hình ảnh thất bại!');</script>";
+                            $this->sua($ma_danh_muc);
+                            return;
+                        }
+                    } else {
+                        echo "<script>alert('Định dạng hình ảnh không hợp lệ!');</script>";
+                        $this->sua($ma_danh_muc);
+                        return;
+                    }
+                }
+                // Nếu không có file upload mới, giữ nguyên hình ảnh hiện tại (đã được lấy ở trên)
 
                 $kq = $this->dm->Danhmuc_update($ma_danh_muc, $ten_danh_muc, $image);
                 if($kq)
@@ -139,12 +202,7 @@
 
                 // Nếu cập nhật thất bại, gọi lại view sửa để người dùng thử lại
                 if(!$kq){
-                    $this->view('Master',[
-                        'page' => 'Danhmuc_sua',
-                        'ma_danh_muc' => $ma_danh_muc,
-                        'ten_danh_muc' => $ten_danh_muc,
-                        'image' => $image
-                    ]);
+                    $this->sua($ma_danh_muc);
                 }
             }
         }
@@ -157,9 +215,14 @@
                 echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Danhmuc/danhsach';</script>"; // Quay lại trang danh sách
         }
 
-        // Xuất Excel danh sách danh mục
+        // Xuất Excel danh sách danh mục (theo tìm kiếm nếu có)
         function export(){
-            $data = $this->dm->Danhmuc_find('', '');
+            // Get search parameters from URL or POST
+            $ma_danh_muc = $_GET['ma_danh_muc'] ?? '';
+            $ten_danh_muc = $_GET['ten_danh_muc'] ?? '';
+
+            // Find data based on search parameters (if provided) or all records (if not)
+            $data = $this->dm->Danhmuc_find($ma_danh_muc, $ten_danh_muc);
             $excel = new PHPExcel();
             $excel->getProperties()->setCreator("QLSP")->setTitle("Danh sách danh mục");
             $sheet = $excel->setActiveSheetIndex(0);
@@ -192,35 +255,76 @@
         }
 
         // Xử lý nhập Excel
+        // function up_l(){
+        //     if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
+        //         echo "<script>alert('Upload file lỗi')</script>";
+        //         return;
+        //     }
+
+        //     $file = $_FILES['txtfile']['tmp_name'];
+
+        //     $objReader = PHPExcel_IOFactory::createReaderForFile($file);
+        //     $objExcel  = $objReader->load($file);
+
+        //     $sheet     = $objExcel->getSheet(0);
+        //     $sheetData = $sheet->toArray(null,true,true,true);
+
+        //     for($i = 2; $i <= count($sheetData); $i++){
+
+        //         $ma_danh_muc   = trim((string)$sheetData[$i]['A']);
+        //         $ten_danh_muc = trim((string)$sheetData[$i]['B']);
+        //         $image     = trim((string)$sheetData[$i]['C']);
+
+        //         if($ma_danh_muc == '') continue;
+        //         if(!$this->dm->Danhmuc_ins($ma_danh_muc,$ten_danh_muc,$image)){
+        //             die(mysqli_error($this->dm->con));
+        //         }
+        //     }
+
+        //     echo "<script>alert('Upload danh mục thành công!')</script>";
+        //     $this->view('Master',['page'=>'Danhmuc_up_v']);
+        // }
+
         function up_l(){
-            if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
-                echo "<script>alert('Upload file lỗi')</script>";
-                return;
-            }
+    if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
+        echo "<script>alert('Upload file lỗi')</script>";
+        return;
+    }
 
-            $file = $_FILES['txtfile']['tmp_name'];
+    $file = $_FILES['txtfile']['tmp_name'];
 
-            $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-            $objExcel  = $objReader->load($file);
+    $objReader = PHPExcel_IOFactory::createReaderForFile($file);
+    $objExcel  = $objReader->load($file);
 
-            $sheet     = $objExcel->getSheet(0);
-            $sheetData = $sheet->toArray(null,true,true,true);
+    $sheet     = $objExcel->getSheet(0);
+    $sheetData = $sheet->toArray(null,true,true,true);
 
-            for($i = 2; $i <= count($sheetData); $i++){
+    for($i = 2; $i <= count($sheetData); $i++){
 
-                $ma_danh_muc   = trim((string)$sheetData[$i]['A']);
-                $ten_danh_muc = trim((string)$sheetData[$i]['B']);
-                $image     = trim((string)$sheetData[$i]['C']);
+        $ma_danh_muc  = trim($sheetData[$i]['A']);
+        $ten_danh_muc = trim($sheetData[$i]['B']);
+        $image        = trim($sheetData[$i]['C']);
 
-                if($ma_danh_muc == '') continue;
-                if(!$this->dm->Danhmuc_ins($ma_danh_muc,$ten_danh_muc,$image)){
-                    die(mysqli_error($this->dm->con));
-                }
-            }
+        if($ma_danh_muc == '') continue;
 
-            echo "<script>alert('Upload danh mục thành công!')</script>";
-            $this->view('Master',['page'=>'Danhmuc_up_v']);
+        // ✅ CHECK TRÙNG MÃ DANH MỤC
+        if($this->dm->checktrungMaDanhmuc($ma_danh_muc)){
+            echo "<script>
+                alert('Mã danh mục $ma_danh_muc đã tồn tại! Vui lòng kiểm tra lại file.');
+                window.location.href='http://localhost/QLSP/Danhmuc/import_form';
+            </script>";
+            return;
         }
+
+        // Insert
+        if(!$this->dm->Danhmuc_ins($ma_danh_muc,$ten_danh_muc,$image)){
+            die(mysqli_error($this->dm->con));
+        }
+    }
+
+    echo "<script>alert('Upload danh mục thành công!')</script>";
+    $this->view('Master',['page'=>'Danhmuc_up_v']);
+}
 
         // Tải mẫu Excel (chỉ header)
         function template(){

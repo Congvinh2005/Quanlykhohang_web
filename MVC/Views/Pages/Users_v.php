@@ -76,12 +76,12 @@
             </div>
             <div>
                 <label>Mật khẩu</label>
-                <input type="password" name="txtPassword"
+                <input type="password" name="txtPassword" required
                     value="<?php echo isset($data['password'])?htmlspecialchars($data['password']):'' ?>" />
             </div>
             <div>
                 <label>Email</label>
-                <input type="email" name="txtEmail"
+                <input type="email" name="txtEmail" required
                     value="<?php echo isset($data['email'])?htmlspecialchars($data['email']):'' ?>" />
             </div>
             <div>

@@ -37,49 +37,61 @@
             ]);
         }
 
-        function ins(){
-            if(isset($_POST['btnLuu'])){
-                $ma_user = $_POST['txtMauser'];
-                $ten_user = $_POST['txtTenuser'];
-                $password = $_POST['txtPassword'];
-                $email = $_POST['txtEmail'];
-                $phan_quyen = $_POST['ddlPhanquyen'];
+        function ins()
+    {
+        if (isset($_POST['btnLuu'])) {
+            $ma_user = $_POST['txtMauser'];
+            $ten_user = $_POST['txtTenuser'];
+            $password = $_POST['txtPassword'];
+            $email = $_POST['txtEmail'];
+            $phan_quyen = $_POST['ddlPhanquyen'];
 
-                if($ma_user == ''){
-                    echo "<script>alert('Mã user không được rỗng!')</script>";
+            if ($ma_user == '') {
+                echo "<script>alert('Mã user không được rỗng!')</script>";
+            } else {
+                $kq1 = $this->user->checktrungMaUser($ma_user);
+                $checkEmail = $this->user->checktrungEmail($email, null);
+                if ($kq1) {
+                    echo "<script>alert('Mã user đã tồn tại!')</script>";
+                    $this->view('Master', [
+                        'page' => 'Users_v',
+                        'ma_user' => $ma_user,
+                        'ten_user' => $ten_user,
+                        'password' => $password,
+                        'email' => $email,
+                        'phan_quyen' => $phan_quyen
+                    ]);
+                } else if (mysqli_num_rows($checkEmail) > 0) {
+                    echo "<script>alert('Email đã được sử dụng!')</script>";
+                    $this->view('Master', [
+                        'page' => 'Users_v',
+                        'ma_user' => $ma_user,
+                        'ten_user' => $ten_user,
+                        'password' => $password,
+                        'email' => '',
+                        'phan_quyen' => $phan_quyen
+                    ]);
+                    return;
                 } else {
-                    $kq1 = $this->user->checktrungMaUser($ma_user);
-                    if($kq1){
-                        echo "<script>alert('Mã user đã tồn tại!')</script>";
-                        $this ->view('Master',[
-                                'page' => 'Users_v',
-                                'ma_user' => $ma_user,
-                                'ten_user' => $ten_user,
-                                'password' => $password,
-                                'email' => $email,
-                                'phan_quyen' => $phan_quyen
-                            ]);
+                    $kq = $this->user->users_ins($ma_user, $ten_user, $password, $email, $phan_quyen);
+                    if ($kq) {
+                        echo "<script>alert('Thêm mới thành công!')</script>";
+                        $this->danhsach();
                     } else {
-                        $kq = $this->user->users_ins($ma_user, $ten_user, $password, $email, $phan_quyen);
-                        if($kq) {
-                            echo "<script>alert('Thêm mới thành công!')</script>";
-                            $this->danhsach();
-                        } else {
-                            echo "<script>alert('Thêm mới thất bại!')</script>";
-                            $this ->view('Master',[
-                                'page' => 'Users_v',
-                                'ma_user' => $ma_user,
-                                'ten_user' => $ten_user,
-                                'password' => $password,
-                                'email' => $email,
-                                'phan_quyen' => $phan_quyen
-                            ]);
-                        }
+                        echo "<script>alert('Thêm mới thất bại!')</script>";
+                        $this->view('Master', [
+                            'page' => 'Users_v',
+                            'ma_user' => $ma_user,
+                            'ten_user' => $ten_user,
+                            'password' => $password,
+                            'email' => $email,
+                            'phan_quyen' => $phan_quyen
+                        ]);
                     }
                 }
-        
             }
         }
+    }
 
         function tim(){
             if(isset($_POST['btnTim'])){
@@ -128,21 +140,28 @@
             ]);
         }
 
-        function update(){
-            if(isset($_POST['btnCapnhat'])){
-                $ma_user = $_POST['txtMauser'];
-                $ten_user = $_POST['txtTenuser'];
-                $password = $_POST['txtPassword'];
-                $email = $_POST['txtEmail'];
-                $phan_quyen = $_POST['ddlPhanquyen'];
+       function update()
+    {
+        if (isset($_POST['btnCapnhat'])) {
+            $ma_user = $_POST['txtMauser'];
+            $ten_user = $_POST['txtTenuser'];
+            $password = $_POST['txtPassword'];
+            $email = $_POST['txtEmail'];
+            $phan_quyen = $_POST['ddlPhanquyen'];
 
-                $kq = $this->user->Users_update($ma_user, $ten_user, $password, $email, $phan_quyen);
-                if($kq)
-                    echo "<script>alert('Cập nhật thành công!'); window.location='http://localhost/QLSP/Users/danhsach';</script>";
-                else
-                    echo "<script>alert('Cập nhật thất bại!')</script>";
+            $check = $this->user->checktrungEmail($email, $ma_user);
+            if (mysqli_num_rows($check) > 0) {
+                echo "<script>alert('Email đã được sử dụng bởi tài khoản khác!');history.back();</script>";
+                return;
             }
+
+            $kq = $this->user->Users_update($ma_user, $ten_user, $password, $email, $phan_quyen);
+            if ($kq)
+                echo "<script>alert('Cập nhật thành công!'); window.location='http://localhost/QLSP/Users/danhsach';</script>";
+            else
+                echo "<script>alert('Cập nhật thất bại!')</script>";
         }
+    }
 
         function xoa($ma_user){
             $kq = $this->user->Users_delete($ma_user);
@@ -188,41 +207,104 @@
             ]);
         }
 
+        //     // Xử lý nhập Excel
+        // function up_l(){
+        //     if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
+        //         echo "<script>alert('Upload file lỗi')</script>";
+        //         return;
+        //     }
+
+        //     $file = $_FILES['txtfile']['tmp_name'];
+
+        //     $objReader = PHPExcel_IOFactory::createReaderForFile($file);
+        //     $objExcel  = $objReader->load($file);
+
+        //     $sheet     = $objExcel->getSheet(0);
+        //     $sheetData = $sheet->toArray(null,true,true,true);
+
+        //     for($i = 2; $i <= count($sheetData); $i++){
+
+        //         $ma_user    = trim($sheetData[$i]['A']);
+        //         $ten_user   = trim($sheetData[$i]['B']);
+        //         $password   = trim($sheetData[$i]['C']);
+        //         $email      = trim($sheetData[$i]['D']);
+        //         $phan_quyen = trim($sheetData[$i]['E']);
+        //         // $ngaytao    = trim($sheetData[$i]['F']);
+
+        //         if($ma_user == '') continue;
+
+        //         // ✅ CHECK TRÙNG MÃ USER
+        //         if($this->user->checktrungMaUser($ma_user)){
+        //             echo "<script>
+        //                 alert('Mã user $ma_user đã tồn tại! Vui lòng kiểm tra lại file.');
+        //                 window.location.href='http://localhost/QLSP/Users/import_form';
+        //             </script>";
+        //             return;
+        //         }
+
+        //         // Insert
+        //         if(!$this->user->users_ins($ma_user,$ten_user,$password,$email,$phan_quyen)){
+        //             die(mysqli_error($this->user->con));
+        //         }
+        //     }
+
+        //     echo "<script>alert('Upload người dùng thành công!')</script>";
+        //     $this->view('Master',['page'=>'Users_up_v']);
+        // }
+
         // Xử lý nhập Excel
-        function up_l(){
-            if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
-                echo "<script>alert('Upload file lỗi')</script>";
-                return;
-            }
+function up_l(){
+    if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
+        echo "<script>alert('Upload file lỗi')</script>";
+        return;
+    }
 
-            $file = $_FILES['txtfile']['tmp_name'];
+    $file = $_FILES['txtfile']['tmp_name'];
 
-            $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-            $objExcel  = $objReader->load($file);
+    $objReader = PHPExcel_IOFactory::createReaderForFile($file);
+    $objExcel  = $objReader->load($file);
 
-            $sheet     = $objExcel->getSheet(0);
-            $sheetData = $sheet->toArray(null,true,true,true);
+    $sheet     = $objExcel->getSheet(0);
+    $sheetData = $sheet->toArray(null,true,true,true);
 
-            for($i = 2; $i <= count($sheetData); $i++){
+    for($i = 2; $i <= count($sheetData); $i++){
 
-                $ma_user   = trim((string)$sheetData[$i]['A']);
-                $ten_user = trim((string)$sheetData[$i]['B']);
-                $password     = trim((string)$sheetData[$i]['C']);
-                $email     = trim((string)$sheetData[$i]['D']);
-                $phan_quyen  = trim((string)$sheetData[$i]['E']);
-                $ngaytao  = trim((string)$sheetData[$i]['F']);
-                if($ma_user == '') continue;
-                // // Set a default password for imported users
-                // $password = password_hash('123456', PASSWORD_DEFAULT); // Default password for imported users
+        $ma_user    = trim($sheetData[$i]['A']);
+        $ten_user   = trim($sheetData[$i]['B']);
+        $password   = trim($sheetData[$i]['C']);
+        $email      = trim($sheetData[$i]['D']);
+        $phan_quyen = trim($sheetData[$i]['E']);
 
-                if(!$this->user->users_ins($ma_user,$ten_user,$password,$email,$phan_quyen)){
-                    die(mysqli_error($this->user->con));
-                }
-            }
+        if($ma_user == '') continue;
 
-            echo "<script>alert('Upload người dùng thành công!')</script>";
-            $this->view('Master',['page'=>'Users_v']);
+        // ✅ CHECK GIÁ TRỊ PHÂN QUYỀN
+        if($phan_quyen != 'admin' && $phan_quyen != 'nhan_vien'){
+            echo "<script>
+                alert('Phân quyền không hợp lệ cho user $ma_user! Chỉ cho phép admin hoặc nhan_vien.');
+                window.location.href='http://localhost/QLSP/Users/import_form';
+            </script>";
+            return;
         }
+
+        // ✅ CHECK TRÙNG MÃ USER
+        if($this->user->checktrungMaUser($ma_user)){
+            echo "<script>
+                alert('Mã user $ma_user đã tồn tại! Vui lòng kiểm tra lại file.');
+                window.location.href='http://localhost/QLSP/Users/import_form';
+            </script>";
+            return;
+        }
+
+        // Insert
+        if(!$this->user->users_ins($ma_user,$ten_user,$password,$email,$phan_quyen)){
+            die(mysqli_error($this->user->con));
+        }
+    }
+
+    echo "<script>alert('Upload người dùng thành công!')</script>";
+    $this->view('Master',['page'=>'Users_up_v']);
+}
+
 
         // Tải mẫu Excel (chỉ header)
         function template(){

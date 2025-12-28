@@ -142,9 +142,10 @@
             </div>
 
             <div>
-                <label for="phone">Điện thoại</label>
+                <label for="phone">Điện thoại(10 số)</label>
                 <input type="tel" id="phone" name="txtDienthoai" placeholder="VD: 0912345678" required
-                    value="<?php echo isset($data['dienthoai']) ? $data['dienthoai'] : '' ?>" />
+                    value="<?php echo isset($data['dienthoai']) ? $data['dienthoai'] : '' ?>" maxlength="10"
+                    pattern="[0-9]{10}" title="Vui lòng nhập đúng 10 chữ số điện thoại" />
             </div>
 
             <div class="full">

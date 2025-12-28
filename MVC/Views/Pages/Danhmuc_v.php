@@ -58,12 +58,43 @@
         border-radius: 10px;
         border: 0
     }
+
+    .file-input-wrapper {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        background: #f8fafc;
+        padding: 10px 15px;
+        border: 2px dashed #cbd5e1;
+        border-radius: 8px;
+        transition: border-color 0.3s;
+    }
+
+    .file-input-wrapper:hover {
+        border-color: #9ca3af;
+    }
+
+    .file-input-wrapper input[type="file"] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    .file-name {
+        margin-top: 8px;
+        font-size: 14px;
+        color: #4b5563;
+    }
     </style>
 
     <div class="card">
         <h1>Thêm mới Danh mục</h1>
         <p class="lead">Nhập thông tin danh mục mới.</p>
-        <form method="post" action="http://localhost/QLSP/Danhmuc/ins">
+        <form method="post" action="http://localhost/QLSP/Danhmuc/ins" enctype="multipart/form-data">
             <div>
                 <label>Mã danh mục <span style="color:red">*</span></label>
                 <input type="text" name="txtMadanhmuc" required
@@ -76,8 +107,11 @@
             </div>
             <div>
                 <label>Hình ảnh</label>
-                <input type="text" name="txtImage"
-                    value="<?php echo isset($data['image'])?htmlspecialchars($data['image']):'' ?>" />
+                <div class="file-input-wrapper">
+                    <span>Chọn hình ảnh...</span>
+                    <input type="file" name="txtImage" accept="image/*" />
+                </div>
+                <div class="file-name" id="fileName">Chưa chọn file</div>
             </div>
 
             <div class="actions">
@@ -91,6 +125,16 @@
         </form>
     </div>
 
+    <script>
+        document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+            const fileNameDisplay = document.getElementById('fileName');
+            if (e.target.files.length > 0) {
+                fileNameDisplay.textContent = 'Đã chọn: ' + e.target.files[0].name;
+            } else {
+                fileNameDisplay.textContent = 'Chưa chọn file';
+            }
+        });
+    </script>
 </body>
 
 </html>

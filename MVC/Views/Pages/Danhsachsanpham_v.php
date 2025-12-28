@@ -210,13 +210,15 @@
                 <a href="http://localhost/QLSP/Sanpham/import_form" class="btn-ghost"><i
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
-                <a href="http://localhost/QLSP/Sanpham/export" class="btn-excel"><i class="fa-solid fa-file-excel"></i>
+                <!-- <a href="http://localhost/QLSP/Sanpham/Timkiem" class="btn-excel"><i class="fa-solid fa-file-excel"></i>
                     Xuất
-                    Excel</a>
+                    Excel</a> -->
+
+
             </div>
         </div>
 
-        <form method="post" action="http://localhost/QLSP/Sanpham/tim" class="form-search"
+        <form method="post" action="http://localhost/QLSP/Sanpham/Timkiem" class="form-search"
             style="margin-bottom:30px;border:1px dashed #cbd5e1;padding:20px;border-radius:12px;background:#f8fafc">
             <div>
                 <label for="searchId">Mã sản phẩm</label>
@@ -232,6 +234,9 @@
             <div class="actions" style="margin-top:0;">
                 <button type="submit" class="btn-primary" name="btnTim"><i class="fa-solid fa-search"></i> Tìm
                     kiếm</button>
+                <button type="submit" name="btnXuatexcel" class="btn-excel">
+                    <i class="fa-solid fa-file-excel"></i> Xuất Excel
+                </button>
                 <a href="http://localhost/QLSP/Sanpham/danhsach" class="btn-ghost">Làm mới</a>
             </div>
         </form>

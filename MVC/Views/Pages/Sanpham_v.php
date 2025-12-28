@@ -268,11 +268,12 @@
             </div>
             <div class="actions"
                 style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                <a href="http://localhost/QLSP/Sanpham/danhsach" class="btn-back"><i
-                        class="fa-solid fa-arrow-left"></i> Quay lại</a>
+                <a href="http://localhost/QLSP/Sanpham/danhsach" class="btn-back"><i class="fa-solid fa-arrow-left"></i>
+                    Quay lại</a>
                 <div style="display: flex; gap: 12px;">
-                    <button type="reset" class="btn-ghost"><i class="fa-solid fa-rotate-left"></i> Reset</button>
-                    <button type="submit" class="btn-primary" name="btnLuu"><i class="fa-solid fa-save"></i> Lưu thông tin</button>
+                    <!-- <button type="reset" class="btn-ghost"><i class="fa-solid fa-rotate-left"></i> Reset</button> -->
+                    <button type="submit" class="btn-primary" name="btnLuu"><i class="fa-solid fa-save"></i> Lưu thông
+                        tin</button>
                 </div>
             </div>
         </form>
