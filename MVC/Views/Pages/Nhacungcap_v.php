@@ -128,7 +128,7 @@
             <h2><i class="fa-solid fa-square-plus"></i> Thêm mới Nhà cung cấp</h2>
         </div>
 
-        <form method="post" id="nccForm" novalidate action="http://localhost/QLSP/Nhacungcap/ins" class="form-grid">
+        <form method="post" id="nccForm" action="http://localhost/QLSP/Nhacungcap/ins" class="form-grid">
             <div>
                 <label for="nccId">Mã nhà cung cấp *</label>
                 <input type="text" id="nccId" name="txtMancc" placeholder="VD: NCC001" required

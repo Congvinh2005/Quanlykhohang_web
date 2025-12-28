@@ -30,12 +30,11 @@
                 'dulieu' => $result
             ]);
         }
-        
         function themmoi(){
              $this->view('Master',[
                 'page' => 'Nhacungcap_v', // View thêm mới
                 'mancc' => '',
-                'tenncc' => '', 
+                'tenncc' => '',
                 'diachi' => '',
                 'dienthoai' => ''
             ]);
@@ -56,10 +55,18 @@
                     $kq1 = $this->ncc->checktrungMaNCC($mancc);
                     if($kq1){
                         echo "<script>alert('Mã nhà cung cấp đã tồn tại! Vui lòng nhập mã khác.')</script>";
+                         $this->view('Master', [
+                                'page' => 'Nhacungcap_v',
+                                'mancc' => $mancc,
+                                'tenncc' => $tenncc,
+                                'diachi' => $diachi,
+                                'dienthoai' => $dienthoai
+                            ]);
                     } else {
                         $kq = $this->ncc->nhacungcap_ins($mancc, $tenncc, $diachi, $dienthoai);
                         if($kq) {
                             echo "<script>alert('Thêm mới thành công!');</script>";
+                            $this->danhsach(); 
                             
                         } else {
                             echo "<script>alert('Thêm mới thất bại!');</script>";
@@ -73,17 +80,7 @@
                         }
                     }
                 }
-                
-                // Nếu có lỗi (trùng mã), cần giữ lại dữ liệu
-                if($mancc == '' || $kq1){
-                    $this->view('Master',[
-                        'page' => 'Nhacungcap_v',
-                        'mancc' => $mancc,
-                        'tenncc' => $tenncc,
-                        'diachi' => $diachi,
-                        'dienthoai' => $dienthoai
-                    ]);
-                }
+    
             }
         }
         
@@ -173,11 +170,33 @@
                 echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Nhacungcap/danhsach';</script>"; // Quay lại trang danh sách
         }
 
-        // Xuất Excel danh sách nhà cung cấp - Giữ nguyên logic, đảm bảo gọi $this->ncc->Nhacungcap_find('', '')
+        // Xuất Excel danh sách nhà cung cấp
         function export(){
-            // ... (Logic xuất Excel giữ nguyên)
             $data = $this->ncc->Nhacungcap_find('', '');
-            // ...
+            $excel = new PHPExcel();
+            $excel->getProperties()->setCreator("QLSP")->setTitle("Danh sách nhà cung cấp");
+            $sheet = $excel->setActiveSheetIndex(0);
+            $sheet->setTitle('Nhacungcap');
+            // Header
+            $sheet->setCellValue('A1','Mã NCC');
+            $sheet->setCellValue('B1','Tên NCC');
+            $sheet->setCellValue('C1','Địa chỉ');
+            $sheet->setCellValue('D1','Điện thoại');
+            // Rows
+            $rowIndex = 2;
+            while($r = mysqli_fetch_array($data)){
+                $sheet->setCellValue('A'.$rowIndex,$r['mancc']);
+                $sheet->setCellValue('B'.$rowIndex,$r['tenncc']);
+                $sheet->setCellValue('C'.$rowIndex,$r['diachi']);
+                $sheet->setCellValue('D'.$rowIndex,$r['dienthoai']);
+                $rowIndex++;
+            }
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="nhacungcap.xlsx"');
+            header('Cache-Control: max-age=0');
+            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+            $writer->save('php://output');
+            exit;
         }
 
         // Hiển thị form nhập Excel - Giữ nguyên
@@ -221,7 +240,19 @@
 
         // Tải mẫu Excel (chỉ header) - Giữ nguyên
         function template(){
-            // ... (Logic tải template giữ nguyên)
+            $excel = new PHPExcel();
+            $sheet = $excel->setActiveSheetIndex(0);
+            $sheet->setTitle('Nhacungcap');
+            $sheet->setCellValue('A1','Mã NCC');
+            $sheet->setCellValue('B1','Tên NCC');
+            $sheet->setCellValue('C1','Địa chỉ');
+            $sheet->setCellValue('D1','Điện thoại');
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="mau_nhacungcap.xlsx"');
+            header('Cache-Control: max-age=0');
+            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+            $writer->save('php://output');
+            exit;
         }
     }
 ?>

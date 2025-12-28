@@ -25,6 +25,7 @@
             ]);
         }
 
+
         function themmoi(){
             $this->view('Master',[
                 'page' => 'Users_v',
@@ -50,19 +51,33 @@
                     $kq1 = $this->user->checktrungMaUser($ma_user);
                     if($kq1){
                         echo "<script>alert('Mã user đã tồn tại!')</script>";
+                        $this ->view('Master',[
+                                'page' => 'Users_v',
+                                'ma_user' => $ma_user,
+                                'ten_user' => $ten_user,
+                                'password' => $password,
+                                'email' => $email,
+                                'phan_quyen' => $phan_quyen
+                            ]);
                     } else {
                         $kq = $this->user->users_ins($ma_user, $ten_user, $password, $email, $phan_quyen);
-                        if($kq)
+                        if($kq) {
                             echo "<script>alert('Thêm mới thành công!')</script>";
-                        else
+                            $this->danhsach();
+                        } else {
                             echo "<script>alert('Thêm mới thất bại!')</script>";
+                            $this ->view('Master',[
+                                'page' => 'Users_v',
+                                'ma_user' => $ma_user,
+                                'ten_user' => $ten_user,
+                                'password' => $password,
+                                'email' => $email,
+                                'phan_quyen' => $phan_quyen
+                            ]);
+                        }
                     }
                 }
-
-                // Nếu lỗi hoặc sau thêm, gọi lại trang phù hợp
-                $this->danhsach();
-            } else {
-                $this->themmoi();
+        
             }
         }
 

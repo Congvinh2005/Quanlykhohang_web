@@ -21,25 +21,7 @@
                 'dulieu' => $result
             ]);
         }
-        
-        function form_them(){
-            // Lấy danh sách nhà cung cấp cho dropdown
-            $dsncc = $this->ncc->Nhacungcap_find('', '');
-            // Lấy toàn bộ sản phẩm
-            $result = $this->sp->Sanpham_find('', '');
-            
-            $this->view('Master',[
-                'page' => 'Sanpham_v',
-                'Masanpham' => '',
-                'Tensanpham' => '',
-                'Gia' => '',
-                'Soluong' => '',
-                'mancc' => '',
-                'dsncc' => $dsncc,
-                'dulieu' => $result
-            ]);
-        }
-
+ 
           function themmoi(){
              // Lấy danh sách nhà cung cấp cho dropdown
             $dsncc = $this->ncc->Nhacungcap_find('', '');
@@ -69,32 +51,41 @@
                 // Kiểm tra dữ liệu rỗng
                 if($masp == ''){
                     echo "<script>alert('Mã sản phẩm không được rỗng!')</script>";
-                    $this->form_them();
+                    $this-> themmoi();
                 } else if($tensp == ''){
                     echo "<script>alert('Tên sản phẩm không được rỗng!')</script>";
-                    $this->form_them();
+                    $this->themmoi();
                 } else {
-                    // Kiểm tra trùng mã sản phẩm
                     $kq1 = $this->sp->checktrungMaSP($masp);
                     if($kq1){
                         echo "<script>alert('Mã sản phẩm đã tồn tại! Vui lòng nhập mã khác.')</script>";
-                        $this->form_them();
+                        $this->view('Master',[
+                                'page' => 'Sanpham_v',
+                                'Masanpham' => $masp,
+                                'Tensanpham' => $tensp,
+                                'Gia' => $gia,
+                                'Soluong' => $soluong,
+                                'mancc' => $mancc
+                            ]);
                     } else {
                         $kq = $this->sp->sanpham_ins($masp, $tensp, $gia, $soluong, $mancc);
                         if($kq) {
                             echo "<script>alert('Thêm mới thành công!')</script>";
-                            // Quay về danh sách sau khi thêm thành công
                             $this->danhsach();
                         } else {
                             echo "<script>alert('Thêm mới thất bại!')</script>";
-                            $this->form_them();
+                            $this->view('Master',[
+                                'page' => 'Sanpham_v',
+                                'Masanpham' => $masp,
+                                'Tensanpham' => $tensp,
+                                'Gia' => $gia,
+                                'Soluong' => $soluong,
+                                'mancc' => $mancc
+                            ]);
                         }
                     }
                 }
-            } else {
-                // Hiển thị form thêm mới
-                $this->form_them();
-            }
+            } 
         }
         
         function tim(){

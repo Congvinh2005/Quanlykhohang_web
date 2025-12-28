@@ -40,6 +40,7 @@
                             <i class="fa-solid fa-truck-fast"></i> Quản lý nhà cung cấp
                         </a>
                     </li>
+
                     <li>
                         <a href="http://localhost/QLSP/Users/danhsach"
                             class="<?php echo ($current === 'Danhsachusers_v') ? 'active' : ''; ?>">
@@ -49,9 +50,9 @@
                     </li>
 
                     <li>
-                        <a href="http://localhost/QLSP/Nhacungcap/export"
-                            class="<?php echo (in_array($current, ['Nhacungcap_v','Nhacungcap_sua'])) ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-file-excel"></i>Xuất exel 📥
+                        <a href="http://localhost/QLSP/Danhmuc/danhsach"
+                            class="<?php echo ($current === 'Danhsachdanhmuc_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-file-excel"></i> Quản lý danh mục
                         </a>
 
                     </li>
@@ -73,6 +74,7 @@
                         if($current == 'home') echo 'Dashboard';
                         elseif(strpos($current, 'Sanpham') !== false) echo 'Sản phẩm';
                         elseif(strpos($current, 'Nhacungcap') !== false) echo 'Nhà cung cấp';
+                        elseif(strpos($current, 'Danhmuc') !== false) echo 'Danh mục';
                         elseif(strpos($current, 'Users') !== false) echo 'Người dùng';
                         else echo 'Quản trị hệ thống';
                     ?>
