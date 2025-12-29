@@ -127,11 +127,7 @@
                 <div class="link-title">Quản lý đơn hàng</div>
                 <div class="link-desc">Theo dõi và cập nhật đơn hàng</div>
             </a>
-            <a href="http://localhost/QLSP/Thongke/thongke" class="link-card">
-                <div class="link-icon"><i class="fa-solid fa-chart-line"></i></div>
-                <div class="link-title">Thống kê</div>
-                <div class="link-desc">Xem báo cáo và thống kê</div>
-            </a>
+
         </div>
     </div>
 </body>

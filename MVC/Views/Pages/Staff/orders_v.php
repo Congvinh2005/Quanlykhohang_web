@@ -64,7 +64,6 @@
                     <tr>
                         <th>Mã ĐH</th>
                         <th>Bàn</th>
-                        <th>Người dùng</th>
                         <th>Tổng tiền</th>
                         <th>Trạng thái</th>
                         <th>Ngày tạo</th>
@@ -81,7 +80,6 @@
                     <tr>
                         <td><?php echo htmlspecialchars($order['ma_don_hang']); ?></td>
                         <td><?php echo htmlspecialchars($order['ma_ban']); ?></td>
-                        <td><?php echo htmlspecialchars($order['ten_user']); ?></td>
                         <td><?php echo number_format($order['tong_tien'], 0, ',', '.'); ?> ₫</td>
                         <td><span class="status-badge <?php echo $status_class; ?>"><?php echo $status_text; ?></span></td>
                         <td><?php echo htmlspecialchars($order['ngay_tao']); ?></td>
@@ -97,7 +95,7 @@
                     <?php
                             }
                         } else {
-                            echo '<tr><td colspan="7">Không có dữ liệu đơn hàng.</td></tr>';
+                            echo '<tr><td colspan="6">Không có dữ liệu đơn hàng.</td></tr>';
                         }
                     ?>
                 </tbody>
