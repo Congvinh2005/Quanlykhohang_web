@@ -45,36 +45,17 @@
     }
     </style>
 
-    <div class="card">
-        <div class="actions-top">
-            <div>
-                <h1><i class="fa-solid fa-chair"></i> Quản lý bàn</h1>
-                <p class="lead">Xem trạng thái và quản lý các bàn trong quán.</p>
-            </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+        <div class="tables">
             <?php
                 if(isset($data['tables']) && is_a($data['tables'], 'mysqli_result')){
                     while($table = mysqli_fetch_array($data['tables'])) {
                         $status_text = $table['trang_thai_ban'] == 'trong' ? 'Trống' : 'Đang sử dụng';
-                        $status_class = $table['trang_thai_ban'] == 'trong' ? 'status-available' : 'status-occupied';
+                        $status_color = $table['trang_thai_ban'] == 'trong' ? '#6bbf59' : '#f59e0b'; // Green: Trong, Amber: Dang su dung
             ?>
-            <div style="background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <h3 style="margin: 0; color: #253243; font-size: 18px;"><?php echo htmlspecialchars($table['ten_ban']); ?></h3>
-                    <span class="table-status <?php echo $status_class; ?>"><?php echo $status_text; ?></span>
-                </div>
-                <p style="margin: 10px 0; color: var(--muted);">Mã bàn: <?php echo htmlspecialchars($table['ma_ban']); ?></p>
-                <p style="margin: 10px 0; color: var(--muted);">Số chỗ ngồi: <?php echo htmlspecialchars($table['so_cho_ngoi']); ?></p>
-
-                <div class="table-actions">
-                    <?php if($table['trang_thai_ban'] == 'trong'): ?>
-                        <button class="table-btn btn-assign">Gán đơn</button>
-                    <?php else: ?>
-                        <a href="http://localhost/QLSP/Staff/orders" class="table-btn btn-view">Xem đơn</a>
-                    <?php endif; ?>
-                </div>
+            <div class="table-card" style="background: <?php echo $status_color; ?>;">
+                <i class="fa-solid fa-chair"></i>
+                <h3><?php echo htmlspecialchars($table['ten_ban']); ?></h3>
+                <span><?php echo $status_text; ?></span>
             </div>
             <?php
                     }

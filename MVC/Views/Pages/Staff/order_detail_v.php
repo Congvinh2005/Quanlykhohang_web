@@ -78,94 +78,53 @@
     }
     </style>
 
-    <div class="card">
-        <div class="actions-top">
-            <div>
-                <h1><i class="fa-solid fa-file-invoice"></i> Chi tiết đơn hàng</h1>
-                <p class="lead">Thông tin chi tiết về đơn hàng và các món đã đặt.</p>
-            </div>
-            <div class="actions">
-                <a href="http://localhost/QLSP/Staff/orders" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i> Quay lại</a>
-            </div>
-        </div>
-
         <?php
             if(isset($data['order']) && is_a($data['order'], 'mysqli_result')){
                 $order = mysqli_fetch_array($data['order']);
                 $status_text = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'Đã thanh toán' : 'Chưa thanh toán';
-                $status_class = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'status-paid' : 'status-unpaid';
+                $status_class = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'paid' : '';
         ?>
+        <h1>Chi tiết đơn hàng bàn <b><?php echo htmlspecialchars($order['ma_ban']); ?></b></h1>
+        <p class="status">
+            Trạng thái: <span class="<?php echo $status_class; ?>"><?php echo $status_text; ?></span>
+        </p>
 
-        <div class="order-summary">
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <span class="summary-label">Mã đơn hàng</span>
-                    <span class="summary-value"><?php echo htmlspecialchars($order['ma_don_hang']); ?></span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Bàn</span>
-                    <span class="summary-value"><?php echo htmlspecialchars($order['ma_ban']); ?></span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Khách hàng</span>
-                    <span class="summary-value"><?php echo htmlspecialchars($order['ten_user']); ?></span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Trạng thái</span>
-                    <span class="summary-value">
-                        <span class="status-badge <?php echo $status_class; ?>"><?php echo $status_text; ?></span>
-                    </span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Ngày tạo</span>
-                    <span class="summary-value"><?php echo htmlspecialchars($order['ngay_tao']); ?></span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Tổng tiền</span>
-                    <span class="summary-value"><?php echo number_format($order['tong_tien'], 0, ',', '.'); ?> ₫</span>
-                </div>
-            </div>
-        </div>
-
-        <h2>Chi tiết món ăn</h2>
-        <div class="table-container">
-            <table class="order-details-table">
-                <thead>
-                    <tr>
-                        <th>Hình ảnh</th>
-                        <th>Tên món</th>
-                        <th>Số lượng</th>
-                        <th>Giá tại thời điểm đặt</th>
-                        <th>Ghi chú</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                        if(isset($data['order_details']) && is_array($data['order_details'])){
-                            foreach($data['order_details'] as $detail) {
-                    ?>
-                    <tr>
-                        <td>
-                            <?php if($detail['img_thuc_don']): ?>
-                                <img src="<?php echo htmlspecialchars($detail['img_thuc_don']); ?>" alt="<?php echo htmlspecialchars($detail['ten_mon']); ?>">
-                            <?php else: ?>
-                                <span>Không có</span>
-                            <?php endif; ?>
-                        </td>
-                        <td><?php echo htmlspecialchars($detail['ten_mon']); ?></td>
-                        <td><?php echo htmlspecialchars($detail['so_luong']); ?></td>
-                        <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'], 0, ',', '.'); ?> ₫</td>
-                        <td><?php echo htmlspecialchars($detail['ghi_chu'] ?? ''); ?></td>
-                    </tr>
-                    <?php
-                            }
-                        } else {
-                            echo '<tr><td colspan="5">Không có chi tiết món ăn.</td></tr>';
+        <table class="detail-table">
+            <thead>
+            <tr>
+                <th>Món</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Tổng</th>
+            </tr>
+            </thead>
+            <tbody>
+                <?php
+                    if(isset($data['order_details']) && is_array($data['order_details'])){
+                        foreach($data['order_details'] as $detail) {
+                ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($detail['ten_mon']); ?></td>
+                    <td><?php echo htmlspecialchars($detail['so_luong']); ?></td>
+                    <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'], 0, '.', '') . 'đ'; ?></td>
+                    <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'] * $detail['so_luong'], 0, '.', '') . 'đ'; ?></td>
+                </tr>
+                <?php
                         }
-                    ?>
-                </tbody>
-            </table>
+                    } else {
+                        echo '<tr><td colspan="4">Không có chi tiết món ăn.</td></tr>';
+                    }
+                ?>
+            </tbody>
+        </table>
+
+        <div class="total">
+            Tổng cộng: <span><?php echo number_format($order['tong_tien'], 0, '.', '') . 'đ'; ?></span>
         </div>
+
+        <button class="btn-print">
+            <i class="fa-solid fa-print"></i> In hóa đơn
+        </button>
         <?php
             } else {
                 echo '<p>Không tìm thấy thông tin đơn hàng.</p>';

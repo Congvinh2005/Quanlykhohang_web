@@ -50,57 +50,42 @@
     }
     </style>
 
-    <div class="card">
-        <div class="actions-top">
-            <div>
-                <h1><i class="fa-solid fa-receipt"></i> Quản lý đơn hàng</h1>
-                <p class="lead">Xem và cập nhật trạng thái đơn hàng.</p>
-            </div>
-        </div>
+        <h1>Danh sách đơn hàng</h1>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Mã ĐH</th>
-                        <th>Bàn</th>
-                        <th>Tổng tiền</th>
-                        <th>Trạng thái</th>
-                        <th>Ngày tạo</th>
-                        <th>Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody id="orderBody">
-                    <?php
-                        if(isset($data['orders']) && is_a($data['orders'], 'mysqli_result')){
-                            while($order = mysqli_fetch_array($data['orders'])) {
-                                $status_text = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'Đã thanh toán' : 'Chưa thanh toán';
-                                $status_class = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'status-paid' : 'status-unpaid';
-                    ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($order['ma_don_hang']); ?></td>
-                        <td><?php echo htmlspecialchars($order['ma_ban']); ?></td>
-                        <td><?php echo number_format($order['tong_tien'], 0, ',', '.'); ?> ₫</td>
-                        <td><span class="status-badge <?php echo $status_class; ?>"><?php echo $status_text; ?></span></td>
-                        <td><?php echo htmlspecialchars($order['ngay_tao']); ?></td>
-                        <td>
-                            <div class="order-actions">
-                                <a href="http://localhost/QLSP/Staff/order_detail/<?php echo urlencode($order['ma_don_hang']); ?>" class="order-btn btn-view">Xem</a>
-                                <?php if($order['trang_thai_thanh_toan'] == 'chua_thanh_toan'): ?>
-                                    <a href="http://localhost/QLSP/Staff/update_order_status/<?php echo urlencode($order['ma_don_hang']); ?>" class="order-btn btn-update">Cập nhật</a>
-                                <?php endif; ?>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php
-                            }
-                        } else {
-                            echo '<tr><td colspan="6">Không có dữ liệu đơn hàng.</td></tr>';
+        <table class="order-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Bàn</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Thời gian</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+                <?php
+                    if(isset($data['orders']) && is_a($data['orders'], 'mysqli_result')){
+                        while($order = mysqli_fetch_array($data['orders'])) {
+                            $status_text = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'Đã thanh toán' : 'Chưa thanh toán';
+                            $status_class = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'paid' : '';
+                ?>
+                <tr>
+                    <td><?php echo htmlspecialchars($order['ma_don_hang']); ?></td>
+                    <td><?php echo htmlspecialchars($order['ma_ban']); ?></td>
+                    <td><?php echo number_format($order['tong_tien'], 0, '.', '') . 'đ'; ?></td>
+                    <td class="<?php echo $status_class; ?>"><?php echo $status_text; ?></td>
+                    <td><?php echo date('H:i d/m/Y', strtotime($order['ngay_tao'])); ?></td>
+                    <td><button class="btn-view" onclick="window.location.href='http://localhost/QLSP/Staff/order_detail/<?php echo urlencode($order['ma_don_hang']); ?>'">Xem</button></td>
+                </tr>
+                <?php
                         }
-                    ?>
-                </tbody>
-            </table>
-        </div>
+                    } else {
+                        echo '<tr><td colspan="6">Không có dữ liệu đơn hàng.</td></tr>';
+                    }
+                ?>
+            </tbody>
+        </table>
     </div>
 </body>
 
