@@ -73,10 +73,23 @@
         display: flex;
         gap: var(--gap);
         align-items: flex-end;
+        flex-wrap: wrap;
     }
 
-    .form-search>div {
+    .search-fields {
+        display: flex;
+        gap: var(--gap);
+        flex: 1;
+    }
+
+    .search-fields > div {
         flex: 1 1 200px;
+    }
+
+    .form-search > .actions {
+        flex: 0 0 auto;
+        display: flex;
+        gap: 12px;
     }
 
     label {
@@ -206,7 +219,7 @@
             </div>
             <div class="actions">
                 <a href="http://localhost/QLSP/Sanpham/themmoi" class="btn-create"><i class="fa-solid fa-plus"></i>
-                    Thêm mới</a>
+                    Thêm sản phẩm </a>
                 <a href="http://localhost/QLSP/Sanpham/import_form" class="btn-ghost"><i
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
@@ -220,24 +233,26 @@
 
         <form method="post" action="http://localhost/QLSP/Sanpham/Timkiem" class="form-search"
             style="margin-bottom:30px;border:1px dashed #cbd5e1;padding:20px;border-radius:12px;background:#f8fafc">
-            <div>
-                <label for="searchId">Mã sản phẩm</label>
-                <input type="text" id="searchId" name="txtMasanpham" placeholder="Nhập mã SP..."
-                    value="<?php echo isset($data['Masanpham']) ? htmlspecialchars($data['Masanpham']) : ''; ?>" />
-            </div>
-            <div>
-                <label for="searchName">Tên sản phẩm</label>
-                <input type="text" id="searchName" name="txtTensanpham" placeholder="Nhập tên SP..."
-                    value="<?php echo isset($data['Tensanpham']) ? htmlspecialchars($data['Tensanpham']) : ''; ?>" />
+            <div class="search-fields">
+                <div>
+                    <label for="searchId">Mã sản phẩm</label>
+                    <input type="text" id="searchId" name="txtMasanpham" placeholder="Nhập mã SP..."
+                        value="<?php echo isset($data['Masanpham']) ? htmlspecialchars($data['Masanpham']) : ''; ?>" />
+                </div>
+                <div>
+                    <label for="searchName">Tên sản phẩm</label>
+                    <input type="text" id="searchName" name="txtTensanpham" placeholder="Nhập tên SP..."
+                        value="<?php echo isset($data['Tensanpham']) ? htmlspecialchars($data['Tensanpham']) : ''; ?>" />
+                </div>
             </div>
 
             <div class="actions" style="margin-top:0;">
                 <button type="submit" class="btn-primary" name="btnTim"><i class="fa-solid fa-search"></i> Tìm
                     kiếm</button>
-                <button type="submit" name="btnXuatexcel" class="btn-excel">
-                    <i class="fa-solid fa-file-excel"></i> Xuất Excel
-                </button>
                 <a href="http://localhost/QLSP/Sanpham/danhsach" class="btn-ghost">Làm mới</a>
+                <button type="submit" name="btnXuatexcel" class="btn-excel">
+                    <i class="fa-solid fa-solid fa-download"></i> Xuất Excel
+                </button>
             </div>
         </form>
     </div>

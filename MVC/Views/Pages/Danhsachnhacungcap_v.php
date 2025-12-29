@@ -84,10 +84,23 @@
         display: flex;
         gap: var(--gap);
         align-items: flex-end;
+        flex-wrap: wrap;
     }
 
-    .form-search>div {
+    .search-fields {
+        display: flex;
+        gap: var(--gap);
+        flex: 1;
+    }
+
+    .search-fields > div {
         flex: 1 1 200px;
+    }
+
+    .form-search > .actions {
+        flex: 0 0 auto;
+        display: flex;
+        gap: 12px;
     }
 
     label {
@@ -219,35 +232,39 @@
                 <div class="actions">
                     <a href="http://localhost/QLSP/Nhacungcap/themmoi" class="btn-create"><i
                             class="fa-solid fa-plus"></i>
-                        Thêm
-                        mới</a>
+                        Thêm nhà cung cấp</a>
                     <a href="http://localhost/QLSP/Nhacungcap/import_form" class="btn-ghost"><i
                             class="fa-solid fa-file-excel"></i> Nhập
                         Excel</a>
-                    <a href="http://localhost/QLSP/Nhacungcap/export" class="btn-excel"><i
+                    <!-- <a href="http://localhost/QLSP/Nhacungcap/export" class="btn-excel"><i
                             class="fa-solid fa-download"></i> Xuất
-                        Excel</a>
+                        Excel</a> -->
                 </div>
             </div>
 
-            <form method="post" action="http://localhost/QLSP/Nhacungcap/tim" class="form-search"
+            <form method="post" action="http://localhost/QLSP/Nhacungcap/Timkiem" class="form-search"
                 style="margin-bottom:30px;border:1px dashed #cbd5e1;padding:20px;border-radius:12px;background:#f8fafc">
-                <div>
-                    <label for="searchId">Mã nhà cung cấp</label>
-                    <input type="text" id="searchId" name="txtMancc" placeholder="Nhập mã cần tìm"
-                        value="<?php echo isset($data['mancc']) ? $data['mancc'] : '' ?>" />
-                </div>
+                <div class="search-fields">
+                    <div>
+                        <label for="searchId">Mã nhà cung cấp</label>
+                        <input type="text" id="searchId" name="txtMancc" placeholder="Nhập mã cần tìm"
+                            value="<?php echo isset($data['mancc']) ? $data['mancc'] : '' ?>" />
+                    </div>
 
-                <div>
-                    <label for="searchName">Tên nhà cung cấp</label>
-                    <input type="text" id="searchName" name="txtTenncc" placeholder="Nhập tên cần tìm"
-                        value="<?php echo isset($data['tenncc']) ? $data['tenncc'] : '' ?>" />
+                    <div>
+                        <label for="searchName">Tên nhà cung cấp</label>
+                        <input type="text" id="searchName" name="txtTenncc" placeholder="Nhập tên cần tìm"
+                            value="<?php echo isset($data['tenncc']) ? $data['tenncc'] : '' ?>" />
+                    </div>
                 </div>
 
                 <div class="actions" style="margin-top:0;">
                     <button type="submit" class="btn-primary" name="btnTim"><i class="fa-solid fa-search"></i> Tìm
                         kiếm</button>
                     <a href="http://localhost/QLSP/Nhacungcap/danhsach" class="btn-ghost">Làm mới</a>
+                    <button type="submit" name="btnXuatexcel" class="btn-excel">
+                        <i class="fa-solid fa-solid fa-download"></i> Xuất Excel
+                    </button>
                 </div>
             </form>
 

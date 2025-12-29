@@ -3,7 +3,6 @@
 
 <body>
     <style>
-    /* Reuse styles similar to Danhsachsanpham */
     .btn-create {
         background: #10b981;
         /* Màu xanh lá cây */
@@ -72,10 +71,23 @@
         display: flex;
         gap: var(--gap);
         align-items: flex-end;
+        flex-wrap: wrap;
     }
 
-    .form-search>div {
+    .search-fields {
+        display: flex;
+        gap: var(--gap);
+        flex: 1;
+    }
+
+    .search-fields > div {
         flex: 1 1 200px;
+    }
+
+    .form-search > .actions {
+        flex: 0 0 auto;
+        display: flex;
+        gap: 12px;
     }
 
     label {
@@ -209,35 +221,40 @@
                 <a href="http://localhost/QLSP/Danhmuc/import_form" class="btn-ghost"><i
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
-                <a href="http://localhost/QLSP/Danhmuc/export" class="btn-excel"><i class="fa-solid fa-download"></i> Xuất
-                    Excel</a>
+                <!-- <a href="http://localhost/QLSP/Danhmuc/export" class="btn-excel"><i class="fa-solid fa-download"></i> Xuất
+                    Excel</a> -->
             </div>
         </div>
 
-        <form method="post" action="http://localhost/QLSP/Danhmuc/tim" class="form-search"
+        <form method="post" action="http://localhost/QLSP/Danhmuc/Timkiem" class="form-search"
             style="margin-bottom:30px;border:1px dashed #cbd5e1;padding:20px;border-radius:12px;background:#f8fafc">
-            <div>
-                <label for="searchId">Mã danh mục</label>
-                <input type="text" id="searchId" name="txtMadanhmuc" placeholder="Nhập mã danh mục..."
-                    value="<?php echo isset($data['ma_danh_muc']) ? htmlspecialchars($data['ma_danh_muc']) : ''; ?>" />
-            </div>
-            <div>
-                <label for="searchName">Tên danh mục</label>
-                <input type="text" id="searchName" name="txtTendanhmuc" placeholder="Nhập tên danh mục..."
-                    value="<?php echo isset($data['ten_danh_muc']) ? htmlspecialchars($data['ten_danh_muc']) : ''; ?>" />
+            <div class="search-fields">
+                <div>
+                    <label for="searchId">Mã danh mục</label>
+                    <input type="text" id="searchId" name="txtMadanhmuc" placeholder="Nhập mã danh mục..."
+                        value="<?php echo isset($data['ma_danh_muc']) ? htmlspecialchars($data['ma_danh_muc']) : ''; ?>" />
+                </div>
+                <div>
+                    <label for="searchName">Tên danh mục</label>
+                    <input type="text" id="searchName" name="txtTendanhmuc" placeholder="Nhập tên danh mục..."
+                        value="<?php echo isset($data['ten_danh_muc']) ? htmlspecialchars($data['ten_danh_muc']) : ''; ?>" />
+                </div>
             </div>
 
             <div class="actions" style="margin-top:0;">
                 <button type="submit" class="btn-primary" name="btnTim"><i class="fa-solid fa-search"></i> Tìm
                     kiếm</button>
                 <a href="http://localhost/QLSP/Danhmuc/danhsach" class="btn-ghost">Làm mới</a>
+                <button type="submit" name="btnXuatexcel" class="btn-excel">
+                    <i class="fa-solid fa-solid fa-download"></i> Xuất Excel
+                </button>
             </div>
         </form>
     </div>
 
     <div class="card">
         <h2><i class="fa-solid fa-list-ul"></i> Danh sách hiện tại</h2>
-            <?php
+        <?php
             // Reset con trỏ dữ liệu
             if(isset($data['dulieu']) && is_a($data['dulieu'], 'mysqli_result')){
                  mysqli_data_seek($data['dulieu'], 0);
@@ -279,14 +296,17 @@
                     <tr>
                         <td><span style="font-weight:600;color:var(--accent)"><?php echo $serial++; ?></span>
                         </td>
-                        <td><span style="font-weight:600;color:var(--accent)"><?php echo htmlspecialchars($row['ma_danh_muc']) ?></span>
+                        <td><span
+                                style="font-weight:600;color:var(--accent)"><?php echo htmlspecialchars($row['ma_danh_muc']) ?></span>
                         </td>
                         <td><?php echo htmlspecialchars($row['ten_danh_muc']) ?></td>
                         <td>
                             <?php if($row['image']): ?>
-                                <img src="<?php echo htmlspecialchars($row['image']) ?>" alt="<?php echo htmlspecialchars($row['ten_danh_muc']) ?>" style="width:50px;height:50px;object-fit:cover;border-radius:5px;" />
+                            <img src="<?php echo htmlspecialchars($row['image']) ?>"
+                                alt="<?php echo htmlspecialchars($row['ten_danh_muc']) ?>"
+                                style="width:50px;height:50px;object-fit:cover;border-radius:5px;" />
                             <?php else: ?>
-                                <span>Không có hình</span>
+                            <span>Không có hình</span>
                             <?php endif; ?>
                         </td>
                         <td><?php echo htmlspecialchars($row['ngay_tao']) ?></td>

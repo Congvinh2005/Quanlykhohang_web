@@ -49,5 +49,12 @@
             $sql = "SELECT * FROM users WHERE ma_user = '$ma_user'";
             return mysqli_query($this->con, $sql);
         }
+
+        // Validate user for login
+        function validateUser($username, $password){
+            $sql = "SELECT * FROM users WHERE (ma_user = '$username' OR email = '$username' OR ten_user = '$username') AND password = '$password'";
+            $result = mysqli_query($this->con, $sql);
+            return $result;
+        }
     }
 ?>

@@ -83,13 +83,18 @@
                 // Kiểm tra dữ liệu rỗng
                 if($ma_danh_muc == ''){
                     echo "<script>alert('Mã danh mục không được rỗng!')</script>";
-                    $this->form_them();
+                    $this->themmoi();
                 } else {
                     // Kiểm tra trùng mã danh mục
                     $kq1 = $this->dm->checktrungMaDanhmuc($ma_danh_muc);
                     if($kq1){
                         echo "<script>alert('Mã danh mục đã tồn tại! Vui lòng nhập mã khác.')</script>";
-                        $this->form_them();
+                         $this->view('Master',[
+                            'page' => 'Danhmuc_v',
+                            'ma_danh_muc' => $ma_danh_muc,
+                            'ten_danh_muc' => $ten_danh_muc,
+                            'image' => ''
+                        ]);
                     } else {
                         $kq = $this->dm->danhmuc_ins($ma_danh_muc, $ten_danh_muc, $image);
                         if($kq) {
@@ -97,28 +102,68 @@
                             $this->danhsach(); // Quay về danh sách sau khi thêm thành công
                         } else {
                             echo "<script>alert('Thêm mới thất bại!');</script>";
-                            $this->form_them();
+                            $this->themmoi();
                         }
                     }
                 }
             } 
         }
 
-        function tim(){
-            if(isset($_POST['btnTim'])){
-                $ma_danh_muc = $_POST['txtMadanhmuc'];
-                $ten_danh_muc = $_POST['txtTendanhmuc'];
+function Timkiem()
+    {
+        // Get the search parameters from the form
+        $ma_danh_muc = $_POST['txtMadanhmuc'] ?? '';
+        $ten_danh_muc = $_POST['txtTendanhmuc'] ?? '';
 
-                $result = $this->dm->Danhmuc_find($ma_danh_muc, $ten_danh_muc);
+        // 👉 LẤY DỮ LIỆU THEO MÃ DANH MỤC + TÊN DANH MỤC
+        $result = $this->dm->Danhmuc_find($ma_danh_muc, $ten_danh_muc);
+        // ====== XUẤT EXCEL ======
+        if (isset($_POST['btnXuatexcel'])) {
 
-                $this->view('Master',[
-                    'page' => 'Danhsachdanhmuc_v',
-                    'ma_danh_muc' => $ma_danh_muc,
-                    'ten_danh_muc' => $ten_danh_muc,
-                    'dulieu' => $result
-                ]);
+            $objExcel = new PHPExcel();
+            $objExcel->setActiveSheetIndex(0);
+            $sheet = $objExcel->getActiveSheet()->setTitle('DanhSachDanhmuc');
+
+            // Header tương ứng với ảnh CSDL
+            $sheet->setCellValue('A1', 'Mã Danh Mục');
+            $sheet->setCellValue('B1', 'Tên Danh Mục');
+            $sheet->setCellValue('C1', 'Hình Ảnh');
+            $sheet->setCellValue('D1', 'Ngày Tạo');
+
+
+            $rowCount = 2; // Starting from row 2 since row 1 is headers
+            mysqli_data_seek($result, 0); // Reset result pointer to beginning
+            while ($row = mysqli_fetch_assoc($result)) {
+                // Mapping field according to database table
+                $sheet->setCellValue('A'.$rowCount, $row['ma_danh_muc']);
+                $sheet->setCellValue('B'.$rowCount, $row['ten_danh_muc']);
+                $sheet->setCellValue('C'.$rowCount, $row['image']);
+                $sheet->setCellValue('D'.$rowCount, $row['ngay_tao']);
+                $rowCount++;
             }
+
+            foreach (range('A','D') as $col) {
+                $sheet->getColumnDimension($col)->setAutoSize(true);
+            }
+
+            if (ob_get_length()) ob_end_clean();
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="DanhSachDanhmuc.xlsx"');
+            header('Cache-Control: max-age=0');
+
+            $writer = PHPExcel_IOFactory::createWriter($objExcel, 'Excel2007');
+            $writer->save('php://output');
+            exit;
         }
+
+        // ====== DISPLAY VIEW ======
+        $this->view('Master', [
+            'page' => 'Danhsachdanhmuc_v',
+            'ma_danh_muc' => $ma_danh_muc, // Consistent with view variable name
+            'ten_danh_muc' => $ten_danh_muc, // Consistent with view variable name
+            'dulieu' => $result
+        ]);
+    }
 
         // AJAX search (JSON)
         function tim_ajax(){

@@ -35,6 +35,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="http://localhost/QLSP/Thucdon/danhsach"
+                            class="<?php echo ($current === 'Danhsachthucdon_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-utensils"></i> Quản lý thực đơn
+                        </a>
+                    </li>
+                    <li>
                         <a href="http://localhost/QLSP/Nhacungcap/danhsach"
                             class="<?php echo ($current === 'Danhsachnhacungcap_v') ? 'active' : ''; ?>">
                             <i class="fa-solid fa-truck-fast"></i> Quản lý nhà cung cấp
@@ -57,11 +63,22 @@
 
                     </li>
                     <li>
-                        <a href="http://localhost/QLSP/Nhacungcap/import"
-                            class="<?php echo (in_array($current, ['Nhacungcap_v','Nhacungcap_sua'])) ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-cloud-arrow-up"></i> Upload exel 🔍
+                        <a href="http://localhost/QLSP/Banuong/danhsach"
+                            class="<?php echo ($current === 'Danhsachbanuong_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-chair"></i> Quản lý bàn uống
                         </a>
-
+                    </li>
+                    <li>
+                        <a href="http://localhost/QLSP/Donhang/danhsach"
+                            class="<?php echo ($current === 'Danhsachdonhang_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-receipt"></i> Quản lý đơn hàng
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost/QLSP/Thongke/thongke"
+                            class="<?php echo ($current === 'Thongke_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-chart-line"></i> Thống kê
+                        </a>
                     </li>
                 </ul>
             </nav>
@@ -70,21 +87,41 @@
         <div class="main-content">
             <header class="top-header">
                 <div class="page-title">
-                    <?php 
+                    <?php
                         if($current == 'home') echo 'Dashboard';
                         elseif(strpos($current, 'Sanpham') !== false) echo 'Sản phẩm';
+                        elseif(strpos($current, 'Thucdon') !== false) echo 'Thực đơn';
+                        elseif(strpos($current, 'Donhang') !== false) echo 'Đơn hàng';
+                        elseif(strpos($current, 'Thongke') !== false) echo 'Thống kê';
                         elseif(strpos($current, 'Nhacungcap') !== false) echo 'Nhà cung cấp';
                         elseif(strpos($current, 'Danhmuc') !== false) echo 'Danh mục';
+                        elseif(strpos($current, 'Banuong') !== false) echo 'Bàn uống';
                         elseif(strpos($current, 'Users') !== false) echo 'Người dùng';
                         else echo 'Quản trị hệ thống';
                     ?>
                 </div>
                 <div class="user-info">
-                    <span>Đào Văn Vinh</span>
-                    <div class="avatar">
-                        <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
-                            alt="Avatar">
-                    </div>
+                    <?php if(isset($_SESSION['user_name'])): ?>
+                        <span>
+                            <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+                            <?php if(isset($_SESSION['user_role'])): ?>
+                                <span class="user-role">(<?php echo $_SESSION['user_role'] == 'admin' ? 'Quản trị viên' : 'Nhân viên'; ?>)</span>
+                            <?php endif; ?>
+                        </span>
+                        <div class="avatar">
+                            <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
+                                alt="Avatar">
+                        </div>
+                        <a href="http://localhost/QLSP/Users/logout" class="logout-btn" title="Đăng xuất">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </a>
+                    <?php else: ?>
+                        <span>Đào Văn Vinh</span>
+                        <div class="avatar">
+                            <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
+                                alt="Avatar">
+                        </div>
+                    <?php endif; ?>
                 </div>
             </header>
 

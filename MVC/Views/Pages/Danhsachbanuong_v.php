@@ -3,7 +3,6 @@
 
 <body>
     <style>
-    /* Reuse styles similar to Danhsachsanpham */
     .btn-create {
         background: #10b981;
         /* Màu xanh lá cây */
@@ -80,7 +79,7 @@
         gap: var(--gap);
         flex: 1;
     }
-
+    
     .search-fields > div {
         flex: 1 1 200px;
     }
@@ -99,7 +98,8 @@
         font-weight: bold;
     }
 
-    input[type="text"] {
+    input[type="text"],
+    input[type="number"] {
         width: 100%;
         padding: 10px 12px;
         border: 1px solid #e3e7ef;
@@ -213,45 +213,52 @@
     <div class="card">
         <div class="actions-top">
             <div>
-                <h1><i class="fa-solid fa-user"></i> Quản lý Users</h1>
-                <p class="lead">Tạo, sửa, xóa tài khoản người dùng.</p>
+                <h1><i class="fa-solid fa-chair"></i> Quản lý Bàn Uống</h1>
+                <p class="lead">Quản lý thông tin các bàn uống trong quán.</p>
             </div>
             <div class="actions">
-                <a href="http://localhost/QLSP/Users/themmoi" class="btn-create"><i class="fa-solid fa-plus"></i>
-                    Thêm người dùng</a>
-                <a href="http://localhost/QLSP/Users/import_form" class="btn-ghost"><i
+                <a href="http://localhost/QLSP/Banuong/themmoi" class="btn-create"><i class="fa-solid fa-plus"></i>
+                    Thêm bàn</a>
+                <a href="http://localhost/QLSP/Banuong/import_form" class="btn-ghost"><i
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
-                <!-- <a href="http://localhost/QLSP/Users/export" class="btn-excel"><i class="fa-solid fa-download"></i> Xuất
+                <!-- <a href="http://localhost/QLSP/Banuong/export" class="btn-excel"><i class="fa-solid fa-download"></i> Xuất
                     Excel</a> -->
             </div>
         </div>
 
-        <form method="post" action="http://localhost/QLSP/Users/Timkiem" class="form-search"
+        <form method="post" action="http://localhost/QLSP/Banuong/Timkiem" class="form-search"
             style="margin-bottom:30px;border:1px dashed #cbd5e1;padding:20px;border-radius:12px;background:#f8fafc">
             <div class="search-fields">
                 <div>
-                    <label for="searchId">Mã user</label>
-                    <input type="text" id="searchId" name="txtMauser" placeholder="Nhập mã user..."
-                        value="<?php echo isset($data['ma_user'])?htmlspecialchars($data['ma_user']):'' ?>" />
+                    <label for="txtMaban">Mã bàn</label>
+                    <input type="text" id="txtMaban" name="txtMaban" placeholder="Nhập mã bàn..."
+                        value="<?php echo isset($data['ma_ban']) ? htmlspecialchars($data['ma_ban']) : ''; ?>" />
                 </div>
                 <div>
-                    <label for="searchName">Tên user</label>
-                    <input type="text" id="searchName" name="txtTenuser" placeholder="Nhập tên user..."
-                        value="<?php echo isset($data['ten_user'])?htmlspecialchars($data['ten_user']):'' ?>" />
+                    <label for="txtTenban">Tên bàn</label>
+                    <input type="text" id="txtTenban" name="txtTenban" placeholder="Nhập tên bàn..."
+                        value="<?php echo isset($data['ten_ban']) ? htmlspecialchars($data['ten_ban']) : ''; ?>" />
+                </div>
+                <div>
+                    <label for="txtSochongoi">Số chỗ ngồi</label>
+                    <input type="number" id="txtSochongoi" name="txtSochongoi" placeholder="Nhập số chỗ ngồi..."
+                        value="<?php echo isset($data['so_cho_ngoi']) ? htmlspecialchars($data['so_cho_ngoi']) : ''; ?>" />
                 </div>
             </div>
-
+            
             <div class="actions" style="margin-top:0;">
                 <button type="submit" class="btn-primary" name="btnTim"><i class="fa-solid fa-search"></i> Tìm
                     kiếm</button>
-                <a href="http://localhost/QLSP/Users/danhsach" class="btn-ghost">Làm mới</a>
+                <a href="http://localhost/QLSP/Banuong/danhsach" class="btn-ghost">Làm mới</a>
                 <button type="submit" name="btnXuatexcel" class="btn-excel">
                     <i class="fa-solid fa-solid fa-download"></i> Xuất Excel
                 </button>
             </div>
         </form>
+    </div>
 
+    <div class="card">
         <h2><i class="fa-solid fa-list-ul"></i> Danh sách hiện tại</h2>
         <?php
             // Reset con trỏ dữ liệu
@@ -278,16 +285,15 @@
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Mã User</th>
-                        <th>Tên người dùng</th>
-                        <th>Password</th>
-                        <th>Email</th>
-                        <th>Quyền</th>
-                        <th>Ngày tạo</th>
+                        <th>Mã Bàn</th>
+                        <th>Tên Bàn</th>
+                        <th>Số Chỗ Ngồi</th>
+                        <th>Trạng Thái</th>
+                        <th>Ngày Tạo</th>
                         <th style="text-align:right">Thao tác</th>
                     </tr>
                 </thead>
-                <tbody id="userBody">
+                <tbody id="dmBody">
                     <?php
                     // Render dữ liệu tĩnh ban đầu
                     if($count > 0) {
@@ -298,18 +304,22 @@
                         <td><span style="font-weight:600;color:var(--accent)"><?php echo $serial++; ?></span>
                         </td>
                         <td><span
-                                style="font-weight:600;color:var(--accent)"><?php echo htmlspecialchars($row['ma_user']) ?></span>
+                                style="font-weight:600;color:var(--accent)"><?php echo htmlspecialchars($row['ma_ban']) ?></span>
                         </td>
-                        <td><?php echo htmlspecialchars($row['ten_user']) ?></td>
-                        <td><?php echo htmlspecialchars($row['password']) ?></td>
-                        <td><?php echo htmlspecialchars($row['email']) ?></td>
-                        <td><?php echo htmlspecialchars($row['phan_quyen']) ?></td>
+                        <td><?php echo htmlspecialchars($row['ten_ban']) ?></td>
+                        <td><?php echo htmlspecialchars($row['so_cho_ngoi']) ?></td>
+                        <td>
+                            <span
+                                style="background:<?php echo $row['trang_thai_ban']=='trong'?'#d1fae5':'#fed7aa'; ?>;color:<?php echo $row['trang_thai_ban']=='trong'?'#065f46':'#c2410c'; ?>;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">
+                                <?php echo $row['trang_thai_ban'] == 'trong' ? 'Trống' : 'Đang sử dụng'; ?>
+                            </span>
+                        </td>
                         <td><?php echo htmlspecialchars($row['ngay_tao']) ?></td>
                         <td style="text-align:right">
-                            <a href="http://localhost/QLSP/Users/sua/<?php echo urlencode($row['ma_user']) ?>"><button
+                            <a href="http://localhost/QLSP/Banuong/sua/<?php echo urlencode($row['ma_ban']) ?>"><button
                                     class="btn-edit">✏️
                                     Sửa</button></a>
-                            <a href="http://localhost/QLSP/Users/xoa/<?php echo urlencode($row['ma_user']) ?>"
+                            <a href="http://localhost/QLSP/Banuong/xoa/<?php echo urlencode($row['ma_ban']) ?>"
                                 onclick="return confirm('Bạn có chắc chắn muốn xoá không?')"><button
                                     class="btn-delete">🗑️
                                     Xóa</button></a>
@@ -321,8 +331,8 @@
         </div>
         <script>
         // Manual search only (no AJAX)
-        const idInput = document.getElementById('searchId');
-        const nameInput = document.getElementById('searchName');
+        const idInput = document.getElementById('txtMaban');
+        const nameInput = document.getElementById('txtTenban');
         const resultCount = document.getElementById('resultCount');
 
         // init count
@@ -332,8 +342,8 @@
         <?php if(isset($data['dulieu']) && mysqli_num_rows($data['dulieu']) === 0){ ?>
         <div class="hint">Không có kết quả phù hợp.</div>
         <?php } ?>
-    </div>
 
+    </div>
 </body>
 
 </html>

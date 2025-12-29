@@ -1,0 +1,118 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: url("https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb")
+    no-repeat center/cover;
+  height: 100vh;
+}
+
+.app {
+  display: flex;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: #ffffff;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+}
+
+.logo {
+  margin-bottom: 30px;
+}
+
+.menu li {
+  list-style: none;
+  padding: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.menu li i {
+  margin-right: 8px;
+}
+
+.menu li.active,
+.menu li:hover {
+  background: #e7f3ff;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 30px;
+}
+
+.breadcrumb {
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.breadcrumb a {
+  color: #2c7be5;
+  text-decoration: none;
+}
+
+.alert {
+  background: #e6f4ea;
+  color: #1e4620;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin-bottom: 15px;
+}
+
+/* TABLE */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-table thead {
+  background: #2f343a;
+  color: white;
+}
+
+.order-table th,
+.order-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.order-table tbody tr:hover {
+  background: #f5f7fa;
+}
+
+.paid {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+/* BUTTON */
+.btn-view {
+  background: #6ec1e4;
+  border: none;
+  padding: 6px 14px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-view:hover {
+  background: #4faad0;
+}

@@ -55,7 +55,7 @@
                     $dienthoai = trim($dienthoai); // Loại bỏ khoảng trắng
                     if($dienthoai != '' && !preg_match('/^\d{10}$/', $dienthoai)){
                         echo "<script>alert('Số điện thoại phải có đúng 10 chữ số!')</script>";
-                        $this->form_them();
+                        $this->themmoi();
                         return;
                     }
 
@@ -93,23 +93,63 @@
             }
         }
         
-        function tim(){
-            if(isset($_POST['btnTim'])){
-                $mancc = $_POST['txtMancc'];
-                $tenncc = $_POST['txtTenncc'];
+        function Timkiem()
+    {
+        // Get the search parameters from the form
+        $mancc = $_POST['txtMancc'] ?? '';
+        $tenncc = $_POST['txtTenncc'] ?? '';
 
-                $result = $this->ncc->Nhacungcap_find($mancc, $tenncc);
+        // 👉 LẤY DỮ LIỆU THEO MÃ NHÀ CUNG CẤP + TÊN NHÀ CUNG CẤP
+        $result = $this->ncc->Nhacungcap_find($mancc, $tenncc);
+        // ====== XUẤT EXCEL ======
+        if (isset($_POST['btnXuatexcel'])) {
 
-                $this->view('Master',[
-                    'page' => 'Danhsachnhacungcap_v',
-                    'mancc' => $mancc,
-                    'tenncc' => $tenncc,
-                    'diachi' => '',
-                    'dienthoai' => '',
-                    'dulieu' => $result
-                ]);
+            $objExcel = new PHPExcel();
+            $objExcel->setActiveSheetIndex(0);
+            $sheet = $objExcel->getActiveSheet()->setTitle('DanhSachNhacungcap');
+
+            // Header tương ứng với ảnh CSDL
+            $sheet->setCellValue('A1', 'Mã Nhà Cung Cấp');
+            $sheet->setCellValue('B1', 'Tên Nhà Cung Cấp');
+            $sheet->setCellValue('C1', 'Địa Chỉ');
+            $sheet->setCellValue('D1', 'Điện Thoại');
+           
+
+
+            $rowCount = 2; // Starting from row 2 since row 1 is headers
+            mysqli_data_seek($result, 0); // Reset result pointer to beginning
+            while ($row = mysqli_fetch_assoc($result)) {
+                // Mapping field according to database table
+                $sheet->setCellValue('A'.$rowCount, $row['mancc']);
+                $sheet->setCellValue('B'.$rowCount, $row['tenncc']);
+                $sheet->setCellValue('C'.$rowCount, $row['diachi']);
+                $sheet->setCellValue('D'.$rowCount, $row['dienthoai']);
+                $rowCount++;
             }
+
+            foreach (range('A','D') as $col) {
+                $sheet->getColumnDimension($col)->setAutoSize(true);
+            }
+
+            if (ob_get_length()) ob_end_clean();
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="DanhSachNhacungcap.xlsx"');
+            header('Cache-Control: max-age=0');
+
+            $writer = PHPExcel_IOFactory::createWriter($objExcel, 'Excel2007');
+            $writer->save('php://output');
+            exit;
         }
+
+        // ====== DISPLAY VIEW ======
+        $this->view('Master', [
+            'page' => 'Danhsachnhacungcap_v',
+            'mancc' => $mancc, // Consistent with view variable name
+            'tenncc' => $tenncc, // Consistent with view variable name
+            'dulieu' => $result
+        ]);
+    }
+
 
         // AJAX search (JSON) - Giữ nguyên
         function tim_ajax(){

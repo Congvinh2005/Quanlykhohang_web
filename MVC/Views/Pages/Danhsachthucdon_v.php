@@ -2,8 +2,9 @@
 <html lang="vi">
 
 <body>
+
     <style>
-    /* Reuse styles similar to Danhsachsanpham */
+    /* Custom styles for the actions */
     .btn-create {
         background: #10b981;
         /* Màu xanh lá cây */
@@ -80,7 +81,7 @@
         gap: var(--gap);
         flex: 1;
     }
-
+    
     .search-fields > div {
         flex: 1 1 200px;
     }
@@ -213,63 +214,68 @@
     <div class="card">
         <div class="actions-top">
             <div>
-                <h1><i class="fa-solid fa-user"></i> Quản lý Users</h1>
-                <p class="lead">Tạo, sửa, xóa tài khoản người dùng.</p>
+                <h1><i class="fa-solid fa-utensils"></i> Quản lý Thực Đơn</h1>
+                <p class="lead">Tra cứu và cập nhật thực đơn quán.</p>
             </div>
             <div class="actions">
-                <a href="http://localhost/QLSP/Users/themmoi" class="btn-create"><i class="fa-solid fa-plus"></i>
-                    Thêm người dùng</a>
-                <a href="http://localhost/QLSP/Users/import_form" class="btn-ghost"><i
+                <a href="http://localhost/QLSP/Thucdon/themmoi" class="btn-create"><i class="fa-solid fa-plus"></i>
+                    Thêm món </a>
+                <a href="http://localhost/QLSP/Thucdon/import_form" class="btn-ghost"><i
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
-                <!-- <a href="http://localhost/QLSP/Users/export" class="btn-excel"><i class="fa-solid fa-download"></i> Xuất
+                <!-- <a href="http://localhost/QLSP/Thucdon/Timkiem" class="btn-excel"><i class="fa-solid fa-file-excel"></i>
+                    Xuất
                     Excel</a> -->
+
+
             </div>
         </div>
 
-        <form method="post" action="http://localhost/QLSP/Users/Timkiem" class="form-search"
+        <form method="post" action="http://localhost/QLSP/Thucdon/Timkiem" class="form-search"
             style="margin-bottom:30px;border:1px dashed #cbd5e1;padding:20px;border-radius:12px;background:#f8fafc">
             <div class="search-fields">
                 <div>
-                    <label for="searchId">Mã user</label>
-                    <input type="text" id="searchId" name="txtMauser" placeholder="Nhập mã user..."
-                        value="<?php echo isset($data['ma_user'])?htmlspecialchars($data['ma_user']):'' ?>" />
+                    <label for="searchId">Mã thực đơn</label>
+                    <input type="text" id="searchId" name="txtMathucdon" placeholder="Nhập mã TD..."
+                        value="<?php echo isset($data['ma_thuc_don']) ? htmlspecialchars($data['ma_thuc_don']) : ''; ?>" />
                 </div>
                 <div>
-                    <label for="searchName">Tên user</label>
-                    <input type="text" id="searchName" name="txtTenuser" placeholder="Nhập tên user..."
-                        value="<?php echo isset($data['ten_user'])?htmlspecialchars($data['ten_user']):'' ?>" />
+                    <label for="searchName">Tên món</label>
+                    <input type="text" id="searchName" name="txtTenmon" placeholder="Nhập tên món..."
+                        value="<?php echo isset($data['ten_mon']) ? htmlspecialchars($data['ten_mon']) : ''; ?>" />
                 </div>
             </div>
 
             <div class="actions" style="margin-top:0;">
                 <button type="submit" class="btn-primary" name="btnTim"><i class="fa-solid fa-search"></i> Tìm
                     kiếm</button>
-                <a href="http://localhost/QLSP/Users/danhsach" class="btn-ghost">Làm mới</a>
+                <a href="http://localhost/QLSP/Thucdon/danhsach" class="btn-ghost">Làm mới</a>
                 <button type="submit" name="btnXuatexcel" class="btn-excel">
                     <i class="fa-solid fa-solid fa-download"></i> Xuất Excel
                 </button>
             </div>
         </form>
+    </div>
 
+    <div class="card">
         <h2><i class="fa-solid fa-list-ul"></i> Danh sách hiện tại</h2>
         <?php
-            // Reset con trỏ dữ liệu
-            if(isset($data['dulieu']) && is_a($data['dulieu'], 'mysqli_result')){
-                 mysqli_data_seek($data['dulieu'], 0);
-            }
+        // Reset con trỏ dữ liệu
+        if(isset($data['dulieu']) && is_a($data['dulieu'], 'mysqli_result')){
+             mysqli_data_seek($data['dulieu'], 0);
+        }
 
-            // Đảm bảo dữ liệu tồn tại
-            if(isset($data['dulieu'])){
-                // Giả định $data['dulieu'] là mysqli_result
-                // Reset con trỏ về đầu để có thể đếm và dùng lại bên dưới
-                if (is_object($data['dulieu'])) {
-                    $count = mysqli_num_rows($data['dulieu']);
-                    mysqli_data_seek($data['dulieu'], 0);
-                } else {
-                    $count = 0;
-                }
-            ?>
+        // Đảm bảo dữ liệu tồn tại
+        if(isset($data['dulieu'])){
+            // Giả định $data['dulieu'] là mysqli_result
+            // Reset con trỏ về đầu để có thể đếm và dùng lại bên dưới
+            if (is_object($data['dulieu'])) {
+                $count = mysqli_num_rows($data['dulieu']);
+                mysqli_data_seek($data['dulieu'], 0);
+            } else {
+                $count = 0;
+            }
+        ?>
         <div style="margin:10px 0">
             <strong>Kết quả: <span id="resultCount" class="hint"></span></strong>
         </div>
@@ -278,16 +284,16 @@
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Mã User</th>
-                        <th>Tên người dùng</th>
-                        <th>Password</th>
-                        <th>Email</th>
-                        <th>Quyền</th>
-                        <th>Ngày tạo</th>
+                        <th>Mã TD</th>
+                        <th>Tên món</th>
+                        <th>Hình ảnh</th>
+                        <th>Giá</th>
+                        <th>Trạng thái</th>
+                        <th>Danh mục</th>
                         <th style="text-align:right">Thao tác</th>
                     </tr>
                 </thead>
-                <tbody id="userBody">
+                <tbody id="spBody">
                     <?php
                     // Render dữ liệu tĩnh ban đầu
                     if($count > 0) {
@@ -297,19 +303,28 @@
                     <tr>
                         <td><span style="font-weight:600;color:var(--accent)"><?php echo $serial++; ?></span>
                         </td>
-                        <td><span
-                                style="font-weight:600;color:var(--accent)"><?php echo htmlspecialchars($row['ma_user']) ?></span>
+                        <td><?php echo htmlspecialchars($row['ma_thuc_don']) ?></td>
+                        <td><?php echo htmlspecialchars($row['ten_mon']) ?></td>
+                        <td>
+                            <?php if($row['img_thuc_don']): ?>
+                                <img src="<?php echo htmlspecialchars($row['img_thuc_don']) ?>" alt="<?php echo htmlspecialchars($row['ten_mon']) ?>" style="width:50px;height:50px;object-fit:cover;border-radius:5px;" />
+                            <?php else: ?>
+                                <span>Không có hình</span>
+                            <?php endif; ?>
                         </td>
-                        <td><?php echo htmlspecialchars($row['ten_user']) ?></td>
-                        <td><?php echo htmlspecialchars($row['password']) ?></td>
-                        <td><?php echo htmlspecialchars($row['email']) ?></td>
-                        <td><?php echo htmlspecialchars($row['phan_quyen']) ?></td>
-                        <td><?php echo htmlspecialchars($row['ngay_tao']) ?></td>
+                        <td><?php echo number_format($row['gia'], 0, ',', '.') ?> ₫</td>
+                        <td>
+                            <span
+                                style="background:<?php echo $row['trang_thai']=='con_ban'?'#d1fae5':'#fee2e2'; ?>;color:<?php echo $row['trang_thai']=='con_ban'?'#065f46':'#991b1b'; ?>;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">
+                                <?php echo $row['trang_thai'] == 'con_ban' ? 'Còn bán' : 'Hết bán'; ?>
+                            </span>
+                        </td>
+                        <td><?php echo isset($row['ten_danh_muc']) ? htmlspecialchars($row['ten_danh_muc']) : 'N/A' ?></td>
                         <td style="text-align:right">
-                            <a href="http://localhost/QLSP/Users/sua/<?php echo urlencode($row['ma_user']) ?>"><button
+                            <a href="http://localhost/QLSP/Thucdon/sua/<?php echo urlencode($row['ma_thuc_don']) ?>"><button
                                     class="btn-edit">✏️
                                     Sửa</button></a>
-                            <a href="http://localhost/QLSP/Users/xoa/<?php echo urlencode($row['ma_user']) ?>"
+                            <a href="http://localhost/QLSP/Thucdon/xoa/<?php echo urlencode($row['ma_thuc_don']) ?>"
                                 onclick="return confirm('Bạn có chắc chắn muốn xoá không?')"><button
                                     class="btn-delete">🗑️
                                     Xóa</button></a>
@@ -332,8 +347,8 @@
         <?php if(isset($data['dulieu']) && mysqli_num_rows($data['dulieu']) === 0){ ?>
         <div class="hint">Không có kết quả phù hợp.</div>
         <?php } ?>
-    </div>
 
+    </div>
 </body>
 
 </html>

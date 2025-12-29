@@ -1,0 +1,126 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: url("https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb")
+    no-repeat center/cover;
+  height: 100vh;
+}
+
+.app {
+  display: flex;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: #ffffff;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+}
+
+.logo {
+  margin-bottom: 30px;
+}
+
+.menu li {
+  list-style: none;
+  padding: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.menu li i {
+  margin-right: 8px;
+}
+
+.menu li.active,
+.menu li:hover {
+  background: #e7f3ff;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 30px;
+}
+
+.breadcrumb {
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.breadcrumb a {
+  color: #2c7be5;
+  text-decoration: none;
+}
+
+h1 {
+  margin-bottom: 5px;
+}
+
+.status {
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.paid {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+/* TABLE */
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.detail-table th,
+.detail-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-table thead {
+  background: #f5f6f8;
+  font-weight: bold;
+}
+
+.detail-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* TOTAL */
+.total {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* BUTTON */
+.btn-print {
+  margin-top: 20px;
+  padding: 10px 16px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-print i {
+  margin-right: 6px;
+}
+
+.btn-print:hover {
+  background: #f1f1f1;
+}

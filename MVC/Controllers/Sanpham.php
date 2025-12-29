@@ -90,53 +90,7 @@
             } 
         }
         
-        // function tim(){
-        //     if(isset($_POST['btnTim'])){
-        //         $masp = $_POST['txtMasanpham'];
-        //         $tensp = $_POST['txtTensanpham'];
-                
-        //         $result = $this->sp->Sanpham_find($masp, $tensp);
-                
-        //         $this->view('Master',[
-        //             'page' => 'Danhsachsanpham_v',
-        //             'Masanpham' => $masp,
-        //             'Tensanpham' => $tensp,
-        //             'dulieu' => $result
-        //         ]);
-        //     }
-        //      // Xuất Excel danh sách sản phẩm
-        // function export(){
-        //     $data = $this->sp->Sanpham_getAll();
-        //     $excel = new PHPExcel();
-        //     $excel->getProperties()->setCreator("QLSP")->setTitle("Danh sách sản phẩm");
-        //     $sheet = $excel->setActiveSheetIndex(0);
-        //     $sheet->setTitle('Sanpham');
-        //     // Header
-        //     $sheet->setCellValue('A1','Mã SP');
-        //     $sheet->setCellValue('B1','Tên sản phẩm');
-        //     $sheet->setCellValue('C1','Giá');
-        //     $sheet->setCellValue('D1','Số lượng');
-        //     $sheet->setCellValue('E1','Mã NCC');
-        //     // Rows
-        //     $rowIndex = 2;
-        //     while($r = mysqli_fetch_array($data)){
-        //         $sheet->setCellValue('A'.$rowIndex,$r['masp']);
-        //         $sheet->setCellValue('B'.$rowIndex,$r['tensp']);
-        //         $sheet->setCellValue('C'.$rowIndex,$r['gia']);
-        //         $sheet->setCellValue('D'.$rowIndex,$r['soluong']);
-        //         $sheet->setCellValue('E'.$rowIndex,$r['mancc']);
-        //         $rowIndex++;
-        //     }
-        //     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        //     header('Content-Disposition: attachment;filename="sanpham.xlsx"');
-        //     header('Cache-Control: max-age=0');
-        //     $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-        //     $writer->save('php://output');
-        //     exit;
-        // }
-
-        // }
-
+       
         function Timkiem()
     {
         // Get the search parameters from the form
@@ -243,39 +197,6 @@
             ]);
         }
 
-        // // Xử lý nhập Excel
-        //     function up_l(){
-        //     if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
-        //         echo "<script>alert('Upload file lỗi')</script>";
-        //         return;
-        //     }
-
-        //     $file = $_FILES['txtfile']['tmp_name'];
-
-        //     $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-        //     $objExcel  = $objReader->load($file);
-
-        //     $sheet     = $objExcel->getSheet(0);
-        //     $sheetData = $sheet->toArray(null,true,true,true);
-
-        //     for($i = 2; $i <= count($sheetData); $i++){
-
-        //         $masp   = trim((string)$sheetData[$i]['A']);
-        //         $tensp = trim((string)$sheetData[$i]['B']);
-        //         $gia     = trim((string)$sheetData[$i]['C']);
-        //         $soluong  = trim((string)$sheetData[$i]['D']);
-        //         $mancc    = trim((string)$sheetData[$i]['E']);
-
-        //         if($masp == '') continue;
-        //         if(!$this->sp->Sanpham_ins($masp,$tensp,$gia,$soluong,$mancc)){
-        //             die(mysqli_error($this->sp->con));
-        //         }
-        //     }
-
-        //     echo "<script>alert('Upload sản phẩm thành công!')</script>";
-        //     $this->view('Master',['page'=>'Sanpham_up_v']);
-        // }
-
     function up_l(){
         if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
             echo "<script>alert('Upload file lỗi')</script>";
@@ -318,26 +239,6 @@
     $this->view('Master',['page'=>'Sanpham_up_v']);
 }
 
-
-
-
-        // Tải mẫu Excel (chỉ header)
-        function template(){
-            $excel = new PHPExcel();
-            $sheet = $excel->setActiveSheetIndex(0);
-            $sheet->setTitle('Sanpham');
-            $sheet->setCellValue('A1','Mã SP');
-            $sheet->setCellValue('B1','Tên sản phẩm');
-            $sheet->setCellValue('C1','Giá');
-            $sheet->setCellValue('D1','Số lượng');
-            $sheet->setCellValue('E1','Mã NCC');
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="mau_sanpham.xlsx"');
-            header('Cache-Control: max-age=0');
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-            $writer->save('php://output');
-            exit;
-        }
         
         function update(){
             if(isset($_POST['btnCapnhat'])){

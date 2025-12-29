@@ -93,19 +93,65 @@
         }
     }
 
-        function tim(){
-            if(isset($_POST['btnTim'])){
-                $ma_user = $_POST['txtMauser'];
-                $ten_user = $_POST['txtTenuser'];
-                $result = $this->user->Users_find($ma_user, $ten_user);
-                $this->view('Master',[
-                    'page' => 'Danhsachusers_v',
-                    'ma_user' => $ma_user,
-                    'ten_user' => $ten_user,
-                    'dulieu' => $result
-                ]);
+    function Timkiem()
+    {
+        // Get the search parameters from the form
+        $ma_user = $_POST['txtMauser'] ?? '';
+        $ten_user = $_POST['txtTenuser'] ?? '';
+
+        // 👉 LẤY DỮ LIỆU THEO MÃ USER + TÊN USER
+        $result = $this->user->Users_find($ma_user, $ten_user);
+        // ====== XUẤT EXCEL ======
+        if (isset($_POST['btnXuatexcel'])) {
+
+            $objExcel = new PHPExcel();
+            $objExcel->setActiveSheetIndex(0);
+            $sheet = $objExcel->getActiveSheet()->setTitle('DanhSachUsers');
+
+            // Header tương ứng với ảnh CSDL
+            $sheet->setCellValue('A1', 'Mã User');
+            $sheet->setCellValue('B1', 'Tên User');
+            $sheet->setCellValue('C1', 'Password');
+            $sheet->setCellValue('D1', 'Email');
+            $sheet->setCellValue('E1', 'Phân Quyền');
+            $sheet->setCellValue('F1', 'Ngay Tạo');
+
+
+            $rowCount = 2; // Starting from row 2 since row 1 is headers
+            mysqli_data_seek($result, 0); // Reset result pointer to beginning
+            while ($row = mysqli_fetch_assoc($result)) {
+                // Mapping field according to database table
+                $sheet->setCellValue('A'.$rowCount, $row['ma_user']);
+                $sheet->setCellValue('B'.$rowCount, $row['ten_user']);
+                $sheet->setCellValue('C'.$rowCount, $row['password']);
+                $sheet->setCellValue('D'.$rowCount, $row['email']);
+                $sheet->setCellValue('E'.$rowCount, $row['phan_quyen']);
+                $sheet->setCellValue('F'.$rowCount, $row['ngay_tao']);
+                $rowCount++;
             }
+
+            foreach (range('A','F') as $col) {
+                $sheet->getColumnDimension($col)->setAutoSize(true);
+            }
+
+            if (ob_get_length()) ob_end_clean();
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="DanhSachUsers.xlsx"');
+            header('Cache-Control: max-age=0');
+
+            $writer = PHPExcel_IOFactory::createWriter($objExcel, 'Excel2007');
+            $writer->save('php://output');
+            exit;
         }
+
+        // ====== DISPLAY VIEW ======
+        $this->view('Master', [
+            'page' => 'Danhsachusers_v',
+            'ma_user' => $ma_user, // Consistent with view variable name
+            'ten_user' => $ten_user, // Consistent with view variable name
+            'dulieu' => $result
+        ]);
+    }
 
         function tim_ajax(){
             header('Content-Type: application/json; charset=utf-8');
@@ -320,6 +366,50 @@ function up_l(){
             header('Cache-Control: max-age=0');
             $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
             $writer->save('php://output');
+            exit;
+        }
+
+        // Login method
+        function login(){
+            if(isset($_POST['username']) && isset($_POST['password'])){
+                $username = $_POST['username'];
+                $password = $_POST['password'];
+
+                // Validate credentials
+                $result = $this->user->validateUser($username, $password);
+
+                if($result && mysqli_num_rows($result) > 0){
+                    $user = mysqli_fetch_assoc($result);
+                    // Set session variables
+                    $_SESSION['user_id'] = $user['ma_user'];
+                    $_SESSION['user_name'] = $user['ten_user'];
+                    $_SESSION['user_role'] = $user['phan_quyen'];
+
+                    // Redirect based on role
+                    if($user['phan_quyen'] == 'admin'){
+                        header('Location: http://localhost/QLSP/Home');
+                    } else {
+                        header('Location: http://localhost/QLSP/Staff');
+                    }
+                    exit;
+                } else {
+                    // Invalid credentials - redirect to login with error
+                    header('Location: http://localhost/QLSP/Login?error=' . urlencode('Tên đăng nhập hoặc mật khẩu không đúng!'));
+                    exit;
+                }
+            } else {
+                // If accessing directly without POST, redirect to Login controller
+                header('Location: http://localhost/QLSP/Login');
+                exit;
+            }
+        }
+
+        // Logout method
+        function logout(){
+            // Destroy session
+            session_destroy();
+            // Redirect to login
+            header('Location: http://localhost/QLSP/Users/login');
             exit;
         }
     }
