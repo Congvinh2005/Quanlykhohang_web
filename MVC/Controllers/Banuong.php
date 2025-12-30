@@ -1,10 +1,14 @@
 <?php
     class Banuong extends controller{
-        private $bu;
+        private $bu; // ban_uong
+        private $dh; // don_hang
+        private $ctdh; // chi_tiet_don_hang
 
         function __construct()
         {
             $this->bu = $this->model("Banuong_m");
+            $this->dh = $this->model("Donhang_m");
+            $this->ctdh = $this->model("Chitietdonhang_m");
         }
 
         function index(){
@@ -88,7 +92,7 @@ function Timkiem()
             // Header tương ứng với ảnh CSDL
             $sheet->setCellValue('A1', 'Mã Bàn');
             $sheet->setCellValue('B1', 'Tên Bàn');
-            $sheet->setCellValue('C1', 'Số Chỗ Ngồi');
+            $sheet->setCellValue('C1', 'Số Chỗ Ngồi'); 
             $sheet->setCellValue('D1', 'Trạng Thái Bàn');
             $sheet->setCellValue('E1', 'Ngày Tạo');
 
@@ -276,21 +280,148 @@ function Timkiem()
     $this->view('Master',['page'=>'Banuong_up_v']);
 }
 
-        // Tải mẫu Excel (chỉ header)
-        function template(){
-            $excel = new PHPExcel();
-            $sheet = $excel->setActiveSheetIndex(0);
-            $sheet->setTitle('BanUong');
-            $sheet->setCellValue('A1','Mã Bàn');
-            $sheet->setCellValue('B1','Tên Bàn');
-            $sheet->setCellValue('C1','Số Chỗ Ngồi');
-            $sheet->setCellValue('D1','Trạng Thái');
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="mau_banuong.xlsx"');
-            header('Cache-Control: max-age=0');
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-            $writer->save('php://output');
+      
+
+       
+        function order($ma_ban){
+            // Get table info
+            $table = $this->bu->Banuong_getById($ma_ban);
+            $table_info = mysqli_fetch_array($table);
+
+            $danhmuc = $this->model("Danhmuc_m");
+            $categories = $danhmuc->Danhmuc_getAll();
+
+            // Get all menu items
+            $thucdon = $this->model("Thucdon_m");
+            $menu_items = $thucdon->Thucdon_getAll();
+
+            $this->view('StaffMaster', [
+                'page' => 'Staff/Table_order_v',
+                'table_info' => $table_info,
+                'categories' => $categories,
+                'menu_items' => $menu_items
+            ]);
+        }
+
+        // Method to create an order via AJAX
+        function create_order(){
+            // Only allow POST requests
+            if($_SERVER['REQUEST_METHOD'] !== 'POST'){
+                header('HTTP/1.1 405 Method Not Allowed');
+                echo json_encode(['success' => false, 'message' => 'Phương thức không được phép']);
+                exit;
+            }
+
+            // Get JSON data from request
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+
+            if(!$data || !isset($data['ma_ban']) || !isset($data['cart'])){
+                echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ']);
+                exit;
+            }
+
+            $ma_ban = $data['ma_ban'];
+            $cart = $data['cart'];
+
+            // Validate table exists
+            $table = $this->bu->Banuong_getById($ma_ban);
+            if(!$table || mysqli_num_rows($table) == 0){
+                echo json_encode(['success' => false, 'message' => 'Bàn không tồn tại']);
+                exit;
+            }
+
+            // Create new order in don_hang table
+            $ma_don_hang = 'DH' . time(); // Generate unique order ID
+            $tong_tien = 0;
+
+            // Calculate total amount
+            foreach($cart as $item) {
+                $tong_tien += ($item['price'] * $item['quantity']);
+            }
+
+            // Assuming current user is admin or staff (you may want to get from session)
+            $ma_user = $_SESSION['user_id'] ?? 'U01'; // Default user if not set
+
+            // Check if there's already an unpaid order for this table
+            $existing_order = $this->getUnpaidOrderByTable($ma_ban);
+
+            if($existing_order) {
+                // Update existing order
+                $ma_don_hang = $existing_order['ma_don_hang'];
+                $this->updateOrder($ma_don_hang, $tong_tien);
+            } else {
+                // Create new order using the Donhang model's insert method
+                $result = $this->dh->donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, 'chua_thanh_toan', date('Y-m-d H:i:s'));
+                if(!$result) {
+                    echo json_encode(['success' => false, 'message' => 'Không thể tạo đơn hàng']);
+                    exit;
+                }
+            }
+
+            // Add order items to chi_tiet_don_hang table
+            foreach($cart as $item) {
+                $ma_thuc_don = $item['id'];
+                $so_luong = $item['quantity'];
+                $gia_tai_thoi_diem_dat = $item['price'];
+                $ghi_chu = ''; // You can add notes functionality later
+
+                // Check if this item already exists in the current order
+                $existing_detail = $this->checkExistingOrderDetail($ma_don_hang, $ma_thuc_don);
+
+                if($existing_detail) {
+                    // Update quantity if item exists
+                    $this->updateOrderDetailQuantity($existing_detail['ma_ctdh'], $so_luong, $gia_tai_thoi_diem_dat);
+                } else {
+                    // Add new order item
+                    $this->addOrderDetail($ma_don_hang, $ma_thuc_don, $so_luong, $gia_tai_thoi_diem_dat, $ghi_chu);
+                }
+            }
+
+            // Update table status to occupied
+            $this->updateTableStatus($ma_ban, 'dang_su_dung');
+
+            echo json_encode(['success' => true, 'message' => 'Tạo đơn hàng thành công!', 'order_id' => $ma_don_hang]);
             exit;
+        }
+
+        // Helper method to get unpaid order by table
+        private function getUnpaidOrderByTable($ma_ban) {
+            $sql = "SELECT * FROM don_hang WHERE ma_ban = '$ma_ban' AND trang_thai_thanh_toan = 'chua_thanh_toan' LIMIT 1";
+            $result = mysqli_query($this->dh->con, $sql);
+            return $result ? mysqli_fetch_assoc($result) : null;
+        }
+
+        // Helper method to update order amount
+        private function updateOrder($ma_don_hang, $tong_tien) {
+            $sql = "UPDATE don_hang SET tong_tien = '$tong_tien', ngay_tao = NOW() WHERE ma_don_hang = '$ma_don_hang'";
+            return mysqli_query($this->dh->con, $sql);
+        }
+
+        // Helper method to check existing order detail
+        private function checkExistingOrderDetail($ma_don_hang, $ma_thuc_don) {
+            $sql = "SELECT * FROM chi_tiet_don_hang WHERE ma_don_hang = '$ma_don_hang' AND ma_thuc_don = '$ma_thuc_don' LIMIT 1";
+            $result = mysqli_query($this->ctdh->con, $sql);
+            return $result ? mysqli_fetch_assoc($result) : null;
+        }
+
+        // Helper method to update order detail quantity
+        private function updateOrderDetailQuantity($ma_ctdh, $so_luong, $gia) {
+            $sql = "UPDATE chi_tiet_don_hang SET so_luong = '$so_luong', gia_tai_thoi_diem_dat = '$gia' WHERE ma_ctdh = '$ma_ctdh'";
+            return mysqli_query($this->ctdh->con, $sql);
+        }
+
+        // Helper method to add order detail
+        private function addOrderDetail($ma_don_hang, $ma_thuc_don, $so_luong, $gia, $ghi_chu) {
+            $sql = "INSERT INTO chi_tiet_don_hang (ma_don_hang, ma_thuc_don, so_luong, gia_tai_thoi_diem_dat, ghi_chu)
+                    VALUES ('$ma_don_hang', '$ma_thuc_don', '$so_luong', '$gia', '$ghi_chu')";
+            return mysqli_query($this->ctdh->con, $sql);
+        }
+
+        // Helper method to update table status
+        private function updateTableStatus($ma_ban, $status) {
+            $sql = "UPDATE ban_uong SET trang_thai_ban = '$status' WHERE ma_ban = '$ma_ban'";
+            return mysqli_query($this->bu->con, $sql);
         }
     }
 ?>

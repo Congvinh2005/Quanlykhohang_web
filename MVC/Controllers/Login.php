@@ -8,14 +8,14 @@
         }
 
         function Get_data(){
-            // This is the default method that gets called if no specific action is provided
+            // Đây là phương thức mặc định được gọi nếu không có hành động cụ thể nào được cung cấp
             $this->index();
         }
 
         function index(){
-            // Check if user is already logged in
+            // Kiểm tra xem người dùng đã đăng nhập chưa
             if(isset($_SESSION['user_id'])){
-                // If already logged in, redirect based on role
+                // Nếu đã đăng nhập, chuyển hướng theo vai trò
                 if($_SESSION['user_role'] === 'admin'){
                     header('Location: http://localhost/QLSP/Home');
                 } else {
@@ -23,7 +23,7 @@
                 }
                 exit;
             } else {
-               
+                // Hiển thị trang đăng nhập độc lập (không có layout Master)
                 include_once __DIR__.'/../Views/Pages/Login_v.php';
             }
         }
@@ -33,17 +33,11 @@
                 $username = $_POST['username'];
                 $password = $_POST['password'];
 
-                // Validate credentials
-                $result = $this->user->validateUser($username, $password);
+                // Xác thực người dùng (thiết lập biến phiên nếu thành công)
+                $user = $this->user->authenticateUser($username, $password);
 
-                if($result && mysqli_num_rows($result) > 0){
-                    $user = mysqli_fetch_assoc($result);
-                    // Set session variables
-                    $_SESSION['user_id'] = $user['ma_user'];
-                    $_SESSION['user_name'] = $user['ten_user'];
-                    $_SESSION['user_role'] = $user['phan_quyen'];
-
-                    // Redirect based on role
+                if($user) {
+                    // Chuyển hướng theo vai trò
                     if($user['phan_quyen'] == 'admin'){
                         header('Location: http://localhost/QLSP/Home');
                     } else {
@@ -51,12 +45,12 @@
                     }
                     exit;
                 } else {
-                    // Invalid credentials - redirect to login with error
+                    // Thông tin đăng nhập không hợp lệ - chuyển hướng đến đăng nhập với lỗi
                     header('Location: http://localhost/QLSP/Login?error=' . urlencode('Tên đăng nhập hoặc mật khẩu không đúng!'));
                     exit;
                 }
             } else {
-                // If no POST data, redirect to login page
+                // Nếu không có dữ liệu POST, chuyển hướng đến trang đăng nhập
                 header('Location: http://localhost/QLSP/Login');
                 exit;
             }

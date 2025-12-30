@@ -50,11 +50,28 @@
             return mysqli_query($this->con, $sql);
         }
 
-        // Validate user for login
+        // Xác thực người dùng để đăng nhập
         function validateUser($username, $password){
             $sql = "SELECT * FROM users WHERE (ma_user = '$username' OR email = '$username' OR ten_user = '$username') AND password = '$password'";
             $result = mysqli_query($this->con, $sql);
             return $result;
+        }
+
+        // Xác thực người dùng và thiết lập phiên (xử lý quá trình đăng nhập)
+        function authenticateUser($username, $password) {
+            $result = $this->validateUser($username, $password);
+
+            if($result && mysqli_num_rows($result) > 0){
+                $user = mysqli_fetch_assoc($result);
+                // Thiết lập biến phiên
+                $_SESSION['user_id'] = $user['ma_user'];
+                $_SESSION['user_name'] = $user['ten_user'];
+                $_SESSION['user_role'] = $user['phan_quyen'];
+
+                return $user; // Trả về dữ liệu người dùng để xử lý tiếp
+            }
+
+            return false; // Xác thực thất bại
         }
     }
 ?>

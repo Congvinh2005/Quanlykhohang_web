@@ -352,64 +352,24 @@ function up_l(){
 }
 
 
-        // Tải mẫu Excel (chỉ header)
-        function template(){
-            $excel = new PHPExcel();
-            $sheet = $excel->setActiveSheetIndex(0);
-            $sheet->setTitle('Users');
-            $sheet->setCellValue('A1','Mã User');
-            $sheet->setCellValue('B1','Tên');
-            $sheet->setCellValue('C1','Email');
-            $sheet->setCellValue('D1','Quyền');
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="mau_users.xlsx"');
-            header('Cache-Control: max-age=0');
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-            $writer->save('php://output');
+
+        // Phương thức đăng nhập - Chuyển hướng đến controller Login để xác thực tập trung
+        function login(){
+            // Tất cả chức năng đăng nhập được tập trung trong Login.php
+            // Điều này đảm bảo tất cả logic xác thực nằm ở một nơi
+            if($_SERVER['REQUEST_METHOD'] === 'POST'){
+                // Nếu là yêu cầu POST (gửi form), chuyển hướng đến phương thức xử lý của Login
+                header('Location: http://localhost/QLSP/Login/process');
+            } else {
+                // Nếu là yêu cầu GET (xem trang đăng nhập), chuyển hướng đến phương thức index của Login
+                header('Location: http://localhost/QLSP/Login');
+            }
             exit;
         }
 
-        // Login method
-        function login(){
-            if(isset($_POST['username']) && isset($_POST['password'])){
-                $username = $_POST['username'];
-                $password = $_POST['password'];
-
-                // Validate credentials
-                $result = $this->user->validateUser($username, $password);
-
-                if($result && mysqli_num_rows($result) > 0){
-                    $user = mysqli_fetch_assoc($result);
-                    // Set session variables
-                    $_SESSION['user_id'] = $user['ma_user'];
-                    $_SESSION['user_name'] = $user['ten_user'];
-                    $_SESSION['user_role'] = $user['phan_quyen'];
-
-                    // Redirect based on role
-                    if($user['phan_quyen'] == 'admin'){
-                        header('Location: http://localhost/QLSP/Home');
-                    } else {
-                        header('Location: http://localhost/QLSP/Staff');
-                    }
-                    exit;
-                } else {
-                    // Invalid credentials - redirect to login with error
-                    header('Location: http://localhost/QLSP/Login?error=' . urlencode('Tên đăng nhập hoặc mật khẩu không đúng!'));
-                    exit;
-                }
-            } else {
-                // If accessing directly without POST, redirect to Login controller
-                header('Location: http://localhost/QLSP/Login');
-                exit;
-            }
-        }
-
-        // Logout method
         function logout(){
-            // Destroy session
             session_destroy();
-            // Redirect to login
-            header('Location: http://localhost/QLSP/Users/login');
+            header('Location: http://localhost/QLSP/Login');
             exit;
         }
     }

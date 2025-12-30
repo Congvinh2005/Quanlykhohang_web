@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Đặt món - Cafe Manager</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        display: flex;
+        min-height: 100vh;
+        background: #f5f5f5;
+      }
+
+      /* ===== SIDEBAR ===== */
+      .sidebar {
+        width: 220px;
+        background: #ffffff;
+        border-right: 1px solid #ddd;
+        padding: 20px;
+      }
+
+      .sidebar h2 {
+        margin-bottom: 30px;
+        color: #6f4e37;
+      }
+
+      .sidebar a {
+        display: block;
+        padding: 12px;
+        margin-bottom: 10px;
+        color: #333;
+        text-decoration: none;
+        border-radius: 8px;
+      }
+
+      .sidebar a:hover {
+        background: #f0e6dc;
+      }
+
+      /* ===== MAIN ===== */
+      .main {
+        flex: 1;
+        padding: 30px;
+        background: url("https://images.unsplash.com/photo-1509042239860-f550ce710b93")
+          center/cover no-repeat;
+      }
+
+      .overlay {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 30px;
+        border-radius: 12px;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      .category {
+        margin-top: 30px;
+      }
+
+      .category h2 {
+        margin-bottom: 15px;
+        color: #6f4e37;
+      }
+
+      .product-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+      }
+
+      .product {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        text-align: center;
+      }
+
+      .product img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+
+      .product h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+
+      .price {
+        color: #6f4e37;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .product input {
+        width: 60px;
+        padding: 5px;
+        text-align: center;
+      }
+
+      /* ===== BUTTON TẠO ĐƠN ===== */
+      .btn-create {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        background: #6f4e37;
+        color: #fff;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-create:hover {
+        background: #5a3e2b;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <h2>☕ Cafe Manager</h2>
+      <a href="#"><i class="fa-solid fa-table"></i> Sơ đồ bàn</a>
+      <a href="#"><i class="fa-solid fa-receipt"></i> Đơn hàng</a>
+      <a href="#"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <div class="overlay">
+        <h1>Đặt món cho Bàn 11</h1>
+
+        <!-- CÀ PHÊ -->
+        <div class="category">
+          <h2>Cà phê</h2>
+          <div class="product-list">
+            <div class="product">
+              <img
+                src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735"
+              />
+              <h3>Cà phê sữa đá</h3>
+              <div class="price">25.000đ</div>
+              <input type="number" min="0" value="0" />
+            </div>
+
+            <div class="product">
+              <img
+                src="https://images.unsplash.com/photo-1511920170033-f8396924c348"
+              />
+              <h3>Cà phê đen đá</h3>
+              <div class="price">22.000đ</div>
+              <input type="number" min="0" value="0" />
+            </div>
+
+            <div class="product">
+              <img
+                src="https://images.unsplash.com/photo-1509042239860-f550ce710b93"
+              />
+              <h3>Cappuccino</h3>
+              <div class="price">30.000đ</div>
+              <input type="number" min="0" value="0" />
+            </div>
+          </div>
+        </div>
+
+        <!-- TRÀ -->
+        <div class="category">
+          <h2>Trà</h2>
+          <div class="product-list">
+            <div class="product">
+              <img
+                src="https://images.unsplash.com/photo-1544145945-f90425340c7e"
+              />
+              <h3>Trà đào cam sả</h3>
+              <div class="price">28.000đ</div>
+              <input type="number" min="0" value="0" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUTTON -->
+    <button class="btn-create">
+      <i class="fa-solid fa-plus"></i> Tạo đơn hàng
+    </button>
+  </body>
+</html>

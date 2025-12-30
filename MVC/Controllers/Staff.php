@@ -6,7 +6,7 @@
 
         function __construct()
         {
-            // Check if user is logged in and has staff role
+            // Kiểm tra xem người dùng đã đăng nhập và có vai trò nhân viên không
             if(!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'nhan_vien')){
                 header('Location: http://localhost/QLSP/Users/login');
                 exit;
@@ -18,7 +18,7 @@
         }
 
         function Get_data(){
-            // This is the default method that gets called by the routing system
+            // Đây là phương thức mặc định được gọi bởi hệ thống định tuyến
             $this->index();
         }
 
@@ -27,7 +27,7 @@
         }
 
         function dashboard(){
-            // Get basic statistics for staff dashboard
+            // Lấy thống kê cơ bản cho bảng điều khiển nhân viên
             $active_tables = $this->bu->getActiveTables();
             $todays_orders = $this->dh->getTodaysOrders();
 
@@ -38,17 +38,17 @@
             ]);
         }
 
-        // Tables management for staff
-        function tables(){
+        // Chọn bàn cho nhân viên
+        function table(){
             $tables = $this->bu->Banuong_getAll();
 
             $this->view('StaffMaster', [
-                'page' => 'Staff/tables_v',
+                'page' => 'Staff/Chon_ban_v',
                 'tables' => $tables
             ]);
         }
 
-        // Orders management for staff
+        // Quản lý đơn hàng cho nhân viên
         function orders(){
             $orders = $this->dh->getOrdersForStaff();
 
@@ -58,7 +58,8 @@
             ]);
         }
 
-        // Order details for staff
+    
+         // Chi tiết đơn hàng cho nhân viên
         function order_detail($ma_don_hang){
             $order = $this->dh->Donhang_getById($ma_don_hang);
             $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);

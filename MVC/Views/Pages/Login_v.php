@@ -156,9 +156,13 @@
             <h2>Đăng nhập hệ thống</h2>
             <p>Quản lý quán cà phê</p>
 
-            <?php if (isset($data['error'])): ?>
+            <?php
+            // Check for error from URL parameter (since we're using direct include)
+            $error = isset($_GET['error']) ? $_GET['error'] : null;
+            if ($error):
+            ?>
             <div class="error">
-                <?= htmlspecialchars($data['error']) ?>
+                <?= htmlspecialchars(urldecode($error)) ?>
             </div>
             <?php endif; ?>
 

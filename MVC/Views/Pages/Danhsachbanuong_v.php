@@ -306,7 +306,7 @@
                         <td><span
                                 style="font-weight:600;color:var(--accent)"><?php echo htmlspecialchars($row['ma_ban']) ?></span>
                         </td>
-                        <td><?php echo htmlspecialchars($row['ten_ban']) ?></td>
+                        <td><a href="http://localhost/QLSP/Banuong/order/<?php echo urlencode($row['ma_ban']) ?>" style="color: inherit; text-decoration: none; font-weight: 500;"><?php echo htmlspecialchars($row['ten_ban']) ?></a></td>
                         <td><?php echo htmlspecialchars($row['so_cho_ngoi']) ?></td>
                         <td>
                             <span

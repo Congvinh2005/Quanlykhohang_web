@@ -97,6 +97,7 @@
                         elseif(strpos($current, 'Danhmuc') !== false) echo 'Danh mục';
                         elseif(strpos($current, 'Banuong') !== false) echo 'Bàn uống';
                         elseif(strpos($current, 'Users') !== false) echo 'Người dùng';
+                        elseif(strpos($current, 'Staff') !== false) echo 'Nhân viên';
                         else echo 'Quản trị hệ thống';
                     ?>
                 </div>
