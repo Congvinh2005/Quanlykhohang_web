@@ -60,11 +60,45 @@
         border-color: var(--accent);
     }
 
+    .order-container {
+        display: flex;
+        gap: 20px;
+        height: calc(100vh - 300px);
+        /* Adjust based on header height */
+    }
+
+    .menu-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
     .menu-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 20px;
-        margin-bottom: 30px;
+        overflow-y: auto;
+        flex: 1;
+        padding-right: 5px;
+    }
+
+    .menu-grid::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .menu-grid::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .menu-grid::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 4px;
+    }
+
+    .menu-grid::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
     }
 
     .menu-item {
@@ -76,11 +110,12 @@
         cursor: pointer;
         border: 2px solid transparent;
         transition: all 0.2s;
+        min-height: 200px;
     }
 
     .menu-item:hover {
-        border-color: var(--accent);
-        transform: translateY(-3px);
+        border-color: #a57825ff;
+        transform: translateY(-1px);
     }
 
     .menu-item img {
@@ -107,6 +142,10 @@
         border-radius: var(--radius);
         padding: 20px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        width: 350px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
     }
 
     .cart-header {
@@ -114,10 +153,31 @@
         font-weight: 600;
         margin-bottom: 15px;
         color: #253243;
+        flex-shrink: 0;
     }
 
     .cart-items {
+        flex: 1;
+        overflow-y: auto;
         margin-bottom: 15px;
+    }
+
+    .cart-items::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .cart-items::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .cart-items::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+
+    .cart-items::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
     }
 
     .cart-item {
@@ -179,6 +239,7 @@
         padding: 10px 0;
         border-top: 2px solid #e3e7ef;
         margin-top: 10px;
+        flex-shrink: 0;
     }
 
     .order-actions {
@@ -186,6 +247,7 @@
         gap: 12px;
         margin-top: 20px;
         justify-content: flex-end;
+        flex-shrink: 0;
     }
 
     .btn-confirm {
@@ -259,64 +321,80 @@
             ?>
         </div>
 
-        <div class="menu-grid" id="menuGrid">
-            <?php
-                if(isset($data['menu_items'])){
-                    while($item = mysqli_fetch_array($data['menu_items'])){
-            ?>
-            <div class="menu-item" data-category="<?php echo $item['ma_danh_muc']; ?>">
-                <?php if($item['img_thuc_don']): ?>
-                <img src="<?php echo htmlspecialchars($item['img_thuc_don']); ?>"
-                    alt="<?php echo htmlspecialchars($item['ten_mon']); ?>" />
-                <?php else: ?>
-                <div
-                    style="width:100%;height:120px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;border-radius:8px;">
-                    <i class="fa-solid fa-utensils" style="font-size:40px;color:#d1d5db;"></i>
-                </div>
-                <?php endif; ?>
-                <div class="menu-item-name"><?php echo htmlspecialchars($item['ten_mon']); ?></div>
-                <div class="menu-item-price"><?php echo number_format($item['gia'], 0, ',', '.'); ?> ₫</div>
-                <div class="menu-item-quantity">
-                    Order: <input type="number" min="0" value="0" class="quantity-input"
-                        data-id="<?php echo $item['ma_thuc_don']; ?>"
-                        data-name="<?php echo addslashes(htmlspecialchars($item['ten_mon'])); ?>"
-                        data-price="<?php echo $item['gia']; ?>" onchange="addToCartFromInput(this)">
-                </div>
-            </div>
-            <?php
-                    }
-                }
-            ?>
-        </div>
-
-        <div class="order-cart">
-            <div class="cart-header">
-                <i class="fa-solid fa-shopping-cart"></i> Giỏ hàng
-            </div>
-
-            <div class="cart-items" id="cartItems">
-                <!-- Cart items will be added here dynamically -->
-                <div id="emptyCartMessage" style="text-align: center; color: #9ca3af; padding: 20px;">Giỏ hàng trống
+        <div class="order-container">
+            <div class="menu-section">
+                <div class="menu-grid" id="menuGrid">
+                    <?php
+                        if(isset($data['menu_items'])){
+                            while($item = mysqli_fetch_array($data['menu_items'])){
+                    ?>
+                    <div class="menu-item" data-category="<?php echo $item['ma_danh_muc']; ?>">
+                        <?php if($item['img_thuc_don']): ?>
+                        <img src="<?php echo htmlspecialchars($item['img_thuc_don']); ?>"
+                            alt="<?php echo htmlspecialchars($item['ten_mon']); ?>" />
+                        <?php else: ?>
+                        <div
+                            style="width:100%;height:120px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;border-radius:8px;">
+                            <i class="fa-solid fa-utensils" style="font-size:40px;color:#d1d5db;"></i>
+                        </div>
+                        <?php endif; ?>
+                        <div class="menu-item-name"><?php echo htmlspecialchars($item['ten_mon']); ?></div>
+                        <div class="menu-item-price"><?php echo number_format($item['gia'], 0, ',', '.'); ?> ₫</div>
+                        <div class="menu-item-quantity">
+                            Order: <input type="number" min="0" value="0" class="quantity-input"
+                                data-id="<?php echo $item['ma_thuc_don']; ?>"
+                                data-name="<?php echo addslashes(htmlspecialchars($item['ten_mon'])); ?>"
+                                data-price="<?php echo $item['gia']; ?>" onchange="addToCartFromInput(this)">
+                        </div>
+                    </div>
+                    <?php
+                            }
+                        }
+                    ?>
                 </div>
             </div>
 
-            <div class="order-total">
-                <span>Tổng cộng:</span>
-                <span id="totalAmount">0 ₫</span>
-            </div>
+            <div class="order-cart">
+                <div class="cart-header">
+                    <i class="fa-solid fa-shopping-cart"></i> Giỏ hàng
+                </div>
 
-            <div class="order-actions">
-                <a href="http://localhost/QLSP/Staff/table" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i>
-                    Quay
-                    lại</a>
-                <button class="btn-reset" onclick="clearCart()">Làm mới</button>
-                <button class="btn-confirm" onclick="confirmOrder()">Tạo đơn hàng</button>
+                <div class="cart-items" id="cartItems">
+                    <!-- Cart items will be added here dynamically -->
+                    <div id="emptyCartMessage" style="text-align: center; color: #9ca3af; padding: 20px;">Giỏ hàng trống
+                    </div>
+                </div>
+
+                <div class="order-total">
+                    <span>Tổng cộng:</span>
+                    <span id="totalAmount">0 ₫</span>
+                </div>
+
+                <div class="order-actions">
+                    <a href="http://localhost/QLSP/Staff/table" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i>
+                        Quay
+                        lại</a>
+                    <button class="btn-reset" onclick="clearCart()">Làm mới</button>
+                    <button class="btn-confirm" onclick="confirmOrder()">Tạo đơn hàng</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
     let cart = {};
+
+    // Load cart from server if available
+    <?php if(isset($data['current_cart']) && !empty($data['current_cart'])): ?>
+    cart = <?php echo json_encode($data['current_cart']); ?>;
+    <?php endif; ?>
+
+    // Initialize cart on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCart();
+        // Update cart in session periodically
+        setInterval(saveCartToSession, 5000); // Save every 5 seconds
+    });
 
     function addToCartFromInput(inputElement) {
         const id = inputElement.dataset.id;
@@ -344,6 +422,7 @@
         }
 
         updateCart();
+        saveCartToSession();
     }
 
     function addItemToCart(id, name, price) {
@@ -358,6 +437,7 @@
             };
         }
         updateCart();
+        saveCartToSession();
     }
 
     function updateQuantity(id, change) {
@@ -373,6 +453,7 @@
                 }
             }
             updateCart();
+            saveCartToSession();
         }
     }
 
@@ -384,6 +465,53 @@
             inputField.value = 0;
         }
         updateCart();
+        saveCartToSession();
+    }
+
+    // Function to update quantity from cart controls
+    function updateQuantityFromCart(id, change) {
+        if (cart[id]) {
+            cart[id].quantity += change;
+            if (cart[id].quantity <= 0) {
+                delete cart[id];
+            }
+            // Update the input field in the menu grid
+            const inputField = document.querySelector(`input[data-id="${id}"]`);
+            if (inputField) {
+                inputField.value = cart[id] ? cart[id].quantity : 0;
+            }
+            updateCart();
+            saveCartToSession();
+        }
+    }
+
+    // Function to update quantity from menu grid input
+    function addToCartFromInput(inputElement) {
+        const id = inputElement.dataset.id;
+        const name = inputElement.dataset.name;
+        const price = parseFloat(inputElement.dataset.price);
+        const quantity = parseInt(inputElement.value);
+
+        // Get the image URL from the menu item
+        const menuItem = inputElement.closest('.menu-item');
+        const imgElement = menuItem.querySelector('img');
+        const imgSrc = imgElement ? imgElement.src : '';
+
+        if (quantity > 0) {
+            // Add or update item in cart
+            cart[id] = {
+                id: id,
+                name: name,
+                price: price,
+                quantity: quantity,
+                img: imgSrc
+            };
+        } else {
+            // Remove item if quantity is 0
+            delete cart[id];
+        }
+        updateCart();
+        saveCartToSession();
     }
 
     function updateCart() {
@@ -413,9 +541,9 @@
                         </div>
                         <div class="cart-item-actions">
                             <div class="quantity-control">
-                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                <button class="quantity-btn" onclick="updateQuantityFromCart(${item.id}, -1)">-</button>
                                 <input type="text" class="quantity-input" value="${item.quantity}" readonly />
-                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                                <button class="quantity-btn" onclick="updateQuantityFromCart(${item.id}, 1)">+</button>
                             </div>
                             <button class="remove-btn" onclick="removeItem(${item.id})"><i class="fa-solid fa-trash"></i></button>
                         </div>
@@ -467,6 +595,31 @@
             }
         });
         updateCart();
+        saveCartToSession();
+    }
+
+    function saveCartToSession() {
+        if (Object.keys(cart).length > 0) {
+            const cartData = {
+                ma_ban: '<?php echo $data['table_info']['ma_ban']; ?>',
+                cart: cart
+            };
+
+            fetch('http://localhost/QLSP/Banuong/update_cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(cartData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // console.log('Cart saved to session:', data.message);
+                })
+                .catch(error => {
+                    console.error('Error saving cart:', error);
+                });
+        }
     }
 
     function confirmOrder() {
@@ -493,8 +646,8 @@
             .then(data => {
                 if (data.success) {
                     alert('Tạo đơn hàng thành công!');
-                    clearCart();
-                    // Optionally redirect to order list or table list
+                    // Redirect to order detail page with the order ID
+                    window.location.href = 'http://localhost/QLSP/Banuong/order_detail/' + data.order_id;
                 } else {
                     alert('Tạo đơn hàng thất bại: ' + data.message);
                 }

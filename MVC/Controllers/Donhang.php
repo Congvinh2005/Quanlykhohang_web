@@ -232,5 +232,19 @@
             $writer->save('php://output');
             exit;
         }
+
+        // Cập nhật trạng thái thanh toán cho đơn hàng (dành cho admin)
+        function update_payment_status($ma_don_hang){
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $result = $this->dh->update_order_status($ma_don_hang, 'da_thanh_toan');
+
+                if ($result) {
+                    echo json_encode(['status' => 'success', 'message' => 'Cập nhật trạng thái thanh toán thành công']);
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Cập nhật thất bại']);
+                }
+                exit;
+            }
+        }
     }
 ?>

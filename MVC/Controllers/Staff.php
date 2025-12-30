@@ -49,16 +49,25 @@
         }
 
         // Quản lý đơn hàng cho nhân viên
-        function orders(){
-            $orders = $this->dh->getOrdersForStaff();
+        function orders($page = 1){
+            $limit = 10; // Number of orders per page
+            $offset = ($page - 1) * $limit;
+
+            $total_orders = $this->dh->getTotalOrdersCount();
+            $total_pages = ceil($total_orders / $limit);
+
+            $orders = $this->dh->getOrdersForStaffWithPagination($limit, $offset);
 
             $this->view('StaffMaster', [
                 'page' => 'Staff/orders_v',
-                'orders' => $orders
+                'orders' => $orders,
+                'current_page' => $page,
+                'total_pages' => $total_pages,
+                'total_orders' => $total_orders
             ]);
         }
 
-    
+
          // Chi tiết đơn hàng cho nhân viên
         function order_detail($ma_don_hang){
             $order = $this->dh->Donhang_getById($ma_don_hang);
@@ -69,6 +78,45 @@
                 'order' => $order,
                 'order_details' => $order_details
             ]);
+        }
+
+        // Cập nhật trạng thái thanh toán cho đơn hàng
+        function update_payment_status($ma_don_hang){
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $result = $this->dh->update_order_status($ma_don_hang, 'da_thanh_toan');
+
+                if ($result) {
+                    // Get the order to find the table ID
+                    $order = $this->dh->Donhang_getById($ma_don_hang);
+                    if ($order && mysqli_num_rows($order) > 0) {
+                        $order_row = mysqli_fetch_array($order);
+                        $ma_ban = $order_row['ma_ban'];
+
+                        // Clear the cart for this table after payment
+                        $this->clearCartForTable($ma_ban);
+
+                        // Update table status to empty after payment
+                        $this->updateTableStatus($ma_ban, 'trong');
+                    }
+
+                    echo json_encode(['status' => 'success', 'message' => 'Cập nhật trạng thái thanh toán thành công']);
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Cập nhật thất bại']);
+                }
+                exit;
+            }
+        }
+
+        // Helper method to clear cart for a table
+        private function clearCartForTable($ma_ban) {
+            $session_key = 'cart_' . $ma_ban;
+            unset($_SESSION[$session_key]);
+        }
+
+        // Helper method to update table status
+        private function updateTableStatus($ma_ban, $status) {
+            $sql = "UPDATE ban_uong SET trang_thai_ban = '$status' WHERE ma_ban = '$ma_ban'";
+            return mysqli_query($this->bu->con, $sql);
         }
 
     }

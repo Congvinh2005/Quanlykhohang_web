@@ -54,5 +54,14 @@
                     ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
             return mysqli_query($this->con, $sql);
         }
+
+        // Hàm lấy tất cả thực đơn có sẵn (không hết bán) với thông tin danh mục
+        function Thucdon_getAvailable(){
+            $sql = "SELECT t.*, d.ten_danh_muc FROM thuc_don t
+                    LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
+                    WHERE t.trang_thai = 'con_ban'
+                    ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
+            return mysqli_query($this->con, $sql);
+        }
     }
 ?>

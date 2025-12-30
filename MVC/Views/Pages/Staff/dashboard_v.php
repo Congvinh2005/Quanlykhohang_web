@@ -117,7 +117,7 @@
 
         <h2>Liên kết nhanh</h2>
         <div class="quick-links">
-            <a href="http://localhost/QLSP/Staff/tables" class="link-card">
+            <a href="http://localhost/QLSP/Staff/table" class="link-card">
                 <div class="link-icon"><i class="fa-solid fa-chair"></i></div>
                 <div class="link-title">Quản lý bàn</div>
                 <div class="link-desc">Xem và quản lý các bàn đang sử dụng</div>

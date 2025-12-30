@@ -11,12 +11,12 @@
 
         <table class="detail-table">
             <thead>
-            <tr>
-                <th>Món</th>
-                <th>Số lượng</th>
-                <th>Đơn giá</th>
-                <th>Tổng</th>
-            </tr>
+                <tr>
+                    <th>Món</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Tổng</th>
+                </tr>
             </thead>
             <tbody>
                 <?php
@@ -27,7 +27,8 @@
                     <td><?php echo htmlspecialchars($detail['ten_mon']); ?></td>
                     <td><?php echo htmlspecialchars($detail['so_luong']); ?></td>
                     <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'], 0, '.', '') . 'đ'; ?></td>
-                    <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'] * $detail['so_luong'], 0, '.', '') . 'đ'; ?></td>
+                    <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'] * $detail['so_luong'], 0, '.', '') . 'đ'; ?>
+                    </td>
                 </tr>
                 <?php
                         }
@@ -50,7 +51,7 @@
                 echo '<p>Không tìm thấy thông tin đơn hàng.</p>';
             }
         ?>
-    </div>
-</body>
+        </div>
+        </body>
 
-</html>
+        </html>

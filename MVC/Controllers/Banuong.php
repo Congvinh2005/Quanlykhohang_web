@@ -288,19 +288,83 @@ function Timkiem()
             $table = $this->bu->Banuong_getById($ma_ban);
             $table_info = mysqli_fetch_array($table);
 
+            // Check if table is currently in use
+            if ($table_info['trang_thai_ban'] == 'dang_su_dung') {
+                // Find the unpaid order for this table and redirect to order detail view
+                $sql = "SELECT * FROM don_hang WHERE ma_ban = '$ma_ban' AND trang_thai_thanh_toan = 'chua_thanh_toan' LIMIT 1";
+                $result = mysqli_query($this->dh->con, $sql);
+                $unpaid_order = $result ? mysqli_fetch_assoc($result) : null;
+
+                if ($unpaid_order) {
+                    // Redirect to order detail view for the existing order
+                    header('Location: http://localhost/QLSP/Banuong/order_detail/' . $unpaid_order['ma_don_hang']);
+                    exit;
+                }
+            }
+
             $danhmuc = $this->model("Danhmuc_m");
             $categories = $danhmuc->Danhmuc_getAll();
 
-            // Get all menu items
+            // Get only available menu items (not out of stock)
             $thucdon = $this->model("Thucdon_m");
-            $menu_items = $thucdon->Thucdon_getAll();
+            $menu_items = $thucdon->Thucdon_getAvailable();
+
+            // Get current cart from session for this table if exists
+            $current_cart = $this->getCartForTable($ma_ban);
 
             $this->view('StaffMaster', [
                 'page' => 'Staff/Table_order_v',
                 'table_info' => $table_info,
                 'categories' => $categories,
-                'menu_items' => $menu_items
+                'menu_items' => $menu_items,
+                'current_cart' => $current_cart
             ]);
+        }
+
+        // Helper method to get cart from session for a specific table
+        private function getCartForTable($ma_ban) {
+            $session_key = 'cart_' . $ma_ban;
+            return isset($_SESSION[$session_key]) ? $_SESSION[$session_key] : [];
+        }
+
+        // Helper method to set cart to session for a specific table
+        private function setCartForTable($ma_ban, $cart) {
+            $session_key = 'cart_' . $ma_ban;
+            $_SESSION[$session_key] = $cart;
+        }
+
+        // Helper method to clear cart from session for a specific table
+        private function clearCartForTable($ma_ban) {
+            $session_key = 'cart_' . $ma_ban;
+            unset($_SESSION[$session_key]);
+        }
+
+        // Method to update cart via AJAX
+        function update_cart(){
+            // Only allow POST requests
+            if($_SERVER['REQUEST_METHOD'] !== 'POST'){
+                header('HTTP/1.1 405 Method Not Allowed');
+                echo json_encode(['success' => false, 'message' => 'Phương thức không được phép']);
+                exit;
+            }
+
+            // Get JSON data from request
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+
+            if(!$data || !isset($data['ma_ban']) || !isset($data['cart'])){
+                echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ']);
+                exit;
+            }
+
+            $ma_ban = $data['ma_ban'];
+            $cart = $data['cart'];
+
+            // Save cart to session
+            $this->setCartForTable($ma_ban, $cart);
+
+            echo json_encode(['success' => true, 'message' => 'Cập nhật giỏ hàng thành công!']);
+            exit;
         }
 
         // Method to create an order via AJAX
@@ -411,10 +475,10 @@ function Timkiem()
         // Helper method to generate a unique order ID
         private function generateUniqueOrderId() {
             // Get the highest existing order ID to generate the next one
-            $sql = "SELECT ma_don_hang FROM don_hang ORDER BY CAST(SUBSTRING(ma_don_hang, 2) AS UNSIGNED) DESC LIMIT 1";
+            $sql = "SELECT ma_don_hang FROM don_hang ORDER BY CAST(SUBSTRING(ma_don_hang, 3) AS UNSIGNED) DESC LIMIT 1";
             $result = mysqli_query($this->dh->con, $sql);
 
-            $new_id = 'DH01'; // Default starting ID
+            $new_id = 'DH1'; // Default starting ID
 
             if($result && mysqli_num_rows($result) > 0) {
                 $row = mysqli_fetch_assoc($result);
@@ -426,7 +490,7 @@ function Timkiem()
                 if(isset($matches[1])) {
                     $number = intval($matches[1]);
                     $number++; // Increment the number
-                    $new_id = 'DH0' . $number; // Format without leading zeros
+                    $new_id = 'DH' . $number; // Format the ID correctly
                 } else {
                     // If the last ID doesn't match the expected format, start from DH1
                     $new_id = 'DH1';
@@ -434,6 +498,55 @@ function Timkiem()
             }
 
             return $new_id;
+        }
+
+        // Method to view order details
+        function order_detail($ma_don_hang) {
+            // Get order information
+            $order = $this->dh->Donhang_getById($ma_don_hang);
+
+            // Get order details
+            $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
+
+            // If no order details found in database, check if there's a cart in session for this order's table
+            if (empty($order_details)) {
+                // Get the order to find the table
+                $order_result = $this->dh->Donhang_getById($ma_don_hang);
+                if ($order_result && mysqli_num_rows($order_result) > 0) {
+                    $order_row = mysqli_fetch_array($order_result);
+                    $ma_ban = $order_row['ma_ban'];
+
+                    // Get cart from session for this table
+                    $session_cart = $this->getCartForTable($ma_ban);
+
+                    // Convert session cart to the same format as database order details
+                    if (!empty($session_cart)) {
+                        $order_details = [];
+                        foreach ($session_cart as $item) {
+                            // Get item details from database to get name and image
+                            $thucdon = $this->model("Thucdon_m");
+                            $item_details = $thucdon->Thucdon_getById($item['id']);
+
+                            if ($item_details && mysqli_num_rows($item_details) > 0) {
+                                $item_db = mysqli_fetch_array($item_details);
+                                $order_details[] = [
+                                    'ma_thuc_don' => $item['id'],
+                                    'so_luong' => $item['quantity'],
+                                    'gia_tai_thoi_diem_dat' => $item['price'],
+                                    'ten_mon' => $item_db['ten_mon'],
+                                    'img_thuc_don' => $item_db['img_thuc_don']
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+
+            $this->view('StaffMaster', [
+                'page' => 'Staff/Chi_tiet_don_hang_v',
+                'order' => $order,
+                'order_details' => $order_details
+            ]);
         }
     }
 ?>

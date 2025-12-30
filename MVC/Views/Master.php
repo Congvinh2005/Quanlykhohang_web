@@ -26,7 +26,25 @@
                             <i class="fa-solid fa-chart-pie"></i> Tổng quan
                         </a>
                     </li>
+                    <li>
+                        <a href="http://localhost/QLSP/Users/danhsach"
+                            class="<?php echo ($current === 'Danhsachusers_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-users"></i> Quản lý người dùng
+                        </a>
 
+                    </li>
+                    <li>
+                        <a href="http://localhost/QLSP/Nhacungcap/danhsach"
+                            class="<?php echo ($current === 'Danhsachnhacungcap_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-truck-fast"></i> Quản lý nhà cung cấp
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://localhost/QLSP/Banuong/danhsach"
+                            class="<?php echo ($current === 'Danhsachbanuong_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-chair"></i> Quản lý bàn uống
+                        </a>
+                    </li>
 
                     <li>
                         <a href="http://localhost/QLSP/Sanpham/danhsach"
@@ -35,39 +53,20 @@
                         </a>
                     </li>
                     <li>
-                        <a href="http://localhost/QLSP/Thucdon/danhsach"
-                            class="<?php echo ($current === 'Danhsachthucdon_v') ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-utensils"></i> Quản lý thực đơn
-                        </a>
-                    </li>
-                    <li>
-                        <a href="http://localhost/QLSP/Nhacungcap/danhsach"
-                            class="<?php echo ($current === 'Danhsachnhacungcap_v') ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-truck-fast"></i> Quản lý nhà cung cấp
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="http://localhost/QLSP/Users/danhsach"
-                            class="<?php echo ($current === 'Danhsachusers_v') ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-users"></i> Quản lý người dùng
-                        </a>
-
-                    </li>
-
-                    <li>
                         <a href="http://localhost/QLSP/Danhmuc/danhsach"
                             class="<?php echo ($current === 'Danhsachdanhmuc_v') ? 'active' : ''; ?>">
                             <i class="fa-solid fa-file-excel"></i> Quản lý danh mục
                         </a>
 
                     </li>
+
                     <li>
-                        <a href="http://localhost/QLSP/Banuong/danhsach"
-                            class="<?php echo ($current === 'Danhsachbanuong_v') ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-chair"></i> Quản lý bàn uống
+                        <a href="http://localhost/QLSP/Thucdon/danhsach"
+                            class="<?php echo ($current === 'Danhsachthucdon_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-utensils"></i> Quản lý thực đơn
                         </a>
                     </li>
+
                     <li>
                         <a href="http://localhost/QLSP/Donhang/danhsach"
                             class="<?php echo ($current === 'Danhsachdonhang_v') ? 'active' : ''; ?>">
@@ -103,25 +102,26 @@
                 </div>
                 <div class="user-info">
                     <?php if(isset($_SESSION['user_name'])): ?>
-                        <span>
-                            <?php echo htmlspecialchars($_SESSION['user_name']); ?>
-                            <?php if(isset($_SESSION['user_role'])): ?>
-                                <span class="user-role">(<?php echo $_SESSION['user_role'] == 'admin' ? 'Quản trị viên' : 'Nhân viên'; ?>)</span>
-                            <?php endif; ?>
-                        </span>
-                        <div class="avatar">
-                            <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
-                                alt="Avatar">
-                        </div>
-                        <a href="http://localhost/QLSP/Users/logout" class="logout-btn" title="Đăng xuất">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                        </a>
+                    <span>
+                        <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+                        <?php if(isset($_SESSION['user_role'])): ?>
+                        <span
+                            class="user-role">(<?php echo $_SESSION['user_role'] == 'admin' ? 'Quản trị viên' : 'Nhân viên'; ?>)</span>
+                        <?php endif; ?>
+                    </span>
+                    <div class="avatar">
+                        <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
+                            alt="Avatar">
+                    </div>
+                    <a href="http://localhost/QLSP/Users/logout" class="logout-btn" title="Đăng xuất">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </a>
                     <?php else: ?>
-                        <span>Đào Văn Vinh</span>
-                        <div class="avatar">
-                            <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
-                                alt="Avatar">
-                        </div>
+                    <span>Đào Văn Vinh</span>
+                    <div class="avatar">
+                        <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
+                            alt="Avatar">
+                    </div>
                     <?php endif; ?>
                 </div>
             </header>

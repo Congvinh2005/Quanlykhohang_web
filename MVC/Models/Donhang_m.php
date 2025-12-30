@@ -67,6 +67,24 @@
             return mysqli_fetch_assoc($result);
         }
 
+        // Hàm đếm tổng số đơn hàng
+        function getTotalOrdersCount(){
+            $sql = "SELECT COUNT(*) as total FROM don_hang";
+            $result = mysqli_query($this->con, $sql);
+            $row = mysqli_fetch_assoc($result);
+            return $row['total'];
+        }
+
+        // Hàm lấy các đơn hàng cho nhân viên với phân trang
+        function getOrdersForStaffWithPagination($limit, $offset){
+            $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
+                    LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
+                    LEFT JOIN users u ON d.ma_user = u.ma_user
+                    ORDER BY d.ma_don_hang ASC
+                    LIMIT $limit OFFSET $offset";
+            return mysqli_query($this->con, $sql);
+        }
+
         // Hàm cập nhật trạng thái đơn hàng
         function update_order_status($ma_don_hang, $new_status){
             $sql = "UPDATE don_hang SET trang_thai_thanh_toan = '$new_status' WHERE ma_don_hang = '$ma_don_hang'";
