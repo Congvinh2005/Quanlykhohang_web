@@ -92,7 +92,7 @@ function Timkiem()
             // Header tương ứng với ảnh CSDL
             $sheet->setCellValue('A1', 'Mã Bàn');
             $sheet->setCellValue('B1', 'Tên Bàn');
-            $sheet->setCellValue('C1', 'Số Chỗ Ngồi'); 
+            $sheet->setCellValue('C1', 'Số Chỗ Ngồi');
             $sheet->setCellValue('D1', 'Trạng Thái Bàn');
             $sheet->setCellValue('E1', 'Ngày Tạo');
 
@@ -280,9 +280,9 @@ function Timkiem()
     $this->view('Master',['page'=>'Banuong_up_v']);
 }
 
-      
 
-       
+
+
         function order($ma_ban){
             // Get table info
             $table = $this->bu->Banuong_getById($ma_ban);
@@ -331,8 +331,9 @@ function Timkiem()
                 exit;
             }
 
-            // Create new order in don_hang table
-            $ma_don_hang = 'DH' . time(); // Generate unique order ID
+            // Generate unique order ID (always create a new one)
+            $ma_don_hang = $this->generateUniqueOrderId();
+
             $tong_tien = 0;
 
             // Calculate total amount
@@ -343,20 +344,11 @@ function Timkiem()
             // Assuming current user is admin or staff (you may want to get from session)
             $ma_user = $_SESSION['user_id'] ?? 'U01'; // Default user if not set
 
-            // Check if there's already an unpaid order for this table
-            $existing_order = $this->getUnpaidOrderByTable($ma_ban);
-
-            if($existing_order) {
-                // Update existing order
-                $ma_don_hang = $existing_order['ma_don_hang'];
-                $this->updateOrder($ma_don_hang, $tong_tien);
-            } else {
-                // Create new order using the Donhang model's insert method
-                $result = $this->dh->donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, 'chua_thanh_toan', date('Y-m-d H:i:s'));
-                if(!$result) {
-                    echo json_encode(['success' => false, 'message' => 'Không thể tạo đơn hàng']);
-                    exit;
-                }
+            // Create new order using the Donhang model's insert method
+            $result = $this->dh->donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, 'chua_thanh_toan', date('Y-m-d H:i:s'));
+            if(!$result) {
+                echo json_encode(['success' => false, 'message' => 'Không thể tạo đơn hàng']);
+                exit;
             }
 
             // Add order items to chi_tiet_don_hang table
@@ -366,16 +358,8 @@ function Timkiem()
                 $gia_tai_thoi_diem_dat = $item['price'];
                 $ghi_chu = ''; // You can add notes functionality later
 
-                // Check if this item already exists in the current order
-                $existing_detail = $this->checkExistingOrderDetail($ma_don_hang, $ma_thuc_don);
-
-                if($existing_detail) {
-                    // Update quantity if item exists
-                    $this->updateOrderDetailQuantity($existing_detail['ma_ctdh'], $so_luong, $gia_tai_thoi_diem_dat);
-                } else {
-                    // Add new order item
-                    $this->addOrderDetail($ma_don_hang, $ma_thuc_don, $so_luong, $gia_tai_thoi_diem_dat, $ghi_chu);
-                }
+                // Add new order item
+                $this->addOrderDetail($ma_don_hang, $ma_thuc_don, $so_luong, $gia_tai_thoi_diem_dat, $ghi_chu);
             }
 
             // Update table status to occupied
@@ -422,6 +406,34 @@ function Timkiem()
         private function updateTableStatus($ma_ban, $status) {
             $sql = "UPDATE ban_uong SET trang_thai_ban = '$status' WHERE ma_ban = '$ma_ban'";
             return mysqli_query($this->bu->con, $sql);
+        }
+
+        // Helper method to generate a unique order ID
+        private function generateUniqueOrderId() {
+            // Get the highest existing order ID to generate the next one
+            $sql = "SELECT ma_don_hang FROM don_hang ORDER BY CAST(SUBSTRING(ma_don_hang, 2) AS UNSIGNED) DESC LIMIT 1";
+            $result = mysqli_query($this->dh->con, $sql);
+
+            $new_id = 'DH01'; // Default starting ID
+
+            if($result && mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $last_id = $row['ma_don_hang'];
+
+                // Extract the numeric part from the last ID
+                preg_match('/^DH(\d+)$/', $last_id, $matches);
+
+                if(isset($matches[1])) {
+                    $number = intval($matches[1]);
+                    $number++; // Increment the number
+                    $new_id = 'DH0' . $number; // Format without leading zeros
+                } else {
+                    // If the last ID doesn't match the expected format, start from DH1
+                    $new_id = 'DH1';
+                }
+            }
+
+            return $new_id;
         }
     }
 ?>

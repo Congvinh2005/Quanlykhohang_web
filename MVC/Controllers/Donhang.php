@@ -19,7 +19,7 @@
             // Hàm mặc định - hiển thị danh sách đơn hàng
             $this->danhsach();
         }
-        
+
         function danhsach(){
             $result = $this->dh->Donhang_getAll();
 
@@ -32,7 +32,7 @@
         // Function to get order details for a specific order
         function get_order_details($ma_don_hang){
             $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
-            
+
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode([
                 'order_details' => $order_details
@@ -44,10 +44,11 @@
     {
         // Get the search parameters from the form
         $ma_don_hang = $_POST['txtMadonhang'] ?? '';
-        $ma_ban = $_POST['txtMaban'] ?? '';
+        $ten_ban = $_POST['txtTenban'] ?? '';
+        $ten_user = $_POST['txtTenuser'] ?? '';
 
         // 👉 LẤY DỮ LIỆU THEO MÃ ĐƠN HÀNG + MÃ BÀN
-        $result = $this->dh->Donhang_find($ma_don_hang, $ma_ban);
+        $result = $this->dh->Donhang_find($ma_don_hang, $ten_ban, $ten_user);
 
         // ====== XUẤT EXCEL ======
         if (isset($_POST['btnXuatexcel'])) {
@@ -58,8 +59,8 @@
 
             // Header tương ứng với ảnh CSDL
             $sheet->setCellValue('A1', 'Mã Đơn Hàng');
-            $sheet->setCellValue('B1', 'Mã Bàn');
-            $sheet->setCellValue('C1', 'Mã User');
+            $sheet->setCellValue('B1', 'Tên Bàn');
+            $sheet->setCellValue('C1', 'Tên User');
             $sheet->setCellValue('D1', 'Tổng Tiền');
             $sheet->setCellValue('E1', 'Trạng Thái Thanh Toán');
             $sheet->setCellValue('F1', 'Ngày Tạo');
@@ -69,8 +70,8 @@
             while ($row = mysqli_fetch_assoc($result)) {
                 // Mapping field according to database table
                 $sheet->setCellValue('A'.$rowCount, $row['ma_don_hang']);
-                $sheet->setCellValue('B'.$rowCount, $row['ma_ban']);
-                $sheet->setCellValue('C'.$rowCount, $row['ma_user']);
+                $sheet->setCellValue('B'.$rowCount, $row['ten_ban']);
+                $sheet->setCellValue('C'.$rowCount, $row['ten_user']);
                 $sheet->setCellValue('D'.$rowCount, $row['tong_tien']);
                 $sheet->setCellValue('E'.$rowCount, $row['trang_thai_thanh_toan']);
                 $sheet->setCellValue('F'.$rowCount, $row['ngay_tao']);
@@ -95,7 +96,8 @@
         $this->view('Master', [
             'page' => 'Danhsachdonhang_v',
             'ma_don_hang' => $ma_don_hang, // Consistent with view variable name
-            'ma_ban' => $ma_ban, // Consistent with view variable name
+            'ten_ban' => $ten_ban,
+            'ten_user' => $ten_user, // Consistent with view variable name
             'dulieu' => $result
         ]);
     }
@@ -105,7 +107,8 @@
             header('Content-Type: application/json; charset=utf-8');
             $ma_don_hang = isset($_POST['q_madh']) ? $_POST['q_madh'] : '';
             $ma_ban = isset($_POST['q_maban']) ? $_POST['q_maban'] : '';
-            $result = $this->dh->Donhang_find($ma_don_hang, $ma_ban);
+            $ten_user = isset($_POST['q_tenuser']) ? $_POST['q_tenuser'] : '';
+            $result = $this->dh->Donhang_find($ma_don_hang, $ma_ban, $ten_user);
             $rows = [];
             if($result){
                 while($r = mysqli_fetch_assoc($result)){
@@ -152,7 +155,7 @@
             $tong_tien   = trim($sheetData[$i]['D']);
             $trang_thai_thanh_toan = trim($sheetData[$i]['E']);
             $ngay_tao    = trim($sheetData[$i]['F']);
-            
+
             if($ma_don_hang == '') continue;
 
             // ✅ CHECK TRÙNG MÃ
@@ -187,9 +190,10 @@
             // Check if coming from search context - get parameters from URL if available
             $ma_don_hang = $_GET['ma_don_hang'] ?? '';
             $ma_ban = $_GET['ma_ban'] ?? '';
+            $ten_user = $_GET['ten_user'] ?? '';
 
             // Get the filtered data based on search parameters, or all if none provided
-            $result = $this->dh->Donhang_find($ma_don_hang, $ma_ban);
+            $result = $this->dh->Donhang_find($ma_don_hang, $ma_ban, $ten_user);
 
             $objExcel = new PHPExcel();
             $objExcel->setActiveSheetIndex(0);

@@ -17,12 +17,12 @@
         }
 
         // Hàm tìm kiếm đơn hàng (kèm thông tin bàn và user)
-        function Donhang_find($ma_don_hang, $ma_ban){
+        function Donhang_find($ma_don_hang, $ma_ban, $ten_user = ''){
             $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
-                    WHERE d.ma_don_hang LIKE '%$ma_don_hang%' AND d.ma_ban LIKE '%$ma_ban%'
-                    ORDER BY LENGTH(d.ma_don_hang), d.ma_don_hang";
+                    WHERE d.ma_don_hang LIKE '%$ma_don_hang%' AND d.ma_ban LIKE '%$ma_ban%' AND u.ten_user LIKE '%$ten_user%'
+                    ORDER BY d.ma_don_hang ASC";
             return mysqli_query($this->con, $sql);
         }
 
@@ -37,7 +37,7 @@
             $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
-                    ORDER BY d.ngay_tao DESC";
+                    ORDER BY d.ma_don_hang ASC";
             return mysqli_query($this->con, $sql);
         }
 
@@ -46,8 +46,7 @@
             $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
-                    WHERE d.ma_don_hang = '$ma_don_hang'
-                    ORDER BY LENGTH(d.ma_don_hang), d.ma_don_hang";
+                    WHERE d.ma_don_hang = '$ma_don_hang'";
             return mysqli_query($this->con, $sql);
         }
 
@@ -56,7 +55,7 @@
             $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
-                    ORDER BY d.ngay_tao DESC";
+                    ORDER BY d.ma_don_hang ASC";
             return mysqli_query($this->con, $sql);
         }
 

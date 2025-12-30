@@ -20,7 +20,7 @@
                 ?>
                 <tr>
                     <td><?php echo htmlspecialchars($order['ma_don_hang']); ?></td>
-                    <td><?php echo htmlspecialchars($order['ma_ban']); ?></td>
+                    <td><?php echo htmlspecialchars($order['ten_ban']); ?></td>
                     <td><?php echo number_format($order['tong_tien'], 0, '.', '') . 'đ'; ?></td>
                     <td class="<?php echo $status_class; ?>"><?php echo $status_text; ?></td>
                     <td><?php echo date('H:i d/m/Y', strtotime($order['ngay_tao'])); ?></td>

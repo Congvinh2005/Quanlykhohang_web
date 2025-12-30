@@ -81,12 +81,12 @@
         gap: var(--gap);
         flex: 1;
     }
-    
-    .search-fields > div {
+
+    .search-fields>div {
         flex: 1 1 200px;
     }
 
-    .form-search > .actions {
+    .form-search>.actions {
         flex: 0 0 auto;
         display: flex;
         gap: 12px;
@@ -347,16 +347,22 @@
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 
     @keyframes slideIn {
-        from { 
+        from {
             opacity: 0;
             transform: translateY(-50px);
         }
-        to { 
+
+        to {
             opacity: 1;
             transform: translateY(0);
         }
@@ -387,9 +393,14 @@
                         value="<?php echo isset($data['ma_don_hang']) ? htmlspecialchars($data['ma_don_hang']) : ''; ?>" />
                 </div>
                 <div>
-                    <label for="searchName">Mã bàn</label>
-                    <input type="text" id="searchName" name="txtMaban" placeholder="Nhập mã bàn..."
-                        value="<?php echo isset($data['ma_ban']) ? htmlspecialchars($data['ma_ban']) : ''; ?>" />
+                    <label for="searchName">Tên bàn</label>
+                    <input type="text" id="searchName" name="txtTenban" placeholder="Nhập tên bàn..."
+                        value="<?php echo isset($data['ten_ban']) ? htmlspecialchars($data['ten_ban']) : ''; ?>" />
+                </div>
+                <div>
+                    <label for="searchName">Tên user</label>
+                    <input type="text" id="searchName" name="txtTenuser" placeholder="Nhập tên user..."
+                        value="<?php echo isset($data['ten_user']) ? htmlspecialchars($data['ten_user']) : ''; ?>" />
                 </div>
             </div>
 
@@ -452,8 +463,10 @@
                         <td><span style="font-weight:600;color:var(--accent)"><?php echo $serial++; ?></span>
                         </td>
                         <td><?php echo htmlspecialchars($row['ma_don_hang']) ?></td>
-                        <td><?php echo isset($row['ten_ban']) ? htmlspecialchars($row['ten_ban']) : htmlspecialchars($row['ma_ban']) ?></td>
-                        <td><?php echo isset($row['ten_user']) ? htmlspecialchars($row['ten_user']) : htmlspecialchars($row['ma_user']) ?></td>
+                        <td><?php echo isset($row['ten_ban']) ? htmlspecialchars($row['ten_ban']) : htmlspecialchars($row['ma_ban']) ?>
+                        </td>
+                        <td><?php echo isset($row['ten_user']) ? htmlspecialchars($row['ten_user']) : htmlspecialchars($row['ma_user']) ?>
+                        </td>
                         <td><?php echo number_format($row['tong_tien'], 0, ',', '.') ?> ₫</td>
                         <td>
                             <span
@@ -491,10 +504,11 @@
         function showOrderDetails(orderId) {
             // Show loading message initially
             document.getElementById('detailModal').style.display = 'block';
-            
+
             const modalBody = document.getElementById('modalBody');
-            modalBody.innerHTML = '<div style="text-align: center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải chi tiết...</div>';
-            
+            modalBody.innerHTML =
+                '<div style="text-align: center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải chi tiết...</div>';
+
             // Update modal title with the order ID
             document.getElementById('modalTitle').innerHTML = `Chi tiết đơn hàng: <strong>${orderId}</strong>`;
 
@@ -517,13 +531,13 @@
                                     <div class="order-summary-item">
                                         <span class="order-summary-label">Tổng tiền</span>
                                         <span class="order-summary-value">`;
-                                        
+
                         // Calculate total amount
                         let total = 0;
                         data.order_details.forEach(item => {
                             total += parseFloat(item.so_luong) * parseFloat(item.gia_tai_thoi_diem_dat);
                         });
-                        
+
                         orderDetailHtml += total.toLocaleString('vi-VN') + ' ₫</span></div></div></div>';
 
                         orderDetailHtml += `
@@ -556,15 +570,17 @@
                         orderDetailHtml += `
                                 </tbody>
                             </table>`;
-                        
+
                         modalBody.innerHTML = orderDetailHtml;
                     } else {
-                        modalBody.innerHTML = '<div style="text-align: center; padding: 20px; color: #6b7280;">Không có chi tiết đơn hàng</div>';
+                        modalBody.innerHTML =
+                            '<div style="text-align: center; padding: 20px; color: #6b7280;">Không có chi tiết đơn hàng</div>';
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    modalBody.innerHTML = '<div style="text-align: center; padding: 20px; color: #dc3545;">Lỗi khi tải chi tiết đơn hàng</div>';
+                    modalBody.innerHTML =
+                        '<div style="text-align: center; padding: 20px; color: #dc3545;">Lỗi khi tải chi tiết đơn hàng</div>';
                 });
         }
 
