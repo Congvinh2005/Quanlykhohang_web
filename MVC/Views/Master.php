@@ -15,7 +15,7 @@
     <div class="app-container">
         <aside class="sidebar">
             <div class="brand">
-                <i class="fa-solid fa-cube"></i> CôngVinhShop
+                <i class="fa-solid fa-cube"></i> ☕ Coffee Manager
             </div>
             <?php $current = isset($data['page']) ? $data['page'] : ''; ?>
             <nav class="menu_left1">
