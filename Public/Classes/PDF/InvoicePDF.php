@@ -33,23 +33,58 @@ class InvoicePDF extends TCPDF
     }
 
     // Page header
+    // public function Header()
+    // {
+    //     // Logo
+    //     $image_file = K_PATH_IMAGES.'logo_example.jpg';
+    //     if (file_exists($image_file)) {
+    //         $this->Image($image_file, 15, 10, 30, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+    //     }
+        
+    //     // Title
+    //     $this->SetFont('dejavusans', 'B', 18);
+    //     $this->Cell(0, 10, 'HÓA ĐƠN BÁN HÀNG', 0, false, 'C', 0, '', 0, false, 'M', 'M');
+    //     $this->Ln(10);
+        
+    //     // Add line separator
+    //     $this->Line(15, $this->GetY(), 195, $this->GetY());
+    //     $this->Ln(5);
+    // }
+
     public function Header()
-    {
-        // Logo
-        $image_file = K_PATH_IMAGES.'logo_example.jpg';
-        if (file_exists($image_file)) {
-            $this->Image($image_file, 15, 10, 30, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-        }
-        
-        // Title
-        $this->SetFont('dejavusans', 'B', 18);
-        $this->Cell(0, 10, 'HÓA ĐƠN BÁN HÀNG', 0, false, 'C', 0, '', 0, false, 'M', 'M');
-        $this->Ln(10);
-        
-        // Add line separator
-        $this->Line(15, $this->GetY(), 195, $this->GetY());
-        $this->Ln(5);
+{
+    // === 1. ẢNH QUÁN ===
+    $image_file = K_PATH_IMAGES . 'quan.jpg';
+    if (file_exists($image_file)) {
+        // căn giữa ảnh
+        $this->Image($image_file, 85, 10, 40);
     }
+
+    $this->Ln(40);
+
+    // === 2. TÊN QUÁN ===
+    $this->SetFont('dejavusans', 'B', 16);
+    $this->Cell(0, 8, 'QUÁN ABC COFFEE', 0, 1, 'C');
+
+    // === 3. ĐỊA CHỈ ===
+    $this->SetFont('dejavusans', '', 11);
+    $this->Cell(0, 6, 'Địa chỉ: 54 Triều Khúc, Thanh Xuân Nma, Hà Nội', 0, 1, 'C');
+
+    // === 4. HOTLINE ===
+    $this->Cell(0, 6, 'Hotline: 0389783619', 0, 1, 'C');
+
+    $this->Ln(5);
+
+    // === 5. GẠCH NGANG ===
+    $this->Line(15, $this->GetY(), 195, $this->GetY());
+    $this->Ln(6);
+
+    // === 6. TIÊU ĐỀ HÓA ĐƠN ===
+    $this->SetFont('dejavusans', 'B', 18);
+    $this->Cell(0, 10, 'HÓA ĐƠN BÁN HÀNG', 0, 1, 'C');
+
+    $this->Ln(5);
+}
 
     // Page footer
     public function Footer()
