@@ -72,7 +72,7 @@
 
          function order_detail($ma_don_hang) {
             // Get order information
-            $order = $this->dh->Donhang_getById($ma_don_hang);
+            $order = $this->dh->Donhang_getByIdWithDiscount($ma_don_hang);
 
             // Initialize variables
             $order_data = [];
@@ -136,11 +136,44 @@
                 return;
             }
 
+            // Get discount vouchers
+            $discount_vouchers = $this->dh->getDiscountVouchers();
+
             $this->view('StaffMaster', [
                 'page' => 'Staff/order_detail_v',
                 'order' => $order_data, // Pass the formatted order data
-                'order_details' => $order_details
+                'order_details' => $order_details,
+                'discount_vouchers' => $discount_vouchers
             ]);
+        }
+
+        // Cập nhật giảm giá cho đơn hàng
+        function update_order_discount($ma_don_hang) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = json_decode(file_get_contents('php://input'), true);
+                $ma_khuyen_mai = $data['ma_khuyen_mai'];
+
+                // Get discount amount from database
+                $sql = "SELECT tien_khuyen_mai FROM khuyen_mai WHERE ma_khuyen_mai = '$ma_khuyen_mai'";
+                $result = mysqli_query($this->dh->con, $sql);
+
+                if ($result && mysqli_num_rows($result) > 0) {
+                    $discount = mysqli_fetch_assoc($result);
+                    $tien_khuyen_mai = $discount['tien_khuyen_mai'];
+
+                    // Update order with discount
+                    $result = $this->dh->updateOrderWithDiscount($ma_don_hang, $tien_khuyen_mai);
+
+                    if ($result) {
+                        echo json_encode(['status' => 'success', 'message' => 'Cập nhật giảm giá thành công', 'tien_khuyen_mai' => $tien_khuyen_mai]);
+                    } else {
+                        echo json_encode(['status' => 'error', 'message' => 'Cập nhật giảm giá thất bại']);
+                    }
+                } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Không tìm thấy phiếu giảm giá']);
+                }
+                exit;
+            }
         }
         // Cập nhật trạng thái thanh toán cho đơn hàng
         function update_payment_status($ma_don_hang){

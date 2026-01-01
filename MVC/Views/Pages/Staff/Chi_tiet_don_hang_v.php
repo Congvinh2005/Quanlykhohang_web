@@ -325,43 +325,39 @@
                     ?>
                 </tbody>
             </table>
-
-            <!-- THÊM MÓN -->
-            <!-- <div class="box add-item">
-                <h3>Thêm món vào đơn</h3>
-
-                <div class="add-row">
-                    <select>
-                        <option selected disabled>-- Chọn món --</option>
-                        <option>Cà phê sữa đá</option>
-                        <option>Cà phê đen đá</option>
-                        <option>Trà đào</option>
-                        <option>Trà sữa</option>
-                    </select>
-
-                    <input type="number" min="1" value="1">
-
-                    <button class="btn btn-success">
-                        <i class="fa-solid fa-plus"></i> Thêm món
-                    </button>
-                </div>
-            </div> -->
-
-
             <div class="total">Tổng cộng: <?php echo number_format($order['tong_tien'], 0, '.', '.') . 'đ'; ?></div>
 
-            <!-- <div class="box">
-                <h3>Chuyển bàn (hiện tại: Bàn <?php echo htmlspecialchars($order['ma_ban']); ?>)</h3><br>
-                <select>
-                    <option>Bàn VIP</option>
-                    <option>Sân vườn</option>
-                </select>
-                <button class="btn btn-warning">Chuyển bàn</button>
-            </div> -->
+
+            <!-- Chọn phiếu giảm giá -->
+            <div class="box add-item">
+                <h3>Chọn phiếu giảm giá</h3>
+
+                <div class="add-row">
+                    <select id="discount-select">
+                        <option selected disabled>-- Chọn phiếu giảm giá --</option>
+                        <?php
+                        if(isset($data['discount_vouchers']) && is_a($data['discount_vouchers'], 'mysqli_result')){
+                            while($voucher = mysqli_fetch_array($data['discount_vouchers'])){
+                                echo '<option value="'.$voucher['ma_khuyen_mai'].'" data-amount="'.$voucher['tien_khuyen_mai'].'">'.$voucher['ten_khuyen_mai'].'</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+
+                    <button class="btn btn-success" id="apply-discount-btn">
+                        <i class="fa-solid fa-tag"></i> Áp dụng giảm giá
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="total">Tiền cần thanh toán là :
+                <?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></div>
 
             <div class="box">
                 <h3>Thanh toán</h3><br>
-                <button class="btn btn-primary" id="paymentButton" data-order-id="<?php echo htmlspecialchars($order['ma_don_hang']); ?>">
+                <button class="btn btn-primary" id="paymentButton"
+                    data-order-id="<?php echo htmlspecialchars($order['ma_don_hang']); ?>">
                     <i class="fa-solid fa-credit-card"></i> Thanh toán
                 </button>
             </div>
@@ -372,26 +368,32 @@
             }
             ?>
 
+
         </main>
 
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const paymentButton = document.getElementById('paymentButton');
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentButton = document.getElementById('paymentButton');
+        const discountSelect = document.getElementById('discount-select');
+        const applyDiscountBtn = document.getElementById('apply-discount-btn');
+        const orderId = paymentButton ? paymentButton.getAttribute('data-order-id') : null;
 
-            if (paymentButton) {
-                paymentButton.addEventListener('click', function() {
-                    const orderId = this.getAttribute('data-order-id');
+        // Handle payment button click
+        if (paymentButton) {
+            paymentButton.addEventListener('click', function() {
+                const orderId = this.getAttribute('data-order-id');
 
-                    if (confirm('Bạn có chắc chắn muốn cập nhật trạng thái thanh toán cho đơn hàng này?')) {
-                        // Show loading state
-                        const originalText = paymentButton.innerHTML;
-                        paymentButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
-                        paymentButton.disabled = true;
+                if (confirm('Bạn có chắc chắn muốn cập nhật trạng thái thanh toán cho đơn hàng này?')) {
+                    // Show loading state
+                    const originalText = paymentButton.innerHTML;
+                    paymentButton.innerHTML =
+                        '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+                    paymentButton.disabled = true;
 
-                        // Make AJAX request to update payment status
-                        fetch(`http://localhost/QLSP/Staff/update_payment_status/${orderId}`, {
+                    // Make AJAX request to update payment status
+                    fetch(`http://localhost/QLSP/Staff/update_payment_status/${orderId}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -406,7 +408,8 @@
                                 statusElement.className = 'status-paid';
 
                                 // Update the button to show success
-                                paymentButton.innerHTML = '<i class="fa-solid fa-check"></i> Đã thanh toán';
+                                paymentButton.innerHTML =
+                                    '<i class="fa-solid fa-check"></i> Đã thanh toán';
                                 paymentButton.className = 'btn btn-success';
                                 paymentButton.disabled = true;
 
@@ -430,10 +433,60 @@
                             paymentButton.innerHTML = originalText;
                             paymentButton.disabled = false;
                         });
-                    }
-                });
-            }
-        });
+                }
+            });
+        }
+
+        // Handle discount selection
+        if (applyDiscountBtn && discountSelect) {
+            applyDiscountBtn.addEventListener('click', function() {
+                const selectedOption = discountSelect.options[discountSelect.selectedIndex];
+
+                if (selectedOption.value) {
+                    const maKhuyenMai = selectedOption.value;
+                    const discountAmount = parseFloat(selectedOption.getAttribute('data-amount'));
+
+                    // Make AJAX request to update order with discount
+                    fetch(`http://localhost/QLSP/Staff/update_order_discount/${orderId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                ma_khuyen_mai: maKhuyenMai
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                // Update the displayed discount amount
+                                const totalElements = document.querySelectorAll('.total');
+                                if (totalElements.length >= 2) {
+                                    // Update the second total element (the one showing final payment)
+                                    const originalTotalText = totalElements[0].textContent;
+                                    const originalTotal = parseFloat(originalTotalText.match(/\d+/g)
+                                        .join(''));
+                                    const finalTotal = originalTotal - data.tien_khuyen_mai;
+
+                                    totalElements[1].innerHTML =
+                                        `Tiền cần thanh toán là : ${finalTotal.toLocaleString('vi-VN')}đ`;
+
+                                    alert(data.message);
+                                }
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Có lỗi xảy ra khi cập nhật giảm giá');
+                        });
+                } else {
+                    alert('Vui lòng chọn một phiếu giảm giá');
+                }
+            });
+        }
+    });
     </script>
 
 </body>

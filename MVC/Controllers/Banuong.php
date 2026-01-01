@@ -510,7 +510,7 @@ function Timkiem()
         // Method to view order details
         function order_detail($ma_don_hang) {
             // Get order information
-            $order_result = $this->dh->Donhang_getById($ma_don_hang);
+            $order_result = $this->dh->Donhang_getByIdWithDiscount($ma_don_hang);
 
             // Check if order exists in database
             if ($order_result && mysqli_num_rows($order_result) > 0) {
@@ -570,10 +570,14 @@ function Timkiem()
                 return;
             }
 
+            // Get discount vouchers
+            $discount_vouchers = $this->dh->getDiscountVouchers();
+
             $this->view('StaffMaster', [
                 'page' => 'Staff/Chi_tiet_don_hang_v',
                 'order' => $order_result, // Pass the mysqli_result as expected by the view
-                'order_details' => $order_details
+                'order_details' => $order_details,
+                'discount_vouchers' => $discount_vouchers
             ]);
 
         }

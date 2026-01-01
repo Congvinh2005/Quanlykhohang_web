@@ -2,7 +2,7 @@
     class Donhang_m extends connectDB{
         // Hàm thêm đơn hàng
         function Donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, $trang_thai_thanh_toan, $ngay_tao){
-            $sql = "INSERT INTO don_hang VALUES ('$ma_don_hang', '$ma_ban', '$ma_user', '$tong_tien', '$trang_thai_thanh_toan', '$ngay_tao')";
+            $sql = "INSERT INTO don_hang (ma_don_hang, ma_ban, ma_user, tong_tien, trang_thai_thanh_toan, ngay_tao, ma_khuyen_mai, tien_khuyen_mai) VALUES ('$ma_don_hang', '$ma_ban', '$ma_user', '$tong_tien', '$trang_thai_thanh_toan', '$ngay_tao', NULL, 0.00)";
             return mysqli_query($this->con, $sql);
         }
 
@@ -142,6 +142,27 @@
                 $data[] = $row;
             }
             return $data;
+        }
+
+        // Hàm lấy tất cả các phiếu giảm giá
+        function getDiscountVouchers(){
+            $sql = "SELECT ma_khuyen_mai, ten_khuyen_mai, tien_khuyen_mai FROM khuyen_mai";
+            return mysqli_query($this->con, $sql);
+        }
+
+        // Hàm cập nhật đơn hàng với thông tin giảm giá
+        function updateOrderWithDiscount($ma_don_hang, $tien_khuyen_mai){
+            $sql = "UPDATE don_hang SET tien_khuyen_mai = '$tien_khuyen_mai' WHERE ma_don_hang = '$ma_don_hang'";
+            return mysqli_query($this->con, $sql);
+        }
+
+        // Hàm lấy đơn hàng theo ID bao gồm cả thông tin giảm giá
+        function Donhang_getByIdWithDiscount($ma_don_hang){
+            $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
+                    LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
+                    LEFT JOIN users u ON d.ma_user = u.ma_user
+                    WHERE d.ma_don_hang = '$ma_don_hang'";
+            return mysqli_query($this->con, $sql);
         }
     }
 ?>
