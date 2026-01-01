@@ -214,42 +214,37 @@
     <div class="card">
         <div class="actions-top">
             <div>
-                <h1><i class="fa-solid fa-utensils"></i> Quản lý Thực Đơn</h1>
-                <p class="lead">Tra cứu và cập nhật thực đơn quán.</p>
+                <h1><i class="fa-solid fa-gift"></i> Quản lý Khuyến Mãi</h1>
+                <p class="lead">Theo dõi và quản lý các chương trình khuyến mãi.</p>
             </div>
             <div class="actions">
-                <a href="http://localhost/QLSP/Thucdon/themmoi" class="btn-create"><i class="fa-solid fa-plus"></i>
-                    Thêm món </a>
-                <a href="http://localhost/QLSP/Thucdon/import_form" class="btn-ghost"><i
+                <a href="http://localhost/QLSP/Khuyenmai/themmoi" class="btn-create"><i class="fa-solid fa-plus"></i>
+                    Thêm KM </a>
+                <a href="http://localhost/QLSP/Khuyenmai/import_form" class="btn-ghost"><i
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
-                <!-- <a href="http://localhost/QLSP/Thucdon/Timkiem" class="btn-excel"><i class="fa-solid fa-file-excel"></i>
-                    Xuất
-                    Excel</a> -->
-
-
             </div>
         </div>
 
-        <form method="post" action="http://localhost/QLSP/Thucdon/Timkiem" class="form-search"
+        <form method="post" action="http://localhost/QLSP/Khuyenmai/Timkiem" class="form-search"
             style="margin-bottom:30px;border:1px dashed #cbd5e1;padding:20px;border-radius:12px;background:#f8fafc">
             <div class="search-fields">
                 <div>
-                    <label for="searchId">Mã thực đơn</label>
-                    <input type="text" id="searchId" name="txtMathucdon" placeholder="Nhập mã TD..."
-                        value="<?php echo isset($data['ma_thuc_don']) ? htmlspecialchars($data['ma_thuc_don']) : ''; ?>" />
+                    <label for="searchId">Mã khuyến mãi</label>
+                    <input type="text" id="searchId" name="txtMakhuyenmai" placeholder="Nhập mã khuyến mãi..."
+                        value="<?php echo isset($data['ma_khuyen_mai']) ? htmlspecialchars($data['ma_khuyen_mai']) : ''; ?>" />
                 </div>
                 <div>
-                    <label for="searchName">Tên món</label>
-                    <input type="text" id="searchName" name="txtTenmon" placeholder="Nhập tên món..."
-                        value="<?php echo isset($data['ten_mon']) ? htmlspecialchars($data['ten_mon']) : ''; ?>" />
+                    <label for="searchName">Tên khuyến mãi</label>
+                    <input type="text" id="searchName" name="txtTenkhuyenmai" placeholder="Nhập tên khuyến mãi..."
+                        value="<?php echo isset($data['ten_khuyen_mai']) ? htmlspecialchars($data['ten_khuyen_mai']) : ''; ?>" />
                 </div>
             </div>
 
             <div class="actions" style="margin-top:0;">
                 <button type="submit" class="btn-primary" name="btnTim"><i class="fa-solid fa-search"></i> Tìm
                     kiếm</button>
-                <a href="http://localhost/QLSP/Thucdon/danhsach" class="btn-ghost">Làm mới</a>
+                <a href="http://localhost/QLSP/Khuyenmai/danhsach" class="btn-ghost">Làm mới</a>
                 <button type="submit" name="btnXuatexcel" class="btn-excel">
                     <i class="fa-solid fa-solid fa-download"></i> Xuất Excel
                 </button>
@@ -284,16 +279,14 @@
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Mã TD</th>
-                        <th>Tên món</th>
-                        <th>Hình ảnh</th>
-                        <th>Giá</th>
-                        <th>Số lượng</th>
-                        <th>Danh mục</th>
+                        <th>Mã KM</th>
+                        <th>Tên khuyến mãi</th>
+                        <th>Tiền khuyến mãi</th>
+                        <th>Ghi chú</th>
                         <th style="text-align:right">Thao tác</th>
                     </tr>
                 </thead>
-                <tbody id="spBody">
+                <tbody id="kmBody">
                     <?php
                     // Render dữ liệu tĩnh ban đầu
                     if($count > 0) {
@@ -303,38 +296,15 @@
                     <tr>
                         <td><span style="font-weight:600;color:var(--accent)"><?php echo $serial++; ?></span>
                         </td>
-                        <td><?php echo htmlspecialchars($row['ma_thuc_don']) ?></td>
-                        <td><?php echo htmlspecialchars($row['ten_mon']) ?></td>
-                        <td>
-                            <?php if($row['img_thuc_don']): ?>
-                            <img src="<?php echo htmlspecialchars($row['img_thuc_don']) ?>"
-                                alt="<?php echo htmlspecialchars($row['ten_mon']) ?>"
-                                style="width:50px;height:50px;object-fit:cover;border-radius:5px;" />
-                            <?php else: ?>
-                            <span>Không có hình</span>
-                            <?php endif; ?>
-                        </td>
-                        <td><?php echo number_format($row['gia'], 0, ',', '.') ?> ₫</td>
-                        <td>
-                            <?php if($row['so_luong'] > 0): ?>
-                            <span
-                                style="background:#d1fae5;color:#065f46;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">
-                                Còn <?php echo htmlspecialchars($row['so_luong']); ?>
-                            </span>
-                            <?php else: ?>
-                            <span
-                                style="background:#fee2e2;color:#991b1b;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600">
-                                Hết hàng
-                            </span>
-                            <?php endif; ?>
-                        </td>
-                        <td><?php echo isset($row['ten_danh_muc']) ? htmlspecialchars($row['ten_danh_muc']) : 'N/A' ?>
-                        </td>
+                        <td><?php echo htmlspecialchars($row['ma_khuyen_mai']) ?></td>
+                        <td><?php echo htmlspecialchars($row['ten_khuyen_mai']) ?></td>
+                        <td><?php echo number_format($row['tien_khuyen_mai'], 2, ',', '.') ?> ₫</td>
+                        <td><?php echo htmlspecialchars($row['ghi_chu']) ?></td>
                         <td style="text-align:right">
-                            <a href="http://localhost/QLSP/Thucdon/sua/<?php echo urlencode($row['ma_thuc_don']) ?>"><button
+                            <a href="http://localhost/QLSP/Khuyenmai/sua/<?php echo urlencode($row['ma_khuyen_mai']) ?>"><button
                                     class="btn-edit">✏️
                                     Sửa</button></a>
-                            <a href="http://localhost/QLSP/Thucdon/xoa/<?php echo urlencode($row['ma_thuc_don']) ?>"
+                            <a href="http://localhost/QLSP/Khuyenmai/xoa/<?php echo urlencode($row['ma_khuyen_mai']) ?>"
                                 onclick="return confirm('Bạn có chắc chắn muốn xoá không?')"><button
                                     class="btn-delete">🗑️
                                     Xóa</button></a>

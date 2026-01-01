@@ -22,7 +22,7 @@
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
                     WHERE d.ma_don_hang LIKE '%$ma_don_hang%' AND d.ma_ban LIKE '%$ma_ban%' AND u.ten_user LIKE '%$ten_user%'
-                    ORDER BY d.ma_don_hang ASC";
+                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC";
             return mysqli_query($this->con, $sql);
         }
 
@@ -37,7 +37,7 @@
             $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
-                    ORDER BY d.ma_don_hang ASC";
+                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC";
             return mysqli_query($this->con, $sql);
         }
 
@@ -55,7 +55,7 @@
             $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
-                    ORDER BY d.ma_don_hang ASC";
+                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC";
             return mysqli_query($this->con, $sql);
         }
 
@@ -80,7 +80,7 @@
             $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
-                    ORDER BY d.ma_don_hang ASC
+                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC
                     LIMIT $limit OFFSET $offset";
             return mysqli_query($this->con, $sql);
         }

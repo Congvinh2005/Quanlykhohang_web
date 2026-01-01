@@ -256,11 +256,9 @@
                 </select>
             </div>
             <div>
-                <label for="txtTrangthai">Trạng thái</label>
-                <select id="txtTrangthai" name="txtTrangthai">
-                    <option value="con_ban" <?php echo ($data['trang_thai'] == 'con_ban') ? 'selected' : ''; ?>>Còn bán</option>
-                    <option value="het_ban" <?php echo ($data['trang_thai'] == 'het_ban') ? 'selected' : ''; ?>>Hết bán</option>
-                </select>
+                <label for="txtSoluong">Số lượng</label>
+                <input type="number" id="txtSoluong" name="txtSoluong" placeholder="Nhập số lượng..."
+                    value="<?php echo htmlspecialchars($data['so_luong']); ?>" min="0" />
             </div>
 
             <div class="actions" style="margin-top:0;">

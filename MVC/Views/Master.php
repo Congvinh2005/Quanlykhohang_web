@@ -59,6 +59,12 @@
                         </a>
 
                     </li>
+                    <li>
+                        <a href="http://localhost/QLSP/Khuyenmai/danhsach"
+                            class="<?php echo ($current === 'Danhsachkhuyenmai_v') ? 'active' : ''; ?>">
+                            <i class="fa-solid fa-gift"></i> Quản lý khuyến mãi
+                        </a>
+                    </li>
 
                     <li>
                         <a href="http://localhost/QLSP/Thucdon/danhsach"
@@ -90,6 +96,7 @@
                         if($current == 'home') echo 'Dashboard';
                         elseif(strpos($current, 'Sanpham') !== false) echo 'Sản phẩm';
                         elseif(strpos($current, 'Thucdon') !== false) echo 'Thực đơn';
+                        elseif(strpos($current, 'Khuyenmai') !== false) echo 'Khuyến mãi';
                         elseif(strpos($current, 'Donhang') !== false) echo 'Đơn hàng';
                         elseif(strpos($current, 'Thongke') !== false) echo 'Thống kê';
                         elseif(strpos($current, 'Nhacungcap') !== false) echo 'Nhà cung cấp';

@@ -15,5 +15,12 @@
 
             return $details;
         }
+
+        // Hàm thêm chi tiết đơn hàng
+        function Chitietdonhang_ins($ma_don_hang, $ma_thuc_don, $so_luong, $gia_tai_thoi_diem_dat, $ghi_chu = ''){
+            $sql = "INSERT INTO chi_tiet_don_hang (ma_don_hang, ma_thuc_don, so_luong, gia_tai_thoi_diem_dat, ghi_chu)
+                    VALUES ('$ma_don_hang', '$ma_thuc_don', '$so_luong', '$gia_tai_thoi_diem_dat', '$ghi_chu')";
+            return mysqli_query($this->con, $sql);
+        }
     }
 ?>

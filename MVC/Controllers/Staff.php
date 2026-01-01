@@ -68,18 +68,80 @@
         }
 
 
-         // Chi tiết đơn hàng cho nhân viên
-        function order_detail($ma_don_hang){
+
+
+         function order_detail($ma_don_hang) {
+            // Get order information
             $order = $this->dh->Donhang_getById($ma_don_hang);
-            $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
+
+            // Initialize variables
+            $order_data = [];
+            $order_details = [];
+
+            // Check if order exists in database
+            if ($order && mysqli_num_rows($order) > 0) {
+                // Order exists in database - format as array for consistency
+                $order_row = mysqli_fetch_array($order);
+                $order_data = [$order_row]; // Wrap in array to match the view's expected format
+
+                // Get order details from database
+                $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
+
+                // Debug: Log the order status and details count
+                error_log("Order $ma_don_hang status: " . $order_row['trang_thai_thanh_toan'] . ", details count: " . count($order_details));
+
+                // For paid orders, we should always have order details in the database
+                // The fallback to session cart should only be for temporary orders that haven't been saved yet
+                // If order is paid and no details found in database, it indicates a data inconsistency
+                if ($order_row['trang_thai_thanh_toan'] === 'da_thanh_toan') {
+                    // For paid orders, always use database details and ignore session cart
+                    // This ensures that after payment, only the saved order details are shown
+                    // If no details found in database for a paid order, it's an error state
+                    if (empty($order_details)) {
+                        // Log this as an error state - paid order should have details in DB
+                        error_log("ERROR: Paid order $ma_don_hang has no details in database");
+                        // Still show the order but with empty details
+                    }
+                } else if (empty($order_details)) {
+                    // Only try to get from session cart for unpaid orders that might not have been saved to DB yet
+                    $ma_ban = $order_row['ma_ban'];
+
+                    // Get cart from session for this table
+                    $session_cart = $this->getCartForTable($ma_ban);
+
+                    // Convert session cart to the same format as database order details
+                    if (!empty($session_cart)) {
+                        $order_details = [];
+                        foreach ($session_cart as $item) {
+                            // Get item details from database to get name and image
+                            $thucdon = $this->model("Thucdon_m");
+                            $item_details = $thucdon->Thucdon_getById($item['id']);
+
+                            if ($item_details && mysqli_num_rows($item_details) > 0) {
+                                $item_db = mysqli_fetch_array($item_details);
+                                $order_details[] = [
+                                    'ma_thuc_don' => $item['id'],
+                                    'so_luong' => $item['quantity'],
+                                    'gia_tai_thoi_diem_dat' => $item['price'],
+                                    'ten_mon' => $item_db['ten_mon'],
+                                    'img_thuc_don' => $item_db['img_thuc_don']
+                                ];
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Order doesn't exist in database
+                echo '<p>Không tìm thấy đơn hàng.</p>';
+                return;
+            }
 
             $this->view('StaffMaster', [
                 'page' => 'Staff/order_detail_v',
-                'order' => $order,
+                'order' => $order_data, // Pass the formatted order data
                 'order_details' => $order_details
             ]);
         }
-
         // Cập nhật trạng thái thanh toán cho đơn hàng
         function update_payment_status($ma_don_hang){
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -107,7 +169,19 @@
             }
         }
 
-        // Helper method to clear cart for a table
+        // Helper method to get cart from session for a specific table
+        private function getCartForTable($ma_ban) {
+            $session_key = 'cart_' . $ma_ban;
+            return isset($_SESSION[$session_key]) ? $_SESSION[$session_key] : [];
+        }
+
+        // Helper method to set cart to session for a specific table
+        private function setCartForTable($ma_ban, $cart) {
+            $session_key = 'cart_' . $ma_ban;
+            $_SESSION[$session_key] = $cart;
+        }
+
+        // Helper method to clear cart from session for a specific table
         private function clearCartForTable($ma_ban) {
             $session_key = 'cart_' . $ma_ban;
             unset($_SESSION[$session_key]);

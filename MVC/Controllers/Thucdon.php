@@ -33,7 +33,7 @@
                 'ma_thuc_don' => '',
                 'ten_mon' => '',
                 'gia' => '',
-                'trang_thai' => '',
+                'so_luong' => '0',
                 'ma_danh_muc' => '',
                 'img_thuc_don' => '',
                 'dsdm' => $dsdm,
@@ -45,7 +45,7 @@
                 $ma_thuc_don = $_POST['txtMathucdon'];
                 $ten_mon = $_POST['txtTenmon'];
                 $gia = $_POST['txtGia'];
-                $trang_thai = $_POST['txtTrangthai'] ?? 'con_ban';
+                $so_luong = $_POST['txtSoluong'] ?? '0';
                 $ma_danh_muc = $_POST['ddlDanhmuc'];
                 $dsdm = $this->dm->Danhmuc_find('', '');
 
@@ -70,7 +70,7 @@
                                 'ma_thuc_don' => $ma_thuc_don,
                                 'ten_mon' => $ten_mon,
                                 'gia' => $gia,
-                                'trang_thai' => $trang_thai,
+                                'so_luong' => $so_luong,
                                 'ma_danh_muc' => $ma_danh_muc,
                                 'img_thuc_don' => $img_thuc_don,
                                 'dsdm' => $dsdm
@@ -84,7 +84,7 @@
                             'ma_thuc_don' => $ma_thuc_don,
                             'ten_mon' => $ten_mon,
                             'gia' => $gia,
-                            'trang_thai' => $trang_thai,
+                            'so_luong' => $so_luong,
                             'ma_danh_muc' => $ma_danh_muc,
                             'img_thuc_don' => $img_thuc_don,
                             'dsdm' => $dsdm
@@ -112,14 +112,14 @@
                                 'ma_thuc_don' => $ma_thuc_don,
                                 'ten_mon' => $ten_mon,
                                 'gia' => $gia,
-                                'trang_thai' => $trang_thai,
+                                'so_luong' => $so_luong,
                                 'ma_danh_muc' => $ma_danh_muc,
                                 'img_thuc_don' => $img_thuc_don,
                                 'dsdm' => $dsdm
                             ]);
 
                     } else {
-                        $kq = $this->td->thucdon_ins($ma_thuc_don, $ten_mon, $gia, $trang_thai, $ma_danh_muc, $img_thuc_don);
+                        $kq = $this->td->thucdon_ins($ma_thuc_don, $ten_mon, $gia, $so_luong, $ma_danh_muc, $img_thuc_don);
                         if($kq) {
                             echo "<script>alert('Thêm mới thành công!')</script>";
                             $this->danhsach();
@@ -130,7 +130,7 @@
                                 'ma_thuc_don' => $ma_thuc_don,
                                 'ten_mon' => $ten_mon,
                                 'gia' => $gia,
-                                'trang_thai' => $trang_thai,
+                                'so_luong' => $so_luong,
                                 'ma_danh_muc' => $ma_danh_muc,
                                 'img_thuc_don' => $img_thuc_don,
                                 'dsdm' => $dsdm
@@ -162,7 +162,7 @@
             $sheet->setCellValue('A1', 'Mã TD');
             $sheet->setCellValue('B1', 'Tên Món');
             $sheet->setCellValue('C1', 'Giá');
-            $sheet->setCellValue('D1', 'Trạng Thái');
+            $sheet->setCellValue('D1', 'Số Lượng');
             $sheet->setCellValue('E1', 'Mã DM');
             $sheet->setCellValue('F1', 'Hình Ảnh');
 
@@ -173,7 +173,7 @@
                 $sheet->setCellValue('A'.$rowCount, $row['ma_thuc_don']);
                 $sheet->setCellValue('B'.$rowCount, $row['ten_mon']);
                 $sheet->setCellValue('C'.$rowCount, $row['gia']);
-                $sheet->setCellValue('D'.$rowCount, $row['trang_thai']);
+                $sheet->setCellValue('D'.$rowCount, $row['so_luong']);
                 $sheet->setCellValue('E'.$rowCount, $row['ma_danh_muc']);
                 $sheet->setCellValue('F'.$rowCount, $row['img_thuc_don']);
                 $rowCount++;
@@ -216,7 +216,7 @@
                         'ma_thuc_don' => $r['ma_thuc_don'],
                         'ten_mon' => $r['ten_mon'],
                         'gia' => $r['gia'],
-                        'trang_thai' => $r['trang_thai'],
+                        'so_luong' => $r['so_luong'],
                         'ma_danh_muc' => $r['ma_danh_muc'],
                         'ten_danh_muc' => isset($r['ten_danh_muc']) ? $r['ten_danh_muc'] : ''
                     ];
@@ -236,7 +236,7 @@
                 'ma_thuc_don' => $row['ma_thuc_don'],
                 'ten_mon' => $row['ten_mon'],
                 'gia' => $row['gia'],
-                'trang_thai' => $row['trang_thai'],
+                'so_luong' => $row['so_luong'],
                 'ma_danh_muc' => $row['ma_danh_muc'],
                 'img_thuc_don' => $row['img_thuc_don'],
                 'dsdm' => $dsdm
@@ -270,7 +270,7 @@
             $ma_thuc_don = trim($sheetData[$i]['A']);
             $ten_mon     = trim($sheetData[$i]['B']);
             $gia         = trim($sheetData[$i]['C']);
-            $trang_thai  = trim($sheetData[$i]['D']);
+            $so_luong    = trim($sheetData[$i]['D']);
             $ma_danh_muc = trim($sheetData[$i]['E']);
             $img_thuc_don = trim($sheetData[$i]['F']);
             if($ma_thuc_don == '') continue;
@@ -285,7 +285,7 @@
             }
 
             // Insert
-            if(!$this->td->Thucdon_ins($ma_thuc_don,$ten_mon,$gia,$trang_thai,$ma_danh_muc,$img_thuc_don)){
+            if(!$this->td->Thucdon_ins($ma_thuc_don,$ten_mon,$gia,$so_luong,$ma_danh_muc,$img_thuc_don)){
                 die(mysqli_error($this->td->con));
             }
     }
@@ -300,7 +300,7 @@
                 $ma_thuc_don = $_POST['txtMathucdon'];
                 $ten_mon = $_POST['txtTenmon'];
                 $gia = $_POST['txtGia'];
-                $trang_thai = $_POST['txtTrangthai'] ?? 'con_ban';
+                $so_luong = $_POST['txtSoluong'] ?? '0';
                 $ma_danh_muc = $_POST['ddlDanhmuc'];
 
                 // Lấy hình ảnh hiện tại từ database trước
@@ -340,7 +340,7 @@
                 }
                 // Nếu không có file upload mới, giữ nguyên hình ảnh hiện tại (đã được lấy ở trên)
 
-                $kq = $this->td->Thucdon_update($ma_thuc_don, $ten_mon, $gia, $trang_thai, $ma_danh_muc, $img_thuc_don);
+                $kq = $this->td->Thucdon_update($ma_thuc_don, $ten_mon, $gia, $so_luong, $ma_danh_muc, $img_thuc_don);
                 if($kq)
                     echo "<script>alert('Cập nhật thành công!')</script>";
                 else
@@ -375,7 +375,7 @@
             $sheet->setCellValue('A1', 'Mã Thực Đơn');
             $sheet->setCellValue('B1', 'Tên Món');
             $sheet->setCellValue('C1', 'Giá');
-            $sheet->setCellValue('D1', 'Trạng Thái');
+            $sheet->setCellValue('D1', 'Số Lượng');
             $sheet->setCellValue('E1', 'Mã Danh Mục');
             $sheet->setCellValue('F1', 'Hình Ảnh');
 
@@ -385,7 +385,7 @@
                 $sheet->setCellValue('A'.$rowCount, $row['ma_thuc_don']);
                 $sheet->setCellValue('B'.$rowCount, $row['ten_mon']);
                 $sheet->setCellValue('C'.$rowCount, $row['gia']);
-                $sheet->setCellValue('D'.$rowCount, $row['trang_thai']);
+                $sheet->setCellValue('D'.$rowCount, $row['so_luong']);
                 $sheet->setCellValue('E'.$rowCount, $row['ma_danh_muc']);
                 $sheet->setCellValue('F'.$rowCount, $row['img_thuc_don']);
                 $rowCount++;

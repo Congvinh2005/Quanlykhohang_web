@@ -461,9 +461,16 @@ function Timkiem()
 
         // Helper method to add order detail
         private function addOrderDetail($ma_don_hang, $ma_thuc_don, $so_luong, $gia, $ghi_chu) {
-            $sql = "INSERT INTO chi_tiet_don_hang (ma_don_hang, ma_thuc_don, so_luong, gia_tai_thoi_diem_dat, ghi_chu)
-                    VALUES ('$ma_don_hang', '$ma_thuc_don', '$so_luong', '$gia', '$ghi_chu')";
-            return mysqli_query($this->ctdh->con, $sql);
+            $result = $this->ctdh->Chitietdonhang_ins($ma_don_hang, $ma_thuc_don, $so_luong, $gia, $ghi_chu);
+
+            // Log để kiểm tra lỗi nếu có
+            if (!$result) {
+                error_log("Lỗi khi thêm chi tiết đơn hàng: " . mysqli_error($this->ctdh->con));
+            } else {
+                error_log("Thêm chi tiết đơn hàng thành công: $ma_don_hang, $ma_thuc_don, $so_luong");
+            }
+
+            return $result;
         }
 
         // Helper method to update table status
@@ -503,17 +510,34 @@ function Timkiem()
         // Method to view order details
         function order_detail($ma_don_hang) {
             // Get order information
-            $order = $this->dh->Donhang_getById($ma_don_hang);
+            $order_result = $this->dh->Donhang_getById($ma_don_hang);
 
-            // Get order details
-            $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
+            // Check if order exists in database
+            if ($order_result && mysqli_num_rows($order_result) > 0) {
+                $order_row = mysqli_fetch_array($order_result);
+                // Reset pointer to beginning so the view can fetch it again
+                mysqli_data_seek($order_result, 0);
 
-            // If no order details found in database, check if there's a cart in session for this order's table
-            if (empty($order_details)) {
-                // Get the order to find the table
-                $order_result = $this->dh->Donhang_getById($ma_don_hang);
-                if ($order_result && mysqli_num_rows($order_result) > 0) {
-                    $order_row = mysqli_fetch_array($order_result);
+                // Get order details from database
+                $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
+
+                // Debug: Log the order status and details count
+                error_log("Order $ma_don_hang status: " . $order_row['trang_thai_thanh_toan'] . ", details count: " . count($order_details));
+
+                // For paid orders, we should always have order details in the database
+                // The fallback to session cart should only be for temporary orders that haven't been saved yet
+                // If order is paid and no details found in database, it indicates a data inconsistency
+                if ($order_row['trang_thai_thanh_toan'] === 'da_thanh_toan') {
+                    // For paid orders, always use database details and ignore session cart
+                    // This ensures that after payment, only the saved order details are shown
+                    // If no details found in database for a paid order, it's an error state
+                    if (empty($order_details)) {
+                        // Log this as an error state - paid order should have details in DB
+                        error_log("ERROR: Paid order $ma_don_hang has no details in database");
+                        // Still show the order but with empty details
+                    }
+                } else if (empty($order_details)) {
+                    // Only try to get from session cart for unpaid orders that might not have been saved to DB yet
                     $ma_ban = $order_row['ma_ban'];
 
                     // Get cart from session for this table
@@ -540,13 +564,18 @@ function Timkiem()
                         }
                     }
                 }
+            } else {
+                // Order doesn't exist in database
+                echo '<p>Không tìm thấy đơn hàng.</p>';
+                return;
             }
 
             $this->view('StaffMaster', [
                 'page' => 'Staff/Chi_tiet_don_hang_v',
-                'order' => $order,
+                'order' => $order_result, // Pass the mysqli_result as expected by the view
                 'order_details' => $order_details
             ]);
+
         }
     }
 ?>

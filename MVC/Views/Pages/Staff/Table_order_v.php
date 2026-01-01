@@ -328,7 +328,8 @@
                         if(isset($data['menu_items'])){
                             while($item = mysqli_fetch_array($data['menu_items'])){
                     ?>
-                    <div class="menu-item" data-category="<?php echo $item['ma_danh_muc']; ?>">
+                    <div class="menu-item" data-category="<?php echo $item['ma_danh_muc']; ?>"
+                         onclick="addItemToCart('<?php echo $item['ma_thuc_don']; ?>', '<?php echo addslashes(htmlspecialchars($item['ten_mon'])); ?>', <?php echo $item['gia']; ?>)">
                         <?php if($item['img_thuc_don']): ?>
                         <img src="<?php echo htmlspecialchars($item['img_thuc_don']); ?>"
                             alt="<?php echo htmlspecialchars($item['ten_mon']); ?>" />
@@ -341,10 +342,7 @@
                         <div class="menu-item-name"><?php echo htmlspecialchars($item['ten_mon']); ?></div>
                         <div class="menu-item-price"><?php echo number_format($item['gia'], 0, ',', '.'); ?> ₫</div>
                         <div class="menu-item-quantity">
-                            Order: <input type="number" min="0" value="0" class="quantity-input"
-                                data-id="<?php echo $item['ma_thuc_don']; ?>"
-                                data-name="<?php echo addslashes(htmlspecialchars($item['ten_mon'])); ?>"
-                                data-price="<?php echo $item['gia']; ?>" onchange="addToCartFromInput(this)">
+                            Hiện có <?php echo htmlspecialchars($item['so_luong']); ?>
                         </div>
                     </div>
                     <?php
@@ -426,6 +424,17 @@
     }
 
     function addItemToCart(id, name, price) {
+        // Find the menu item to get its image
+        const menuItem = document.querySelector(`.menu-item[onclick*="'${id}'"]`);
+        let imgSrc = '';
+
+        if (menuItem) {
+            const imgElement = menuItem.querySelector('img');
+            if (imgElement) {
+                imgSrc = imgElement.src;
+            }
+        }
+
         if (cart[id]) {
             cart[id].quantity++;
         } else {
@@ -433,7 +442,8 @@
                 id: id,
                 name: name,
                 price: price,
-                quantity: 1
+                quantity: 1,
+                img: imgSrc
             };
         }
         updateCart();
@@ -541,11 +551,11 @@
                         </div>
                         <div class="cart-item-actions">
                             <div class="quantity-control">
-                                <button class="quantity-btn" onclick="updateQuantityFromCart(${item.id}, -1)">-</button>
+                                <button class="quantity-btn" onclick="updateQuantityFromCart('${item.id}', -1)">-</button>
                                 <input type="text" class="quantity-input" value="${item.quantity}" readonly />
-                                <button class="quantity-btn" onclick="updateQuantityFromCart(${item.id}, 1)">+</button>
+                                <button class="quantity-btn" onclick="updateQuantityFromCart('${item.id}', 1)">+</button>
                             </div>
-                            <button class="remove-btn" onclick="removeItem(${item.id})"><i class="fa-solid fa-trash"></i></button>
+                            <button class="remove-btn" onclick="removeItem('${item.id}')"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                 `;

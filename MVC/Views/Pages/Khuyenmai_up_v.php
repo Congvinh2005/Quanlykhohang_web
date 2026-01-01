@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Upload file — Thực đơn</title>
+    <title>Upload file — Khuyến mãi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
     :root {
@@ -209,11 +209,11 @@
     <div class="wrap">
         <div class="card">
             <div style="text-align: center; margin-bottom: 30px;">
-                <h2><i class="fa-solid fa-utensils"></i> Tải lên file Thực đơn</h2>
-                <p class="hint">Sử dụng form dưới đây để tải lên file Thực đơn.</p>
+                <h2><i class="fa-solid fa-gift"></i> Tải lên file Khuyến mãi</h2>
+                <p class="hint">Sử dụng form dưới đây để tải lên file Khuyến mãi.</p>
             </div>
 
-            <form method="POST" action="http://localhost/QLSP/Thucdon/up_l" enctype="multipart/form-data">
+            <form method="POST" action="http://localhost/QLSP/Khuyenmai/up_l" enctype="multipart/form-data">
                 <label for="txtGhichu">Ghi chú (Tùy chọn)</label>
                 <input type="text" name="txtGhichu" id="txtGhichu" placeholder="Nhập ghi chú hoặc mô tả cho file này">
 
@@ -235,7 +235,7 @@
                 </div>
 
                 <div class="form-actions">
-                    <a href="http://localhost/QLSP/Thucdon/danhsach" class="btn btn-secondary">
+                    <a href="http://localhost/QLSP/Khuyenmai/danhsach" class="btn btn-secondary">
                         <i class="fa-solid fa-arrow-left"></i> Quay lại
                     </a>
                     <button type="submit" name="btnNhap" class="btn btn-primary" style="min-width: 150px;">

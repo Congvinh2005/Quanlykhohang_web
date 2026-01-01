@@ -1,8 +1,8 @@
 <?php
     class Thucdon_m extends connectDB{
         // Hàm thêm thực đơn
-        function thucdon_ins($ma_thuc_don, $ten_mon, $gia, $trang_thai, $ma_danh_muc, $img_thuc_don){
-            $sql = "INSERT INTO thuc_don VALUES ('$ma_thuc_don', '$ten_mon', '$gia', '$trang_thai', '$ma_danh_muc', '$img_thuc_don', NOW())";
+        function thucdon_ins($ma_thuc_don, $ten_mon, $gia, $so_luong, $ma_danh_muc, $img_thuc_don){
+            $sql = "INSERT INTO thuc_don (ma_thuc_don, ten_mon, gia, so_luong, ma_danh_muc, img_thuc_don) VALUES ('$ma_thuc_don', '$ten_mon', '$gia', '$so_luong', '$ma_danh_muc', '$img_thuc_don')";
             return mysqli_query($this->con, $sql);
         }
 
@@ -26,9 +26,9 @@
         }
 
         // Hàm sửa thực đơn
-        function Thucdon_update($ma_thuc_don, $ten_mon, $gia, $trang_thai, $ma_danh_muc, $img_thuc_don){
+        function Thucdon_update($ma_thuc_don, $ten_mon, $gia, $so_luong, $ma_danh_muc, $img_thuc_don){
             $sql = "UPDATE thuc_don SET ten_mon = '$ten_mon', gia = '$gia',
-            trang_thai = '$trang_thai', ma_danh_muc = '$ma_danh_muc', img_thuc_don = '$img_thuc_don' WHERE ma_thuc_don = '$ma_thuc_don'";
+            so_luong = '$so_luong', ma_danh_muc = '$ma_danh_muc', img_thuc_don = '$img_thuc_don' WHERE ma_thuc_don = '$ma_thuc_don'";
             return mysqli_query($this->con, $sql);
         }
 
@@ -59,7 +59,7 @@
         function Thucdon_getAvailable(){
             $sql = "SELECT t.*, d.ten_danh_muc FROM thuc_don t
                     LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
-                    WHERE t.trang_thai = 'con_ban'
+                    WHERE t.so_luong > 0
                     ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
             return mysqli_query($this->con, $sql);
         }
