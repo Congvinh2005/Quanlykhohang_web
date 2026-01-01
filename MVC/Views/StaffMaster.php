@@ -6,67 +6,6 @@
     <title>Cafe Manager Staff</title>
     <base href="/QLSP/">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-
-<body>
-
-    <div class="app">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <h2 class="logo">☕ Cafe Manager</h2>
-            <?php $current = isset($data['page']) ? $data['page'] : ''; ?>
-            <ul class="menu">
-                <li
-                    class="<?php echo (strpos($current, 'dashboard') !== false || $current === 'Staff/dashboard_v') ? 'active' : ''; ?>">
-                    <a href="http://localhost/QLSP/Staff">
-                        <i class="fa-solid fa-gauge"></i> Dashboard
-                    </a>
-                </li>
-                <li class="<?php echo ($current === 'Staff/Chon_ban_v') ? 'active' : ''; ?>">
-                    <a href="http://localhost/QLSP/Staff/table">
-                        <i class="fa-solid fa-chair"></i> Chọn bàn
-                    </a>
-                </li>
-                <li
-                    class="<?php echo ($current === 'Staff/orders_v' || $current === 'Staff/order_detail_v') ? 'active' : ''; ?>">
-                    <a href="http://localhost/QLSP/Staff/orders">
-                        <i class="fa-solid fa-receipt"></i> Đơn hàng
-                    </a>
-                </li>
-                <li>
-                    <a href="http://localhost/QLSP/Users/logout">
-                        <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
-                    </a>
-                </li>
-            </ul>
-        </aside>
-
-        <!-- MAIN -->
-        <main class="content">
-            <?php
-            if(strpos($current, 'order_detail') !== false) {
-                echo '<div class="breadcrumb">';
-                echo '<a href="http://localhost/QLSP/Staff">Trang chủ</a> / Chi tiết đơn hàng';
-                echo '</div>';
-            } else if(strpos($current, 'orders') !== false) {
-                echo '<div class="breadcrumb">';
-                echo '<a href="http://localhost/QLSP/Staff">Trang chủ</a> / Danh sách đơn hàng';
-                echo '</div>';
-
-                echo '<div class="alert">';
-                echo 'Chào mừng nhân viên!';
-                echo '</div>';
-            } else if(strpos($current, 'tables') !== false) {
-                echo '<h1>🪑 Sơ đồ bàn hiện tại</h1>';
-            }
-
-            if(isset($data['page'])){
-                include_once __DIR__.'/Pages/'.$data['page'].".php";
-            }
-        ?>
-        </main>
-    </div>
-
     <style>
     * {
         margin: 0;
@@ -281,6 +220,8 @@
         border: 1px solid #ccc;
         border-radius: 6px;
         cursor: pointer;
+        font-weight: 600;
+        font-size: 25px;
     }
 
     .btn-print i {
@@ -288,9 +229,69 @@
     }
 
     .btn-print:hover {
-        background: #f1f1f1;
+        background: #d8adadff;
     }
     </style>
+</head>
+
+<body>
+
+    <div class="app">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h2 class="logo">☕ Cafe Manager</h2>
+            <?php $current = isset($data['page']) ? $data['page'] : ''; ?>
+            <ul class="menu">
+                <li
+                    class="<?php echo (strpos($current, 'dashboard') !== false || $current === 'Staff/dashboard_v') ? 'active' : ''; ?>">
+                    <a href="http://localhost/QLSP/Staff">
+                        <i class="fa-solid fa-gauge"></i> Dashboard
+                    </a>
+                </li>
+                <li class="<?php echo ($current === 'Staff/Chon_ban_v') ? 'active' : ''; ?>">
+                    <a href="http://localhost/QLSP/Staff/table">
+                        <i class="fa-solid fa-chair"></i> Chọn bàn
+                    </a>
+                </li>
+                <li
+                    class="<?php echo ($current === 'Staff/orders_v' || $current === 'Staff/order_detail_v') ? 'active' : ''; ?>">
+                    <a href="http://localhost/QLSP/Staff/orders">
+                        <i class="fa-solid fa-receipt"></i> Đơn hàng
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost/QLSP/Users/logout">
+                        <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="content">
+            <?php
+            if(strpos($current, 'order_detail') !== false) {
+                echo '<div class="breadcrumb">';
+                echo '<a href="http://localhost/QLSP/Staff">Trang chủ</a> / Chi tiết đơn hàng';
+                echo '</div>';
+            } else if(strpos($current, 'orders') !== false) {
+                echo '<div class="breadcrumb">';
+                echo '<a href="http://localhost/QLSP/Staff">Trang chủ</a> / Danh sách đơn hàng';
+                echo '</div>';
+
+                echo '<div class="alert">';
+                echo 'Chào mừng nhân viên!';
+                echo '</div>';
+            } else if(strpos($current, 'tables') !== false) {
+                echo '<h1>🪑 Sơ đồ bàn hiện tại</h1>';
+            }
+
+            if(isset($data['page'])){
+                include_once __DIR__.'/Pages/'.$data['page'].".php";
+            }
+        ?>
+        </main>
+    </div>
 
 </body>
 

@@ -298,10 +298,11 @@
                         </td>
                         <td><?php echo htmlspecialchars($row['ma_khuyen_mai']) ?></td>
                         <td><?php echo htmlspecialchars($row['ten_khuyen_mai']) ?></td>
-                        <td><?php echo number_format($row['tien_khuyen_mai'], 2, ',', '.') ?> ₫</td>
+                        <td><?php echo number_format($row['tien_khuyen_mai'], 0, ',', '.') ?> ₫</td>
                         <td><?php echo htmlspecialchars($row['ghi_chu']) ?></td>
                         <td style="text-align:right">
-                            <a href="http://localhost/QLSP/Khuyenmai/sua/<?php echo urlencode($row['ma_khuyen_mai']) ?>"><button
+                            <a
+                                href="http://localhost/QLSP/Khuyenmai/sua/<?php echo urlencode($row['ma_khuyen_mai']) ?>"><button
                                     class="btn-edit">✏️
                                     Sửa</button></a>
                             <a href="http://localhost/QLSP/Khuyenmai/xoa/<?php echo urlencode($row['ma_khuyen_mai']) ?>"
