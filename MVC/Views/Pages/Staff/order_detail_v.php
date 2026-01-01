@@ -69,7 +69,7 @@
         background: #5a6268;
     }
 
-    /* .btn-print {
+    .btn-print {
         background: #28a745;
         color: #211f1fff;
         border: none;
@@ -77,11 +77,13 @@
         border-radius: 6px;
         cursor: pointer;
         font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
     }
 
     .btn-print:hover {
         background: #1cd444ff;
-    } */
+    }
     </style>
 </head>
 
@@ -153,9 +155,9 @@ $order_tong_tien = $order['tong_tien'];
             <i class="fa-solid fa-arrow-left"></i> Quay lại
         </a>
 
-        <button class="btn-print" onclick="window.print()">
+        <a href="http://localhost/QLSP/Staff/generateInvoice/<?= $order['ma_don_hang'] ?>" class="btn-print" target="_blank">
             <i class="fa-solid fa-print"></i> In hóa đơn
-        </button>
+        </a>
     </div>
 
 </body>
