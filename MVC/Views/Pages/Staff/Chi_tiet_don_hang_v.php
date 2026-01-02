@@ -769,10 +769,10 @@
 
                                 alert('Thanh toán thành công!');
 
-                                // Close modal and reload page after a short delay
+                                // Close modal and redirect to orders list after a short delay
                                 paymentModal.style.display = 'none';
                                 setTimeout(() => {
-                                    location.reload();
+                                    window.location.href = 'http://localhost/QLSP/Staff/orders';
                                 }, 1500);
                             } else {
                                 alert('Lỗi: ' + data.message);
@@ -838,10 +838,10 @@
 
                                 alert('Thanh toán thành công!');
 
-                                // Close modal and reload page after a short delay
+                                // Close modal and redirect to orders list after a short delay
                                 paymentModal.style.display = 'none';
                                 setTimeout(() => {
-                                    location.reload();
+                                    window.location.href = 'http://localhost/QLSP/Staff/orders';
                                 }, 1500);
                             } else {
                                 alert('Lỗi: ' + data.message);
@@ -896,10 +896,10 @@
 
                                 alert('Thanh toán thành công!');
 
-                                // Close modal and reload page after a short delay
+                                // Close modal and redirect to orders list after a short delay
                                 paymentModal.style.display = 'none';
                                 setTimeout(() => {
-                                    location.reload();
+                                    window.location.href = 'http://localhost/QLSP/Staff/orders';
                                 }, 1500);
                             } else {
                                 alert('Lỗi: ' + data.message);
@@ -953,6 +953,9 @@
                                     totalElements[1].innerHTML =
                                         `Tiền cần thanh toán là : ${finalTotal.toLocaleString('vi-VN')}đ`;
 
+                                    // Update payment modal amounts
+                                    updatePaymentAmounts(finalTotal);
+
                                     alert(data.message);
                                 }
                             } else {
@@ -967,6 +970,26 @@
                     alert('Vui lòng chọn một phiếu giảm giá');
                 }
             });
+        }
+
+        // Function to update payment amounts in modal
+        function updatePaymentAmounts(amount) {
+            // Update all payment method displays
+            const cashPaymentAmount = document.querySelector('#cashPayment p strong');
+            const cardPaymentAmount = document.querySelector('#cardPayment p strong');
+            const qrPaymentAmount = document.querySelector('#qrPayment p strong');
+
+            if (cashPaymentAmount) {
+                cashPaymentAmount.textContent = amount.toLocaleString('vi-VN') + 'đ';
+            }
+
+            if (cardPaymentAmount) {
+                cardPaymentAmount.textContent = amount.toLocaleString('vi-VN') + 'đ';
+            }
+
+            if (qrPaymentAmount) {
+                qrPaymentAmount.textContent = amount.toLocaleString('vi-VN') + 'đ';
+            }
         }
     });
     </script>

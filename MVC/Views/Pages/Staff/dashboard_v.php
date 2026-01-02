@@ -89,6 +89,74 @@
         font-size: 14px;
         color: var(--muted);
     }
+
+    .recent-orders {
+        margin-top: 30px;
+    }
+
+    .recent-orders h2 {
+        margin-bottom: 15px;
+        color: #253243;
+    }
+
+    .order-list {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    .order-list::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .order-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .order-list::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 4px;
+    }
+
+    .order-list::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    .order-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #e3e7ef;
+    }
+
+    .order-item:last-child {
+        border-bottom: none;
+    }
+
+    .order-info {
+        flex: 1;
+    }
+
+    .order-status {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-paid {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .status-unpaid {
+        background: #fed7aa;
+        color: #c2410c;
+    }
     </style>
 
     <div class="card">
@@ -100,17 +168,17 @@
         <div class="stats-grid">
             <div class="stat-card tables">
                 <div class="stat-label">Bàn đang hoạt động</div>
-                <div class="stat-value">3</div>
+                <div class="stat-value"><?php echo mysqli_num_rows($data['active_tables']); ?></div>
                 <div class="stat-title">Bàn</div>
             </div>
             <div class="stat-card orders">
                 <div class="stat-label">Đơn hàng hôm nay</div>
-                <div class="stat-value">15</div>
+                <div class="stat-value"><?php echo $data['todays_orders']['total_orders']; ?></div>
                 <div class="stat-title">Đơn</div>
             </div>
             <div class="stat-card revenue">
                 <div class="stat-label">Doanh thu hôm nay</div>
-                <div class="stat-value">2,500,000 ₫</div>
+                <div class="stat-value"><?php echo number_format($data['todays_revenue']['total_revenue'], 0, ',', '.'); ?> ₫</div>
                 <div class="stat-title">VND</div>
             </div>
         </div>
@@ -127,7 +195,36 @@
                 <div class="link-title">Quản lý đơn hàng</div>
                 <div class="link-desc">Theo dõi và cập nhật đơn hàng</div>
             </a>
+        </div>
 
+        <div class="recent-orders">
+            <h2>Đơn hàng gần đây</h2>
+            <div class="order-list">
+                <?php
+                // Get recent orders
+                $recent_orders = $this->model("Donhang_m")->getOrdersForStaffWithPagination(5, 0);
+                if ($recent_orders && mysqli_num_rows($recent_orders) > 0) {
+                    while($order = mysqli_fetch_array($recent_orders)) {
+                        $status_class = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'status-paid' : 'status-unpaid';
+                        $status_text = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'Đã thanh toán' : 'Chưa thanh toán';
+                ?>
+                <div class="order-item">
+                    <div class="order-info">
+                        <div><strong><?php echo htmlspecialchars($order['ma_don_hang']); ?></strong> - Bàn <?php echo htmlspecialchars($order['ma_ban']); ?></div>
+                        <div style="font-size: 14px; color: #6b7280;"><?php echo htmlspecialchars($order['ngay_tao']); ?></div>
+                    </div>
+                    <div class="order-info" style="text-align: right;">
+                        <div><?php echo number_format($order['tong_tien'], 0, ',', '.'); ?> ₫</div>
+                        <div class="order-status <?php echo $status_class; ?>"><?php echo $status_text; ?></div>
+                    </div>
+                </div>
+                <?php
+                    }
+                } else {
+                    echo '<div style="text-align: center; padding: 20px; color: #9ca3af;">Không có đơn hàng gần đây</div>';
+                }
+                ?>
+            </div>
         </div>
     </div>
 </body>

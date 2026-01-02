@@ -405,6 +405,18 @@
         const imgElement = menuItem.querySelector('img');
         const imgSrc = imgElement ? imgElement.src : '';
 
+        // Get available quantity from menu item
+        const availableQuantityElement = menuItem.querySelector('.menu-item-quantity');
+        const availableText = availableQuantityElement ? availableQuantityElement.textContent : '0';
+        const availableQuantity = parseInt(availableText.match(/\d+/)[0]) || 0;
+
+        // Check if requested quantity exceeds available quantity
+        if (quantity > availableQuantity) {
+            alert(`Số lượng yêu cầu vượt quá số lượng hiện có (${availableQuantity} món).`);
+            inputElement.value = availableQuantity;
+            return;
+        }
+
         if (quantity > 0) {
             // Add or update item in cart
             cart[id] = {
@@ -424,20 +436,37 @@
     }
 
     function addItemToCart(id, name, price) {
-        // Find the menu item to get its image
+        // Find the menu item to get its image and available quantity
         const menuItem = document.querySelector(`.menu-item[onclick*="'${id}'"]`);
         let imgSrc = '';
+        let availableQuantity = 0;
 
         if (menuItem) {
             const imgElement = menuItem.querySelector('img');
             if (imgElement) {
                 imgSrc = imgElement.src;
             }
+
+            // Get available quantity from menu item
+            const availableQuantityElement = menuItem.querySelector('.menu-item-quantity');
+            const availableText = availableQuantityElement ? availableQuantityElement.textContent : '0';
+            availableQuantity = parseInt(availableText.match(/\d+/)[0]) || 0;
         }
 
+        // Check if cart already has this item
         if (cart[id]) {
+            // Check if adding one more would exceed available quantity
+            if (cart[id].quantity >= availableQuantity) {
+                alert(`Số lượng hiện có chỉ còn ${availableQuantity} món.`);
+                return;
+            }
             cart[id].quantity++;
         } else {
+            // Check if adding one item is within available quantity
+            if (availableQuantity < 1) {
+                alert(`Món này đã hết hàng.`);
+                return;
+            }
             cart[id] = {
                 id: id,
                 name: name,
@@ -452,7 +481,26 @@
 
     function updateQuantity(id, change) {
         if (cart[id]) {
-            cart[id].quantity += change;
+            // Get the menu item to check available quantity
+            const menuItem = document.querySelector(`.menu-item[onclick*="'${id}'"]`);
+            let availableQuantity = 0;
+
+            if (menuItem) {
+                const availableQuantityElement = menuItem.querySelector('.menu-item-quantity');
+                const availableText = availableQuantityElement ? availableQuantityElement.textContent : '0';
+                availableQuantity = parseInt(availableText.match(/\d+/)[0]) || 0;
+            }
+
+            const newQuantity = cart[id].quantity + change;
+
+            // Check if the new quantity exceeds available quantity
+            if (newQuantity > availableQuantity) {
+                alert(`Số lượng hiện có chỉ còn ${availableQuantity} món.`);
+                return;
+            }
+
+            cart[id].quantity = newQuantity;
+
             if (cart[id].quantity <= 0) {
                 delete cart[id];
             } else {
@@ -481,10 +529,35 @@
     // Function to update quantity from cart controls
     function updateQuantityFromCart(id, change) {
         if (cart[id]) {
-            cart[id].quantity += change;
+            // Get the menu item to check available quantity
+            const menuItem = document.querySelector(`.menu-item[onclick*="'${id}'"]`);
+            let availableQuantity = 0;
+
+            if (menuItem) {
+                const availableQuantityElement = menuItem.querySelector('.menu-item-quantity');
+                const availableText = availableQuantityElement ? availableQuantityElement.textContent : '0';
+                availableQuantity = parseInt(availableText.match(/\d+/)[0]) || 0;
+            }
+
+            const newQuantity = cart[id].quantity + change;
+
+            // Check if the new quantity exceeds available quantity
+            if (newQuantity > availableQuantity) {
+                alert(`Số lượng hiện có chỉ còn ${availableQuantity} món.`);
+                return;
+            }
+
+            // Check if the new quantity is not negative
+            if (newQuantity < 0) {
+                return; // Don't allow negative quantities
+            }
+
+            cart[id].quantity = newQuantity;
+
             if (cart[id].quantity <= 0) {
                 delete cart[id];
             }
+
             // Update the input field in the menu grid
             const inputField = document.querySelector(`input[data-id="${id}"]`);
             if (inputField) {
@@ -506,6 +579,18 @@
         const menuItem = inputElement.closest('.menu-item');
         const imgElement = menuItem.querySelector('img');
         const imgSrc = imgElement ? imgElement.src : '';
+
+        // Get available quantity from menu item
+        const availableQuantityElement = menuItem.querySelector('.menu-item-quantity');
+        const availableText = availableQuantityElement ? availableQuantityElement.textContent : '0';
+        const availableQuantity = parseInt(availableText.match(/\d+/)[0]) || 0;
+
+        // Check if requested quantity exceeds available quantity
+        if (quantity > availableQuantity) {
+            alert(`Số lượng yêu cầu vượt quá số lượng hiện có (${availableQuantity} món).`);
+            inputElement.value = availableQuantity;
+            return;
+        }
 
         if (quantity > 0) {
             // Add or update item in cart
@@ -535,6 +620,16 @@
             const itemTotal = item.price * item.quantity;
             total += itemTotal;
 
+            // Get available quantity from menu item to show in cart
+            const menuItem = document.querySelector(`.menu-item[onclick*="'${item.id}'"]`);
+            let availableQuantity = 0;
+
+            if (menuItem) {
+                const availableQuantityElement = menuItem.querySelector('.menu-item-quantity');
+                const availableText = availableQuantityElement ? availableQuantityElement.textContent : '0';
+                availableQuantity = parseInt(availableText.match(/\d+/)[0]) || 0;
+            }
+
             // Create image element if image exists
             const imgHtml = item.img ?
                 `<img src="${item.img}" alt="${item.name}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; margin-right: 10px;" />` :
@@ -546,7 +641,7 @@
                             ${imgHtml}
                             <div class="cart-item-info">
                                 <div>${item.name}</div>
-                                <div style="color: #6b7280; font-size: 14px;">${item.price.toLocaleString('vi-VN')} ₫ × ${item.quantity}</div>
+                                <div style="color: #6b7280; font-size: 14px;">${item.price.toLocaleString('vi-VN')} ₫ × ${item.quantity} (Còn ${availableQuantity} món)</div>
                             </div>
                         </div>
                         <div class="cart-item-actions">

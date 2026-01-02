@@ -15,7 +15,7 @@
     <div class="app-container">
         <aside class="sidebar">
             <div class="brand">
-                <i class="fa-solid fa-cube"></i> ☕ Coffee Manager
+                ☕ Coffee Manager
             </div>
             <?php $current = isset($data['page']) ? $data['page'] : ''; ?>
             <nav class="menu_left1">
@@ -49,7 +49,7 @@
                     <li>
                         <a href="http://localhost/QLSP/Sanpham/danhsach"
                             class="<?php echo ($current === 'Danhsachsanpham_v') ? 'active' : ''; ?>">
-                            <i class="fa-solid fa-list-ul"></i> Quản lý sản phẩm
+                            <i class="fa-solid fa-list-ul"></i> Quản lý nguyên liệu
                         </a>
                     </li>
                     <li>

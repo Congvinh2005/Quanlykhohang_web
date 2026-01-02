@@ -30,11 +30,13 @@
             // Lấy thống kê cơ bản cho bảng điều khiển nhân viên
             $active_tables = $this->bu->getActiveTables();
             $todays_orders = $this->dh->getTodaysOrders();
+            $todays_revenue = $this->dh->getTodaysRevenue();
 
             $this->view('StaffMaster', [
                 'page' => 'Staff/dashboard_v',
                 'active_tables' => $active_tables,
-                'todays_orders' => $todays_orders
+                'todays_orders' => $todays_orders,
+                'todays_revenue' => $todays_revenue
             ]);
         }
 
@@ -186,6 +188,38 @@
                     if ($order && mysqli_num_rows($order) > 0) {
                         $order_row = mysqli_fetch_array($order);
                         $ma_ban = $order_row['ma_ban'];
+
+                        // Get order details to reduce inventory
+                        $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
+
+                        if ($order_details && !empty($order_details)) {
+                            // Reduce inventory for each item in the order
+                            foreach ($order_details as $detail) {
+                                $ma_thuc_don = $detail['ma_thuc_don'];
+                                $so_luong_dat = $detail['so_luong'];
+
+                                // Get current quantity from database
+                                $thucdon_model = $this->model("Thucdon_m");
+                                $thucdon = $thucdon_model->Thucdon_getById($ma_thuc_don);
+
+                                if ($thucdon && mysqli_num_rows($thucdon) > 0) {
+                                    $thucdon_row = mysqli_fetch_array($thucdon);
+                                    $current_quantity = $thucdon_row['so_luong'];
+
+                                    // Calculate new quantity (reduce by ordered amount)
+                                    $new_quantity = $current_quantity - $so_luong_dat;
+
+                                    // Ensure quantity doesn't go below 0
+                                    if ($new_quantity < 0) {
+                                        $new_quantity = 0;
+                                    }
+
+                                    // Update the quantity in the database
+                                    $update_sql = "UPDATE thuc_don SET so_luong = $new_quantity WHERE ma_thuc_don = '$ma_thuc_don'";
+                                    mysqli_query($thucdon_model->con, $update_sql);
+                                }
+                            }
+                        }
 
                         // Clear the cart for this table after payment
                         $this->clearCartForTable($ma_ban);

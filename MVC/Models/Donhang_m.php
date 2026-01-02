@@ -164,5 +164,13 @@
                     WHERE d.ma_don_hang = '$ma_don_hang'";
             return mysqli_query($this->con, $sql);
         }
+
+        // Hàm lấy doanh thu hôm nay
+        function getTodaysRevenue(){
+            $today = date('Y-m-d');
+            $sql = "SELECT COALESCE(SUM(tong_tien), 0) as total_revenue FROM don_hang WHERE DATE(ngay_tao) = '$today' AND trang_thai_thanh_toan = 'da_thanh_toan'";
+            $result = mysqli_query($this->con, $sql);
+            return mysqli_fetch_assoc($result);
+        }
     }
 ?>
