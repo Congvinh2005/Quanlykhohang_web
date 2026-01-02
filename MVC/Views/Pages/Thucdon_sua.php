@@ -1,249 +1,139 @@
 <!DOCTYPE html>
 <html lang="vi">
 
-<body>
+<head>
+    <meta charset="UTF-8">
+    <title>Cập nhật món ăn</title>
+
+    <!-- FONT + ICON -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
-    /* Reuse styles similar to Sanpham */
-    .btn-create {
-        background: #10b981;
-        /* Màu xanh lá cây */
-        padding: 8px 15px;
-        border-radius: 10px;
-        color: #fff;
-        font-weight: 600;
-        text-decoration: none;
-    }
-
-    .btn-edit {
-        background: #ffc107;
-        padding: 6px 10px;
-        border-radius: 6px;
-        margin-right: 5px;
-        color: #fff;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-delete {
-        background: #dc3545;
-        padding: 6px 10px;
-        border-radius: 6px;
-        color: #fff;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    /* Các style cơ bản khác giữ nguyên */
-    :root {
-        --bg: #f5f7fb;
-        --card: #ffffff;
-        --accent: #2463ff;
-        --muted: #6b7280;
-        --radius: 12px;
-        --gap: 16px;
-        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
-
-    * {
-        box-sizing: border-box
-    }
-
+    /* Simple form styles following existing pattern */
     .card {
         width: 100%;
-        background: var(--card);
-        border-radius: var(--radius);
-        box-shadow: 0 8px 30px rgba(24, 99, 255, 0.08);
+        background: #fff;
         padding: 28px;
-        margin-bottom: 20px;
-    }
-
-    h1 {
-        margin: 0 0 6px;
-        font-size: 20px
-    }
-
-    p.lead {
-        margin: 0 0 20px;
-        color: var(--muted);
-        font-size: 14px
-    }
-
-    .form-search {
-        display: flex;
-        gap: var(--gap);
-        align-items: flex-end;
-    }
-
-    .form-search>div {
-        flex: 1 1 200px;
+        border-radius: 12px
     }
 
     label {
         display: block;
-        font-size: 15px;
-        color: #253243;
         margin-bottom: 6px;
-        font-weight: bold;
+        font-weight: 600
     }
 
-    input[type="text"],
-    input[type="number"],
-    select,
-    input[type="file"] {
+    input,
+    select {
         width: 100%;
-        padding: 10px 12px;
-        border: 1px solid #e3e7ef;
+        padding: 10px;
         border-radius: 10px;
-        background: #fbfdff;
-        font-size: 14px;
-        outline: none;
-    }
-
-    input:focus,
-    select:focus {
-        box-shadow: 0 0 0 4px rgba(36, 99, 255, 0.08);
-        border-color: var(--accent);
+        border: 1px solid #e3e7ef
     }
 
     .actions {
         display: flex;
-        gap: 12px;
-        justify-content: flex-end;
-    }
-
-    .actions-top {
-        display: flex;
         justify-content: space-between;
         align-items: center;
-        flex-wrap: wrap;
-        gap: 15px;
+        margin-top: 20px
     }
 
-    button {
-        padding: 10px 16px;
-        border-radius: 10px;
-        border: 0;
-        font-size: 14px;
-        cursor: pointer
-    }
-
-    .btn-primary {
-        background: var(--accent);
+    .btn-back {
+        background: #6b7280;
         color: #fff;
-        transition: 0.2s;
+        padding: 8px 15px;
+        border-radius: 10px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px
     }
 
     .btn-ghost {
         background: transparent;
         border: 1px solid #e6e9f2;
-        color: var(--muted);
+        color: #6b7280;
         padding: 10px 16px;
-        border-radius: 10px;
-        text-decoration: none;
-        display: inline-block;
-        line-height: 1;
+        border-radius: 10px
     }
 
-    .btn-excel {
-        background: #e34ae5ff;
-        padding: 10px 16px;
-        border-radius: 10px;
+    .btn-primary {
+        background: #2463ff;
         color: #fff;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: 0
     }
 
-    .btn-excel:hover {
-        background: #e50f9aff;
-    }
-
-    .table-container {
-        max-height: 500px;
-        overflow-y: auto;
-        margin-top: 20px;
-        border: 1px solid #e3e7ef;
-        border-radius: var(--radius);
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        border-spacing: 0;
-    }
-
-    thead th {
-        position: sticky;
-        top: 0;
+    .file-input-wrapper {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
         background: #f8fafc;
-        z-index: 10;
-        border-bottom: 2px solid #e3e7ef;
-        font-weight: 600;
+        padding: 10px 15px;
+        border: 2px dashed #cbd5e1;
+        border-radius: 8px;
+        transition: border-color 0.3s;
     }
 
-    th,
-    td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #e3e7ef;
+    .file-input-wrapper:hover {
+        border-color: #9ca3af;
     }
 
-    tbody tr:hover {
-        background-color: #f8fafc;
+    .file-input-wrapper input[type="file"] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
     }
 
-    .hint {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 6px
+    .file-name {
+        margin-top: 8px;
+        font-size: 14px;
+        color: #4b5563;
+    }
+
+    .current-image {
+        margin-top: 10px;
+    }
+
+    .current-image img {
+        max-width: 100px;
+        max-height: 100px;
+        object-fit: cover;
+        border-radius: 4px;
     }
     </style>
+</head>
+
+<body>
 
     <div class="card">
-        <div class="actions-top">
+        <h1>Cập nhật Món ăn</h1>
+        <p class="lead">Chỉnh sửa thông tin món ăn.</p>
+        <form method="post" action="http://localhost/QLSP/Thucdon/update" enctype="multipart/form-data">
             <div>
-                <h1><i class="fa-solid fa-utensils"></i> Cập nhật Thực Đơn</h1>
-                <p class="lead">Cập nhật thông tin món ăn.</p>
-            </div>
-            <div class="actions">
-                <a href="http://localhost/QLSP/Thucdon/danhsach" class="btn-ghost"><i
-                        class="fa-solid fa-list"></i> Danh sách</a>
-            </div>
-        </div>
-
-        <form method="post" action="http://localhost/QLSP/Thucdon/update" class="form-search"
-            style="margin-bottom:30px;border:1px dashed #cbd5e1;padding:20px;border-radius:12px;background:#f8fafc"
-            enctype="multipart/form-data">
-            <div>
-                <label for="txtMathucdon">Mã thực đơn <span style="color:red;">(*)</span></label>
-                <input type="text" id="txtMathucdon" name="txtMathucdon" placeholder="Nhập mã thực đơn..."
-                    value="<?php echo htmlspecialchars($data['ma_thuc_don']); ?>" readonly />
+                <label>Mã thực đơn <span style="color:red">*</span></label>
+                <input type="text" name="txtMathucdon" value="<?php echo htmlspecialchars($data['ma_thuc_don']); ?>" readonly />
             </div>
             <div>
-                <label for="txtTenmon">Tên món <span style="color:red;">(*)</span></label>
-                <input type="text" id="txtTenmon" name="txtTenmon" placeholder="Nhập tên món..."
-                    value="<?php echo htmlspecialchars($data['ten_mon']); ?>" />
+                <label>Tên món <span style="color:red">*</span></label>
+                <input type="text" name="txtTenmon" value="<?php echo htmlspecialchars($data['ten_mon']); ?>" />
             </div>
             <div>
-                <label for="txtImage">Hình ảnh món</label>
-                <input type="file" id="txtImage" name="txtImage" accept="image/*" />
-                <div class="hint">Chọn hình ảnh mới (nếu muốn thay đổi)</div>
-                <?php if(!empty($data['img_thuc_don'])): ?>
-                <div style="margin-top:10px;">
-                    <img src="<?php echo htmlspecialchars($data['img_thuc_don']); ?>" alt="<?php echo htmlspecialchars($data['ten_mon']); ?>" style="max-width:100px;max-height:100px;">
-                </div>
-                <?php endif; ?>
+                <label>Giá</label>
+                <input type="number" name="txtGia" value="<?php echo htmlspecialchars($data['gia']); ?>" />
             </div>
             <div>
-                <label for="txtGia">Giá</label>
-                <input type="number" id="txtGia" name="txtGia" placeholder="Nhập giá..."
-                    value="<?php echo htmlspecialchars($data['gia']); ?>" />
+                <label>Số lượng</label>
+                <input type="number" name="txtSoluong" value="<?php echo htmlspecialchars($data['so_luong']); ?>" min="0" />
             </div>
             <div>
-                <label for="ddlDanhmuc">Danh mục</label>
-                <select id="ddlDanhmuc" name="ddlDanhmuc">
+                <label>Danh mục <span style="color:red">*</span></label>
+                <select name="ddlDanhmuc" required>
                     <option value="">-- Chọn danh mục --</option>
                     <?php
                     if(isset($data['dsdm'])){
@@ -256,17 +146,41 @@
                 </select>
             </div>
             <div>
-                <label for="txtSoluong">Số lượng</label>
-                <input type="number" id="txtSoluong" name="txtSoluong" placeholder="Nhập số lượng..."
-                    value="<?php echo htmlspecialchars($data['so_luong']); ?>" min="0" />
+                <label>Hình ảnh</label>
+                <div class="file-input-wrapper">
+                    <span>Chọn hình ảnh mới...</span>
+                    <input type="file" name="txtImage" accept="image/*" />
+                </div>
+                <div class="file-name" id="fileName">Chưa chọn file mới</div>
+                <?php if(!empty($data['img_thuc_don'])): ?>
+                <div class="current-image">
+                    <p>Hình ảnh hiện tại:</p>
+                    <img src="<?php echo htmlspecialchars($data['img_thuc_don']); ?>" alt="<?php echo htmlspecialchars($data['ten_mon']); ?>" />
+                </div>
+                <?php endif; ?>
             </div>
 
-            <div class="actions" style="margin-top:0;">
-                <button type="submit" class="btn-primary" name="btnCapnhat"><i class="fa-solid fa-sync"></i> Cập nhật</button>
-                <a href="http://localhost/QLSP/Thucdon/danhsach" class="btn-ghost">Hủy</a>
+            <div class="actions">
+                <a href="http://localhost/QLSP/Thucdon/danhsach" class="btn-back"><i class="fa-solid fa-arrow-left"></i>
+                    Quay lại</a>
+                <div style="display:flex;gap:12px">
+                    <button type="reset" class="btn-ghost">Reset</button>
+                    <button type="submit" name="btnCapnhat" class="btn-primary">Cập nhật thông tin</button>
+                </div>
             </div>
         </form>
     </div>
+
+    <script>
+        document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+            const fileNameDisplay = document.getElementById('fileName');
+            if (e.target.files.length > 0) {
+                fileNameDisplay.textContent = 'Đã chọn: ' + e.target.files[0].name;
+            } else {
+                fileNameDisplay.textContent = 'Chưa chọn file mới';
+            }
+        });
+    </script>
 </body>
 
 </html>

@@ -341,6 +341,16 @@ function up_l(){
             return;
         }
 
+        // ✅ CHECK TRÙNG EMAIL
+        $checkEmail = $this->user->checktrungEmail($email, null);
+        if(mysqli_num_rows($checkEmail) > 0){
+            echo "<script>
+                alert('Email $email đã được sử dụng! Vui lòng kiểm tra lại file.');
+                window.location.href='http://localhost/QLSP/Users/import_form';
+            </script>";
+            return;
+        }
+
         // Insert
         if(!$this->user->users_ins($ma_user,$ten_user,$password,$email,$phan_quyen)){
             die(mysqli_error($this->user->con));

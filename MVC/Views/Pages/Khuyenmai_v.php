@@ -207,8 +207,8 @@
                 <p class="lead">Thêm chương trình khuyến mãi mới.</p>
             </div>
             <div class="actions">
-                <a href="http://localhost/QLSP/Khuyenmai/danhsach" class="btn-ghost"><i
-                        class="fa-solid fa-list"></i> Danh sách</a>
+                <a href="http://localhost/QLSP/Khuyenmai/danhsach" class="btn-ghost"><i class="fa-solid fa-list"></i>
+                    Danh sách</a>
             </div>
         </div>
 
@@ -217,17 +217,21 @@
             <div>
                 <label for="txtMakhuyenmai">Mã khuyến mãi <span style="color:red;">(*)</span></label>
                 <input type="text" id="txtMakhuyenmai" name="txtMakhuyenmai" placeholder="Nhập mã khuyến mãi..."
+                    required
                     value="<?php echo isset($data['ma_khuyen_mai']) ? htmlspecialchars($data['ma_khuyen_mai']) : ''; ?>" />
             </div>
             <div>
                 <label for="txtTenkhuyenmai">Tên khuyến mãi <span style="color:red;">(*)</span></label>
                 <input type="text" id="txtTenkhuyenmai" name="txtTenkhuyenmai" placeholder="Nhập tên khuyến mãi..."
+                    required
                     value="<?php echo isset($data['ten_khuyen_mai']) ? htmlspecialchars($data['ten_khuyen_mai']) : ''; ?>" />
             </div>
             <div>
                 <label for="txtTienkhuyenmai">Tiền khuyến mãi <span style="color:red;">(*)</span></label>
                 <input type="number" id="txtTienkhuyenmai" name="txtTienkhuyenmai" placeholder="Nhập tiền khuyến mãi..."
-                    value="<?php echo isset($data['tien_khuyen_mai']) ? htmlspecialchars($data['tien_khuyen_mai']) : ''; ?>" step="0.01" />
+                    required
+                    value="<?php echo isset($data['tien_khuyen_mai']) ? htmlspecialchars($data['tien_khuyen_mai']) : ''; ?>"
+                    step="0.01" />
             </div>
             <div>
                 <label for="txtGhichu">Ghi chú</label>

@@ -47,7 +47,14 @@
                     $kq1 = $this->km->checktrungMaKhuyenMai($ma_khuyen_mai);
                     if($kq1){
                         echo "<script>alert('Mã khuyến mãi đã tồn tại! Vui lòng nhập mã khác.')</script>";
-                        $this->themmoi();
+                         echo "<script>alert('Mã user đã tồn tại!')</script>";
+                        $this->view('Master', [
+                            'page' => 'Khuyenmai_v',
+                            'ma_khuyen_mai' => $ma_khuyen_mai,
+                            'ten_khuyen_mai' => $ten_khuyen_mai,
+                            'tien_khuyen_mai' => $tien_khuyen_mai,
+                            'ghi_chu' => $ghi_chu
+                        ]);
                     } else {
                         $kq = $this->km->khuyenmai_ins($ma_khuyen_mai, $ten_khuyen_mai, $tien_khuyen_mai, $ghi_chu);
                         if($kq) {
@@ -55,7 +62,13 @@
                             $this->danhsach(); // Quay về danh sách sau khi thêm thành công
                         } else {
                             echo "<script>alert('Thêm mới thất bại!');</script>";
-                            $this->themmoi();
+                            $this->view('Master', [
+                            'page' => 'Khuyenmai_v',
+                            'ma_khuyen_mai' => $ma_khuyen_mai,
+                            'ten_khuyen_mai' => $ten_khuyen_mai,
+                            'tien_khuyen_mai' => $tien_khuyen_mai,
+                            'ghi_chu' => $ghi_chu
+                        ]);
                         }
                     }
                 }

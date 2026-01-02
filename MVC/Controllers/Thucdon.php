@@ -59,7 +59,15 @@
 
                     if(in_array($ext, $allowed)) {
                         $new_filename = 'td_' . $ma_thuc_don . '_' . time() . '.' . $ext;
+                        // Sử dụng đường dẫn tuyệt đối đến thư mục Public/Pictures/thucdon
                         $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/thucdon/' . $new_filename;
+
+                        // Tạo thư mục nếu chưa tồn tại
+                        $upload_dir = dirname($upload_path);
+                        if (!is_dir($upload_dir)) {
+                            // Tạo thư mục với quyền cao hơn và đảm bảo thư mục cha tồn tại
+                            mkdir($upload_dir, 0777, true);
+                        }
 
                         if(move_uploaded_file($filetmp, $upload_path)) {
                             $img_thuc_don = '/qlsp/Public/Pictures/thucdon/' . $new_filename;
@@ -102,6 +110,9 @@
                     $this->themmoi();
                 } else if($ten_mon == ''){
                     echo "<script>alert('Tên món không được rỗng!')</script>";
+                    $this->themmoi();
+                } else if($ma_danh_muc == ''){
+                    echo "<script>alert('Vui lòng chọn danh mục cho món ăn!')</script>";
                     $this->themmoi();
                 } else {
                     $kq1 = $this->td->checktrungMaThucdon($ma_thuc_don);
@@ -317,7 +328,15 @@
 
                     if(in_array($ext, $allowed)) {
                         $new_filename = 'td_' . $ma_thuc_don . '_' . time() . '.' . $ext;
+                        // Sử dụng đường dẫn tuyệt đối đến thư mục Public/Pictures/thucdon
                         $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/thucdon/' . $new_filename;
+
+                        // Tạo thư mục nếu chưa tồn tại
+                        $upload_dir = dirname($upload_path);
+                        if (!is_dir($upload_dir)) {
+                            // Tạo thư mục với quyền cao hơn
+                            mkdir($upload_dir, 0777, true);
+                        }
 
                         if(move_uploaded_file($filetmp, $upload_path)) {
                             // Xóa hình ảnh cũ nếu tồn tại

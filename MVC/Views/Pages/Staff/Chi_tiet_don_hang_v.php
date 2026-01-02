@@ -558,6 +558,10 @@
             </div>
 
 
+            <div class="total">Tổng tiền: <?php echo number_format($order['tong_tien'], 0, '.', '.') . 'đ'; ?></div>
+            <?php if($order['tien_khuyen_mai'] > 0): ?>
+            <div class="total">Giảm giá: <?php echo number_format($order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></div>
+            <?php endif; ?>
             <div class="total">Tiền cần thanh toán là :
                 <?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></div>
 
