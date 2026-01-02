@@ -14,7 +14,7 @@
     .table-card {
         background: var(--card);
         border-radius: var(--radius);
-        padding: 30px 40px;
+        padding: 25px 20px;
         /* gọn lại cho cân */
         text-align: center;
         box-shadow: 0 6px 9px rgba(0, 0, 0, 0.05);
@@ -25,8 +25,6 @@
         overflow: hidden;
 
         min-height: 230px;
-
-
     }
 
 
@@ -34,58 +32,6 @@
         transform: translateY(-7.5px);
         /* -5px * 1.5 */
         box-shadow: 0 12px 22.5px rgba(0, 0, 0, 0.1);
-    }
-
-    .table-icon {
-        font-size: 54px;
-        /* 36px * 1.5 */
-        margin-bottom: 18px;
-        /* 12px * 1.5 */
-    }
-
-    .table-number {
-        font-size: 27px;
-        /* 18px * 1.5 */
-        font-weight: 600;
-        color: #253243;
-        margin: 12px 0;
-        /* 8px * 1.5 */
-    }
-
-    .table-status {
-        font-size: 21px;
-        /* 14px * 1.5 */
-        padding: 9px 18px;
-        /* 6px * 1.5, 12px * 1.5 */
-        border-radius: 30px;
-        /* 20px * 1.5 */
-        display: inline-block;
-        margin: 12px 0;
-        /* 8px * 1.5 */
-    }
-
-    .table-capacity {
-        font-size: 19.5px;
-        /* 13px * 1.5 */
-        color: #253243;
-        /* Màu đen (#253243 là màu văn bản chính) */
-        margin-top: 15px;
-        /* 10px * 1.5 */
-    }
-
-    .table-card.available {
-        border-color: #10b981;
-        background: #f0fdf4;
-    }
-
-    .table-card.occupied {
-        border-color: #f59e0b;
-        background: #fffbeb;
-    }
-
-    .table-card.reserved {
-        border-color: #3b82f6;
-        background: #eff6ff;
     }
 
     .table-icon {
@@ -98,6 +44,9 @@
         font-weight: 600;
         color: #253243;
         margin: 5px 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.4;
     }
 
     .table-status {
@@ -105,6 +54,28 @@
         padding: 4px 8px;
         border-radius: 20px;
         display: inline-block;
+    }
+
+    .table-capacity {
+        font-size: 16px;
+        color: #253243;
+        /* Màu đen (#253243 là màu văn bản chính) */
+        margin-top: 10px;
+    }
+
+    .table-card.available {
+        border-color: #10b981;
+        background: #f0fdf4;
+    }
+
+    .table-card.occupied {
+        border-color: #f15a5aff;
+        background: #edababff;
+    }
+
+    .table-card.reserved {
+        border-color: #3b82f6;
+        background: #eff6ff;
     }
 
     .status-available {

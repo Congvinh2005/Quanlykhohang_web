@@ -93,6 +93,9 @@
         border-collapse: collapse;
         background: #fff;
         margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
     }
 
     th,
@@ -105,6 +108,9 @@
     th {
         background: #fafafa;
         font-weight: bold;
+        position: sticky;
+        top: 0;
+        z-index: 10;
     }
 
     td:first-child {
@@ -118,6 +124,19 @@
         padding: 6px 10px;
         border-radius: 4px;
         cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .btn-delete:hover {
+        background: #c0392b;
+    }
+
+    .table-container {
+        max-height: 400px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     /* ===== THÊM MÓN ===== */
@@ -281,50 +300,52 @@
 
 
             ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Món</th>
-                        <th>Số lượng</th>
-                        <th>Đơn giá</th>
-                        <th>Tổng</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                        if(isset($data['order_details']) && is_array($data['order_details'])){
-                            foreach($data['order_details'] as $detail) {
-                    ?>
-                    <tr>
-                        <td>
-                            <div class="cart-item-details">
-                                <?php if(isset($detail['img_thuc_don']) && $detail['img_thuc_don']): ?>
-                                <img src="<?php echo htmlspecialchars($detail['img_thuc_don']); ?>"
-                                    alt="<?php echo htmlspecialchars($detail['ten_mon']); ?>" class="cart-item-image" />
-                                <?php else: ?>
-                                <div
-                                    style="width: 50px; height: 50px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-right: 10px;">
-                                    <i class="fa-solid fa-utensils" style="color: #d1d5db;"></i>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Món</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Tổng</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            if(isset($data['order_details']) && is_array($data['order_details'])){
+                                foreach($data['order_details'] as $detail) {
+                        ?>
+                        <tr>
+                            <td>
+                                <div class="cart-item-details">
+                                    <?php if(isset($detail['img_thuc_don']) && $detail['img_thuc_don']): ?>
+                                    <img src="<?php echo htmlspecialchars($detail['img_thuc_don']); ?>"
+                                        alt="<?php echo htmlspecialchars($detail['ten_mon']); ?>" class="cart-item-image" />
+                                    <?php else: ?>
+                                    <div
+                                        style="width: 50px; height: 50px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-right: 10px;">
+                                        <i class="fa-solid fa-utensils" style="color: #d1d5db;"></i>
+                                    </div>
+                                    <?php endif; ?>
+                                    <div><?php echo htmlspecialchars($detail['ten_mon']); ?></div>
                                 </div>
-                                <?php endif; ?>
-                                <div><?php echo htmlspecialchars($detail['ten_mon']); ?></div>
-                            </div>
-                        </td>
-                        <td><?php echo htmlspecialchars($detail['so_luong']); ?></td>
-                        <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'], 0, '.', '.') . 'đ'; ?></td>
-                        <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'] * $detail['so_luong'], 0, '.', '.') . 'đ'; ?>
-                        </td>
-                        <td><button class="btn-delete">Xóa</button></td>
-                    </tr>
-                    <?php
+                            </td>
+                            <td><?php echo htmlspecialchars($detail['so_luong']); ?></td>
+                            <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'], 0, '.', '.') . 'đ'; ?></td>
+                            <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'] * $detail['so_luong'], 0, '.', '.') . 'đ'; ?>
+                            </td>
+                            <td><button class="btn-delete">Xóa</button></td>
+                        </tr>
+                        <?php
+                                }
+                            } else {
+                                echo '<tr><td colspan="5">Không có chi tiết món ăn.</td></tr>';
                             }
-                        } else {
-                            echo '<tr><td colspan="5">Không có chi tiết món ăn.</td></tr>';
-                        }
-                    ?>
-                </tbody>
-            </table>
+                        ?>
+                    </tbody>
+                </table>
+            </div>
             <div class="total">Tổng cộng: <?php echo number_format($order['tong_tien'], 0, '.', '.') . 'đ'; ?></div>
 
 
