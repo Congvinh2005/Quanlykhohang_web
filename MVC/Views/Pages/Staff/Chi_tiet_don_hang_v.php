@@ -259,6 +259,191 @@
         border-left: 4px solid #ffc107;
         color: #856404;
     }
+
+    /* Payment Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 0;
+        border: none;
+        border-radius: 10px;
+        width: 600px;
+        max-width: 90%;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modal-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8f9fa;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .modal-header h2 {
+        margin: 0;
+        color: #333;
+        font-size: 22px;
+    }
+
+    .close {
+        font-size: 28px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+    }
+
+    .modal-body {
+        padding: 25px;
+    }
+
+    .payment-methods {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .payment-method {
+        flex: 1;
+        min-width: 150px;
+        text-align: center;
+        padding: 20px 10px;
+        border: 2px solid #e3e7ef;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .payment-method:hover {
+        border-color: #007bff;
+        background-color: #f0f8ff;
+    }
+
+    .payment-method.selected {
+        border-color: #007bff;
+        background-color: #e3f2fd;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+    }
+
+    .payment-method i {
+        font-size: 32px;
+        margin-bottom: 10px;
+        display: block;
+        color: #007bff;
+    }
+
+    .payment-content {
+        display: none;
+    }
+
+    .payment-content.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .qr-container {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .qr-placeholder {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        background: #f8f9fa;
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .qr-icon {
+        font-size: 60px;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+
+    .card-form {
+        margin-top: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 15px;
+    }
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+    .form-row .form-group input {
+        width: 100%;
+    }
     </style>
 </head>
 
@@ -321,7 +506,8 @@
                                 <div class="cart-item-details">
                                     <?php if(isset($detail['img_thuc_don']) && $detail['img_thuc_don']): ?>
                                     <img src="<?php echo htmlspecialchars($detail['img_thuc_don']); ?>"
-                                        alt="<?php echo htmlspecialchars($detail['ten_mon']); ?>" class="cart-item-image" />
+                                        alt="<?php echo htmlspecialchars($detail['ten_mon']); ?>"
+                                        class="cart-item-image" />
                                     <?php else: ?>
                                     <div
                                         style="width: 50px; height: 50px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; border-radius: 4px; margin-right: 10px;">
@@ -383,6 +569,84 @@
                 </button>
             </div>
 
+            <!-- Payment Modal -->
+            <div id="paymentModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Phương thức thanh toán</h2>
+                        <span class="close" id="closeModal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="payment-methods">
+                            <div class="payment-method" data-method="cash">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <span>Thanh toán tiền mặt</span>
+                            </div>
+                            <div class="payment-method" data-method="card">
+                                <i class="fa-solid fa-credit-card"></i>
+                                <span>Thẻ ngân hàng</span>
+                            </div>
+                            <div class="payment-method" data-method="qr">
+                                <i class="fa-solid fa-qrcode"></i>
+                                <span>Quét mã QR</span>
+                            </div>
+                        </div>
+
+                        <div class="payment-details" id="paymentDetails">
+                            <!-- Cash payment content -->
+                            <div id="cashPayment" class="payment-content">
+                                <h3>Thanh toán bằng tiền mặt</h3>
+                                <p>Tổng tiền cần thanh toán:
+                                    <strong><?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></strong>
+                                </p>
+                                <button class="btn btn-success" id="confirmCashPayment">Xác nhận thanh toán</button>
+                            </div>
+
+                            <!-- Card payment content -->
+                            <div id="cardPayment" class="payment-content" style="display: none;">
+                                <h3>Thanh toán bằng thẻ ngân hàng</h3>
+                                <p>Tổng tiền cần thanh toán:
+                                    <strong><?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></strong>
+                                </p>
+                                <div class="card-form">
+                                    <div class="form-group">
+                                        <label for="cardNumber">Số thẻ</label>
+                                        <input type="text" id="cardNumber" placeholder="Nhập số thẻ" maxlength="19">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="expiryDate">Ngày hết hạn</label>
+                                            <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cvv">CVV</label>
+                                            <input type="password" id="cvv" placeholder="CVV" maxlength="3">
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-success" id="confirmCardPayment">Xác nhận thanh toán</button>
+                                </div>
+                            </div>
+
+                            <!-- QR payment content -->
+                            <div id="qrPayment" class="payment-content" style="display: none;">
+                                <h3>Quét mã QR để thanh toán</h3>
+                                <p>Tổng tiền cần thanh toán :
+                                    <strong><?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></strong>
+                                </p>
+                                <div class="qr-container">
+                                    <div class="qr-placeholder">
+                                        <img id="qrCodeImage"
+                                            src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=<?php echo urlencode('Thanh toan don hang ' . $order['ma_don_hang'] . ' - So tien: ' . ($order['tong_tien'] - $order['tien_khuyen_mai'])); ?>"
+                                            alt="QR Code thanh toán" style="width: 200px; height: 200px;">
+                                    </div>
+                                </div>
+                                <button class="btn btn-success" id="confirmQRPayment">Xác nhận thanh toán</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <?php
             } else {
                 echo '<p>Không tìm thấy thông tin đơn hàng.</p>';
@@ -401,17 +665,86 @@
         const applyDiscountBtn = document.getElementById('apply-discount-btn');
         const orderId = paymentButton ? paymentButton.getAttribute('data-order-id') : null;
 
-        // Handle payment button click
+        // Payment modal elements
+        const paymentModal = document.getElementById('paymentModal');
+        const closeModal = document.getElementById('closeModal');
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const paymentDetails = document.getElementById('paymentDetails');
+        const confirmCashPayment = document.getElementById('confirmCashPayment');
+        const confirmCardPayment = document.getElementById('confirmCardPayment');
+        const confirmQRPayment = document.getElementById('confirmQRPayment');
+
+        // Handle payment button click - open modal instead of direct payment
         if (paymentButton) {
             paymentButton.addEventListener('click', function() {
-                const orderId = this.getAttribute('data-order-id');
+                // Open the payment modal
+                paymentModal.style.display = 'block';
 
-                if (confirm('Bạn có chắc chắn muốn cập nhật trạng thái thanh toán cho đơn hàng này?')) {
+                // Reset to default payment method (cash)
+                document.querySelectorAll('.payment-content').forEach(content => {
+                    content.classList.remove('active');
+                    content.style.display = 'none';
+                });
+                document.getElementById('cashPayment').classList.add('active');
+                document.getElementById('cashPayment').style.display = 'block';
+
+                // Reset payment method selection
+                paymentMethods.forEach(method => {
+                    method.classList.remove('selected');
+                });
+                document.querySelector('.payment-method[data-method="cash"]').classList.add('selected');
+            });
+        }
+
+        // Close modal when clicking the close button
+        if (closeModal) {
+            closeModal.addEventListener('click', function() {
+                paymentModal.style.display = 'none';
+            });
+        }
+
+        // Close modal when clicking outside the modal
+        window.addEventListener('click', function(event) {
+            if (event.target === paymentModal) {
+                paymentModal.style.display = 'none';
+            }
+        });
+
+        // Handle payment method selection
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', function() {
+                const selectedMethod = this.getAttribute('data-method');
+
+                // Update selected method
+                paymentMethods.forEach(m => m.classList.remove('selected'));
+                this.classList.add('selected');
+
+                // Show the corresponding payment content
+                document.querySelectorAll('.payment-content').forEach(content => {
+                    content.classList.remove('active');
+                    content.style.display = 'none';
+                });
+
+                const selectedContent = document.getElementById(selectedMethod + 'Payment');
+                selectedContent.style.display = 'block';
+                setTimeout(() => {
+                    selectedContent.classList.add('active');
+                }, 10);
+            });
+        });
+
+        // Handle cash payment confirmation
+        if (confirmCashPayment) {
+            confirmCashPayment.addEventListener('click', function() {
+                const orderId = paymentButton.getAttribute('data-order-id');
+
+                if (confirm(
+                    'Bạn có chắc chắn muốn xác nhận thanh toán bằng tiền mặt cho đơn hàng này?')) {
                     // Show loading state
-                    const originalText = paymentButton.innerHTML;
-                    paymentButton.innerHTML =
+                    const originalText = confirmCashPayment.innerHTML;
+                    confirmCashPayment.innerHTML =
                         '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
-                    paymentButton.disabled = true;
+                    confirmCashPayment.disabled = true;
 
                     // Make AJAX request to update payment status
                     fetch(`http://localhost/QLSP/Staff/update_payment_status/${orderId}`, {
@@ -434,25 +767,153 @@
                                 paymentButton.className = 'btn btn-success';
                                 paymentButton.disabled = true;
 
-                                alert(data.message);
+                                alert('Thanh toán thành công!');
 
-                                // Optionally reload the page to ensure all data is updated
+                                // Close modal and reload page after a short delay
+                                paymentModal.style.display = 'none';
                                 setTimeout(() => {
                                     location.reload();
                                 }, 1500);
                             } else {
                                 alert('Lỗi: ' + data.message);
                                 // Restore original button state
-                                paymentButton.innerHTML = originalText;
-                                paymentButton.disabled = false;
+                                confirmCashPayment.innerHTML = originalText;
+                                confirmCashPayment.disabled = false;
                             }
                         })
                         .catch(error => {
                             console.error('Error:', error);
                             alert('Có lỗi xảy ra khi cập nhật trạng thái thanh toán');
                             // Restore original button state
-                            paymentButton.innerHTML = originalText;
-                            paymentButton.disabled = false;
+                            confirmCashPayment.innerHTML = originalText;
+                            confirmCashPayment.disabled = false;
+                        });
+                }
+            });
+        }
+
+        // Handle card payment confirmation
+        if (confirmCardPayment) {
+            confirmCardPayment.addEventListener('click', function() {
+                const orderId = paymentButton.getAttribute('data-order-id');
+
+                // Get card details
+                const cardNumber = document.getElementById('cardNumber').value;
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvv = document.getElementById('cvv').value;
+
+                // Validate card details
+                if (!cardNumber || !expiryDate || !cvv) {
+                    alert('Vui lòng nhập đầy đủ thông tin thẻ');
+                    return;
+                }
+
+                if (confirm('Bạn có chắc chắn muốn xác nhận thanh toán bằng thẻ cho đơn hàng này?')) {
+                    // Show loading state
+                    const originalText = confirmCardPayment.innerHTML;
+                    confirmCardPayment.innerHTML =
+                        '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+                    confirmCardPayment.disabled = true;
+
+                    // Make AJAX request to update payment status
+                    fetch(`http://localhost/QLSP/Staff/update_payment_status/${orderId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                // Update the status display
+                                const statusElement = document.querySelector('.status span');
+                                statusElement.textContent = 'Đã thanh toán';
+                                statusElement.className = 'status-paid';
+
+                                // Update the button to show success
+                                paymentButton.innerHTML =
+                                    '<i class="fa-solid fa-check"></i> Đã thanh toán';
+                                paymentButton.className = 'btn btn-success';
+                                paymentButton.disabled = true;
+
+                                alert('Thanh toán thành công!');
+
+                                // Close modal and reload page after a short delay
+                                paymentModal.style.display = 'none';
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1500);
+                            } else {
+                                alert('Lỗi: ' + data.message);
+                                // Restore original button state
+                                confirmCardPayment.innerHTML = originalText;
+                                confirmCardPayment.disabled = false;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Có lỗi xảy ra khi cập nhật trạng thái thanh toán');
+                            // Restore original button state
+                            confirmCardPayment.innerHTML = originalText;
+                            confirmCardPayment.disabled = false;
+                        });
+                }
+            });
+        }
+
+        // Handle QR payment confirmation
+        if (confirmQRPayment) {
+            confirmQRPayment.addEventListener('click', function() {
+                const orderId = paymentButton.getAttribute('data-order-id');
+
+                if (confirm('Bạn có chắc chắn muốn xác nhận thanh toán bằng QR cho đơn hàng này?')) {
+                    // Show loading state
+                    const originalText = confirmQRPayment.innerHTML;
+                    confirmQRPayment.innerHTML =
+                        '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
+                    confirmQRPayment.disabled = true;
+
+                    // Make AJAX request to update payment status
+                    fetch(`http://localhost/QLSP/Staff/update_payment_status/${orderId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                // Update the status display
+                                const statusElement = document.querySelector('.status span');
+                                statusElement.textContent = 'Đã thanh toán';
+                                statusElement.className = 'status-paid';
+
+                                // Update the button to show success
+                                paymentButton.innerHTML =
+                                    '<i class="fa-solid fa-check"></i> Đã thanh toán';
+                                paymentButton.className = 'btn btn-success';
+                                paymentButton.disabled = true;
+
+                                alert('Thanh toán thành công!');
+
+                                // Close modal and reload page after a short delay
+                                paymentModal.style.display = 'none';
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1500);
+                            } else {
+                                alert('Lỗi: ' + data.message);
+                                // Restore original button state
+                                confirmQRPayment.innerHTML = originalText;
+                                confirmQRPayment.disabled = false;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('Có lỗi xảy ra khi cập nhật trạng thái thanh toán');
+                            // Restore original button state
+                            confirmQRPayment.innerHTML = originalText;
+                            confirmQRPayment.disabled = false;
                         });
                 }
             });
