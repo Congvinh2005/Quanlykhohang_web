@@ -739,7 +739,7 @@
                 const orderId = paymentButton.getAttribute('data-order-id');
 
                 if (confirm(
-                    'Bạn có chắc chắn muốn xác nhận thanh toán bằng tiền mặt cho đơn hàng này?')) {
+                        'Bạn có chắc chắn muốn xác nhận thanh toán bằng tiền mặt cho đơn hàng này?')) {
                     // Show loading state
                     const originalText = confirmCashPayment.innerHTML;
                     confirmCashPayment.innerHTML =
