@@ -169,12 +169,24 @@
 
     .total {
         font-weight: bold;
-        margin: 10px 0 25px;
+        margin: 10px 10px 25px;
         font-size: 18px;
         padding: 15px;
         background: #f8f9fa;
         border-radius: 8px;
         border-left: 4px solid #28a745;
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .total-row {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .total-discount {
+        display: block;
     }
 
     /* ===== ACTION BLOCK ===== */
@@ -532,7 +544,6 @@
                     </tbody>
                 </table>
             </div>
-            <div class="total">Tổng cộng: <?php echo number_format($order['tong_tien'], 0, '.', '.') . 'đ'; ?></div>
 
 
             <!-- Chọn phiếu giảm giá -->
@@ -558,12 +569,15 @@
             </div>
 
 
-            <div class="total">Tổng tiền: <?php echo number_format($order['tong_tien'], 0, '.', '.') . 'đ'; ?></div>
-            <?php if($order['tien_khuyen_mai'] > 0): ?>
-            <div class="total">Giảm giá: <?php echo number_format($order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></div>
-            <?php endif; ?>
-            <div class="total">Tiền cần thanh toán là :
-                <?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></div>
+            <div class="total-row">
+                <div class="total">Tổng tiền: <?php echo number_format($order['tong_tien'], 0, '.', '.') . 'đ'; ?></div>
+                <div class="total total-discount"
+                    style="<?php echo ($order['tien_khuyen_mai'] > 0) ? 'display: block;' : 'display: none;'; ?>">Giảm
+                    giá: <?php echo number_format($order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></div>
+                <div class="total">Tiền cần thanh toán là:
+                    <?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?>
+                </div>
+            </div>
 
             <div class="box">
                 <h3>Thanh toán</h3><br>
@@ -776,7 +790,8 @@
                                 // Close modal and redirect to orders list after a short delay
                                 paymentModal.style.display = 'none';
                                 setTimeout(() => {
-                                    window.location.href = 'http://localhost/QLSP/Staff/orders';
+                                    window.location.href =
+                                        'http://localhost/QLSP/Staff/orders';
                                 }, 1500);
                             } else {
                                 alert('Lỗi: ' + data.message);
@@ -845,7 +860,8 @@
                                 // Close modal and redirect to orders list after a short delay
                                 paymentModal.style.display = 'none';
                                 setTimeout(() => {
-                                    window.location.href = 'http://localhost/QLSP/Staff/orders';
+                                    window.location.href =
+                                        'http://localhost/QLSP/Staff/orders';
                                 }, 1500);
                             } else {
                                 alert('Lỗi: ' + data.message);
@@ -903,7 +919,8 @@
                                 // Close modal and redirect to orders list after a short delay
                                 paymentModal.style.display = 'none';
                                 setTimeout(() => {
-                                    window.location.href = 'http://localhost/QLSP/Staff/orders';
+                                    window.location.href =
+                                        'http://localhost/QLSP/Staff/orders';
                                 }, 1500);
                             } else {
                                 alert('Lỗi: ' + data.message);
@@ -945,23 +962,43 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.status === 'success') {
-                                // Update the displayed discount amount
-                                const totalElements = document.querySelectorAll('.total');
-                                if (totalElements.length >= 2) {
-                                    // Update the second total element (the one showing final payment)
-                                    const originalTotalText = totalElements[0].textContent;
-                                    const originalTotal = parseFloat(originalTotalText.match(/\d+/g)
-                                        .join(''));
-                                    const finalTotal = originalTotal - data.tien_khuyen_mai;
+                                // Update the discount element
+                                const discountElement = document.querySelector('.total-discount');
 
-                                    totalElements[1].innerHTML =
-                                        `Tiền cần thanh toán là : ${finalTotal.toLocaleString('vi-VN')}đ`;
+                                // Update the final payment amount (always the last total element)
+                                const allTotalElements = document.querySelectorAll('.total');
+                                const finalPaymentElement = allTotalElements[allTotalElements
+                                    .length - 1];
 
-                                    // Update payment modal amounts
-                                    updatePaymentAmounts(finalTotal);
+                                // Get the original total from the first element (Tổng tiền)
+                                const firstTotalElement = allTotalElements[0];
+                                const firstTotalText = firstTotalElement.textContent;
+                                const originalTotal = parseInt(firstTotalText.match(/\d+/g).join(
+                                    '')) || 0;
 
-                                    alert(data.message);
+                                if (data.tien_khuyen_mai > 0) {
+                                    // Update discount element content and show it
+                                    const discountAmount = parseInt(data.tien_khuyen_mai) || 0;
+                                    discountElement.innerHTML =
+                                        `Giảm giá: ${discountAmount.toLocaleString('vi-VN')}đ`;
+                                    discountElement.style.display = 'block';
+                                } else {
+                                    // Hide discount element if no discount
+                                    discountElement.style.display = 'none';
                                 }
+
+                                // Calculate final payment amount
+                                const discountAmount = parseInt(data.tien_khuyen_mai) || 0;
+                                const finalAmount = originalTotal - discountAmount;
+
+                                // Update the final payment amount
+                                finalPaymentElement.innerHTML =
+                                    `Tiền cần thanh toán là: ${finalAmount.toLocaleString('vi-VN')}đ`;
+
+                                // Update payment modal amounts
+                                updatePaymentAmounts(finalAmount);
+
+                                alert(data.message);
                             } else {
                                 alert(data.message);
                             }
@@ -984,15 +1021,15 @@
             const qrPaymentAmount = document.querySelector('#qrPayment p strong');
 
             if (cashPaymentAmount) {
-                cashPaymentAmount.textContent = amount.toLocaleString('vi-VN') + 'đ';
+                cashPaymentAmount.textContent = parseInt(amount).toLocaleString('vi-VN') + 'đ';
             }
 
             if (cardPaymentAmount) {
-                cardPaymentAmount.textContent = amount.toLocaleString('vi-VN') + 'đ';
+                cardPaymentAmount.textContent = parseInt(amount).toLocaleString('vi-VN') + 'đ';
             }
 
             if (qrPaymentAmount) {
-                qrPaymentAmount.textContent = amount.toLocaleString('vi-VN') + 'đ';
+                qrPaymentAmount.textContent = parseInt(amount).toLocaleString('vi-VN') + 'đ';
             }
         }
     });

@@ -167,7 +167,18 @@
                     $result = $this->dh->updateOrderWithDiscount($ma_don_hang, $tien_khuyen_mai);
 
                     if ($result) {
-                        echo json_encode(['status' => 'success', 'message' => 'Cập nhật giảm giá thành công', 'tien_khuyen_mai' => $tien_khuyen_mai]);
+                        // Get updated order data to include total amount
+                        $order_sql = "SELECT tong_tien FROM don_hang WHERE ma_don_hang = '$ma_don_hang'";
+                        $order_result = mysqli_query($this->dh->con, $order_sql);
+                        $order_data = mysqli_fetch_assoc($order_result);
+                        $tong_tien = $order_data['tong_tien'];
+
+                        echo json_encode([
+                            'status' => 'success',
+                            'message' => 'Cập nhật giảm giá thành công',
+                            'tien_khuyen_mai' => $tien_khuyen_mai,
+                            'tong_tien' => $tong_tien
+                        ]);
                     } else {
                         echo json_encode(['status' => 'error', 'message' => 'Cập nhật giảm giá thất bại']);
                     }
