@@ -93,6 +93,9 @@
                     <option value="admin"
                         <?php echo (isset($data['phan_quyen']) && $data['phan_quyen']=='admin')? 'selected':''; ?>>Admin
                     </option>
+                    <option value="khach_hang"
+                        <?php echo (isset($data['phan_quyen']) && $data['phan_quyen']=='khach_hang')? 'selected':''; ?>>Khách hàng
+                    </option>
                 </select>
             </div>
 

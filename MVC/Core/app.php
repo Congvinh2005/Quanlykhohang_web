@@ -59,8 +59,11 @@
             if(isset($_SESSION['user_id']) && in_array($current_route, ['Users/login', 'Login'])){
                 if($_SESSION['user_role'] === 'admin'){
                     header('Location: http://localhost/QLSP/Home');
-                } else {
+                } elseif($_SESSION['user_role'] === 'nhan_vien'){
                     header('Location: http://localhost/QLSP/Staff');
+                } else {
+                    // For customer role or any other role
+                    header('Location: http://localhost/QLSP/Khachhang');
                 }
                 exit;
             }
@@ -69,14 +72,23 @@
             if(isset($_SESSION['user_id']) && empty($current_route)){
                 if($_SESSION['user_role'] === 'admin'){
                     header('Location: http://localhost/QLSP/Home');
-                } else {
+                } elseif($_SESSION['user_role'] === 'nhan_vien'){
                     header('Location: http://localhost/QLSP/Staff');
+                } else {
+                    // For customer role or any other role
+                    header('Location: http://localhost/QLSP/Khachhang');
                 }
                 exit;
             }
 
             // Đảm bảo chỉ những người dùng được ủy quyền mới có thể truy cập các route nhân viên
             if (!isset($_SESSION['user_id']) && strpos($current_route, 'Staff') === 0) {
+                header('Location: http://localhost/QLSP/Login');
+                exit;
+            }
+
+            // Đảm bảo chỉ những người dùng được ủy quyền mới có thể truy cập các route khách hàng
+            if (!isset($_SESSION['user_id']) && strpos($current_route, 'Khachhang') === 0) {
                 header('Location: http://localhost/QLSP/Login');
                 exit;
             }
@@ -89,9 +101,9 @@
         
         
         function processURL(){
-        if(isset($_GET['url'])){
-            return explode('/',filter_var(trim($_GET['url']),FILTER_DEFAULT));
+            if(isset($_GET['url'])){
+                return explode('/',filter_var(trim($_GET['url']),FILTER_DEFAULT));
+            }
         }
-    }
     }
 ?>

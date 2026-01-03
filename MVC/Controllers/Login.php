@@ -18,8 +18,11 @@
                 // Nếu đã đăng nhập, chuyển hướng theo vai trò
                 if($_SESSION['user_role'] === 'admin'){
                     header('Location: http://localhost/QLSP/Home');
-                } else {
+                } elseif($_SESSION['user_role'] === 'nhan_vien'){
                     header('Location: http://localhost/QLSP/Staff');
+                } else {
+                    // For customer role or any other role
+                    header('Location: http://localhost/QLSP/Khachhang');
                 }
                 exit;
             } else {
@@ -37,11 +40,19 @@
                 $user = $this->user->authenticateUser($username, $password);
 
                 if($user) {
+                    // Thiết lập thông tin người dùng vào session
+                    $_SESSION['user_id'] = $user['ma_user'];
+                    $_SESSION['user_name'] = $user['ten_user'];
+                    $_SESSION['user_role'] = $user['phan_quyen'];
+
                     // Chuyển hướng theo vai trò
                     if($user['phan_quyen'] == 'admin'){
                         header('Location: http://localhost/QLSP/Home');
-                    } else {
+                    } elseif($user['phan_quyen'] == 'nhan_vien'){
                         header('Location: http://localhost/QLSP/Staff');
+                    } else {
+                        // For customer role or any other role
+                        header('Location: http://localhost/QLSP/Khachhang');
                     }
                     exit;
                 } else {

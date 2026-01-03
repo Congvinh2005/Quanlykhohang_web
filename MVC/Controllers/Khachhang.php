@@ -1,5 +1,5 @@
 <?php
-    class Staff extends controller{
+    class Khachhang extends controller{
         private $bu; // ban_uong
         private $dh; // don_hang
         private $ctdh; // chi_tiet_don_hang
@@ -7,7 +7,7 @@
         function __construct()
         {
             // Kiểm tra xem người dùng đã đăng nhập và có vai trò nhân viên không
-            if(!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'nhan_vien')){
+            if(!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'khach_hang' && $_SESSION['user_role'] !== 'nhan_vien')){
                 header('Location: http://localhost/QLSP/Users/login');
                 exit;
             }
@@ -36,8 +36,8 @@
             $todays_orders = $this->dh->getTodaysOrders();
             $todays_revenue = $this->dh->getTodaysRevenue();
 
-            $this->view('StaffMaster', [
-                'page' => 'Staff/dashboard_v',
+            $this->view('KhachhangMaster', [
+                'page' => 'Khachhang/dashboard_v',
                 'active_tables' => $active_tables,
                 'todays_orders' => $todays_orders,
                 'todays_revenue' => $todays_revenue
@@ -48,9 +48,71 @@
         function table(){
             $tables = $this->bu->Banuong_getAll();
 
-            $this->view('StaffMaster', [
-                'page' => 'Staff/Chon_ban_v',
+            $this->view('KhachhangMaster', [
+                'page' => 'Khachhang/Chon_ban_v',
                 'tables' => $tables
+            ]);
+        }
+
+        // Direct menu selection for customers without table selection
+        function direct_menu(){
+            $danhmuc = $this->model("Danhmuc_m");
+            $categories = $danhmuc->Danhmuc_getAll();
+
+            // Get only available menu items (not out of stock)
+            $thucdon = $this->model("Thucdon_m");
+            $menu_items = $thucdon->Thucdon_getAvailable();
+
+            // Get current cart from session for customer orders
+            $current_cart = $this->getCartForTable('KHACH_HANG');
+
+            $this->view('KhachhangMaster', [
+                'page' => 'Khachhang/Direct_menu_v',
+                'categories' => $categories,
+                'menu_items' => $menu_items,
+                'current_cart' => $current_cart
+            ]);
+        }
+
+        // Create new order for payment (redirects to payment page)
+        function create_order_for_payment(){
+            // Generate a temporary order to show on payment page
+            $danhmuc = $this->model("Danhmuc_m");
+            $categories = $danhmuc->Danhmuc_getAll();
+
+            // Get only available menu items (not out of stock)
+            $thucdon = $this->model("Thucdon_m");
+            $menu_items = $thucdon->Thucdon_getAvailable();
+
+            // Get current cart from session for customer orders
+            $current_cart = $this->getCartForTable('KHACH_HANG');
+
+            // Calculate total for the temporary order
+            $tong_tien = 0;
+            if (!empty($current_cart)) {
+                foreach($current_cart as $item) {
+                    $tong_tien += ($item['price'] * $item['quantity']);
+                }
+            }
+
+            // Create a temporary order object for the view
+            $order = [
+                'ma_don_hang' => 'TEMP_' . time(), // Temporary ID
+                'ma_ban' => 'KHACH_HANG',
+                'tong_tien' => $tong_tien,
+                'trang_thai_thanh_toan' => 'chua_thanh_toan',
+                'tien_khuyen_mai' => 0,
+                'ngay_tao' => date('Y-m-d H:i:s')
+            ];
+
+            // Get discount vouchers
+            $discount_vouchers = $this->dh->getDiscountVouchers();
+
+            $this->view('KhachhangMaster', [
+                'page' => 'Khachhang/Chi_tiet_don_hang_v',
+                'order' => [$order], // Pass as array to match expected format
+                'order_details' => $current_cart,
+                'discount_vouchers' => $discount_vouchers
             ]);
         }
 
@@ -64,8 +126,8 @@
 
             $orders = $this->dh->getOrdersForStaffWithPagination($limit, $offset);
 
-            $this->view('StaffMaster', [
-                'page' => 'Staff/orders_v',
+            $this->view('KhachhangMaster', [
+                'page' => 'Khachhang/orders_v',
                 'orders' => $orders,
                 'current_page' => $page,
                 'total_pages' => $total_pages,
@@ -81,14 +143,15 @@
             $order = $this->dh->Donhang_getByIdWithDiscount($ma_don_hang);
 
             // Initialize variables
-            $order_data = [];
             $order_details = [];
 
             // Check if order exists in database
             if ($order && mysqli_num_rows($order) > 0) {
-                // Order exists in database - format as array for consistency
+                // Order exists in database - get the order row for processing
                 $order_row = mysqli_fetch_array($order);
-                $order_data = [$order_row]; // Wrap in array to match the view's expected format
+
+                // Reset the result pointer so the view can fetch it again
+                mysqli_data_seek($order, 0);
 
                 // Get order details from database
                 $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
@@ -145,9 +208,9 @@
             // Get discount vouchers
             $discount_vouchers = $this->dh->getDiscountVouchers();
 
-            $this->view('StaffMaster', [
-                'page' => 'Staff/Chi_tiet_don_hang_v',
-                'order' => $order_data, // Pass the formatted order data
+            $this->view('KhachhangMaster', [
+                'page' => 'Khachhang/order_detail_v',
+                'order' => $order, // Pass the mysqli_result object as expected by the view
                 'order_details' => $order_details,
                 'discount_vouchers' => $discount_vouchers
             ]);
@@ -159,14 +222,15 @@
             $order = $this->dh->Donhang_getByIdWithDiscount($ma_don_hang);
 
             // Initialize variables
-            $order_data = [];
             $order_details = [];
 
             // Check if order exists in database
             if ($order && mysqli_num_rows($order) > 0) {
-                // Order exists in database - format as array for consistency
+                // Order exists in database - get the order row for processing
                 $order_row = mysqli_fetch_array($order);
-                $order_data = [$order_row]; // Wrap in array to match the view's expected format
+
+                // Reset the result pointer so the view can fetch it again
+                mysqli_data_seek($order, 0);
 
                 // Get order details from database
                 $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
@@ -223,9 +287,9 @@
             // Get discount vouchers
             $discount_vouchers = $this->dh->getDiscountVouchers();
 
-            $this->view('StaffMaster', [
-                'page' => 'Staff/order_detail_v',
-                'order' => $order_data, // Pass the formatted order data
+            $this->view('KhachhangMaster', [
+                'page' => 'Khachhang/order_detail_v',
+                'order' => $order, // Pass the mysqli_result object as expected by the view
                 'order_details' => $order_details,
                 'discount_vouchers' => $discount_vouchers
             ]);

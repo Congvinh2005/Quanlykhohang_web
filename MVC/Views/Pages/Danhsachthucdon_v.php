@@ -218,11 +218,16 @@
                 <p class="lead">Tra cứu và cập nhật thực đơn quán.</p>
             </div>
             <div class="actions">
+                <?php if($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'nhan_vien'): ?>
                 <a href="http://localhost/QLSP/Thucdon/themmoi" class="btn-create"><i class="fa-solid fa-plus"></i>
                     Thêm món </a>
                 <a href="http://localhost/QLSP/Thucdon/import_form" class="btn-ghost"><i
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
+                <?php elseif($_SESSION['user_role'] === 'khach_hang' && isset($data['ma_ban'])): ?>
+                <a href="http://localhost/QLSP/Thucdon/viewCart/<?php echo $data['ma_ban']; ?>" class="btn-create"><i class="fa-solid fa-shopping-cart"></i>
+                    Giỏ hàng </a>
+                <?php endif; ?>
                 <!-- <a href="http://localhost/QLSP/Thucdon/Timkiem" class="btn-excel"><i class="fa-solid fa-file-excel"></i>
                     Xuất
                     Excel</a> -->
@@ -330,7 +335,8 @@
                         </td>
                         <td><?php echo isset($row['ten_danh_muc']) ? htmlspecialchars($row['ten_danh_muc']) : 'N/A' ?>
                         </td>
-                        <td style="text-align:right">
+                                        <td style="text-align:right">
+                            <?php if($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'khach_hang' || $_SESSION['user_role'] === 'nhan_vien'): ?>
                             <a href="http://localhost/QLSP/Thucdon/sua/<?php echo urlencode($row['ma_thuc_don']) ?>"><button
                                     class="btn-edit">✏️
                                     Sửa</button></a>
@@ -338,6 +344,11 @@
                                 onclick="return confirm('Bạn có chắc chắn muốn xoá không?')"><button
                                     class="btn-delete">🗑️
                                     Xóa</button></a>
+                            <?php elseif($_SESSION['user_role'] === 'khach_hang' && isset($data['ma_ban'])): ?>
+                            <button class="btn-add-to-cart" onclick="addToCart('<?php echo $row['ma_thuc_don']; ?>', '<?php echo $data['ma_ban']; ?>', <?php echo $row['gia']; ?>)">
+                                <i class="fa-solid fa-cart-plus"></i> Thêm
+                            </button>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php } } ?>
@@ -352,6 +363,27 @@
 
         // init count
         resultCount.textContent = '<?php echo $count; ?> bản ghi';
+
+        // Add to cart functionality for customers
+        function addToCart(productId, tableId, price) {
+            // Create AJAX request to add item to cart
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost/QLSP/Thucdon/addToCart', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.status === 'success') {
+                        alert('Đã thêm món vào giỏ hàng!');
+                    } else {
+                        alert('Lỗi: ' + response.message);
+                    }
+                }
+            };
+            xhr.send('product_id=' + encodeURIComponent(productId) +
+                    '&table_id=' + encodeURIComponent(tableId) +
+                    '&price=' + encodeURIComponent(price));
+        }
         </script>
         <?php } ?>
         <?php if(isset($data['dulieu']) && mysqli_num_rows($data['dulieu']) === 0){ ?>
@@ -359,6 +391,22 @@
         <?php } ?>
 
     </div>
+
+    <style>
+        .btn-add-to-cart {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-add-to-cart:hover {
+            background: #2563eb;
+        }
+    </style>
 </body>
 
 </html>

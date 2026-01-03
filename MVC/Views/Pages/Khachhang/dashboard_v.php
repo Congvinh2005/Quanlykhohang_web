@@ -161,8 +161,8 @@
 
     <div class="card">
         <div>
-            <h1><i class="fa-solid fa-user-tie"></i> Trang chủ Nhân viên</h1>
-            <p class="lead">Quản lý bàn và đơn hàng trong quán.</p>
+            <h1><i class="fa-solid fa-user-tie"></i> Trang chủ Khách hàng</h1>
+            <p class="lead">Đặt món và xem đơn hàng trong quán.</p>
         </div>
 
         <div class="stats-grid">
@@ -178,19 +178,20 @@
             </div>
             <div class="stat-card revenue">
                 <div class="stat-label">Doanh thu hôm nay</div>
-                <div class="stat-value"><?php echo number_format($data['todays_revenue']['total_revenue'], 0, ',', '.'); ?> ₫</div>
+                <div class="stat-value">
+                    <?php echo number_format($data['todays_revenue']['total_revenue'], 0, ',', '.'); ?> ₫</div>
                 <div class="stat-title">VND</div>
             </div>
         </div>
 
         <h2>Liên kết nhanh</h2>
         <div class="quick-links">
-            <a href="http://localhost/QLSP/Staff/table" class="link-card">
+            <a href="http://localhost/QLSP/Khachhang/table" class="link-card">
                 <div class="link-icon"><i class="fa-solid fa-chair"></i></div>
                 <div class="link-title">Quản lý bàn</div>
                 <div class="link-desc">Xem và quản lý các bàn đang sử dụng</div>
             </a>
-            <a href="http://localhost/QLSP/Staff/orders" class="link-card">
+            <a href="http://localhost/QLSP/Khachhang/orders" class="link-card">
                 <div class="link-icon"><i class="fa-solid fa-receipt"></i></div>
                 <div class="link-title">Quản lý đơn hàng</div>
                 <div class="link-desc">Theo dõi và cập nhật đơn hàng</div>
@@ -210,8 +211,10 @@
                 ?>
                 <div class="order-item">
                     <div class="order-info">
-                        <div><strong><?php echo htmlspecialchars($order['ma_don_hang']); ?></strong> - Bàn <?php echo htmlspecialchars($order['ma_ban']); ?></div>
-                        <div style="font-size: 14px; color: #6b7280;"><?php echo htmlspecialchars($order['ngay_tao']); ?></div>
+                        <div><strong><?php echo htmlspecialchars($order['ma_don_hang']); ?></strong> - Bàn
+                            <?php echo htmlspecialchars($order['ma_ban']); ?></div>
+                        <div style="font-size: 14px; color: #6b7280;">
+                            <?php echo htmlspecialchars($order['ngay_tao']); ?></div>
                     </div>
                     <div class="order-info" style="text-align: right;">
                         <div><?php echo number_format($order['tong_tien'], 0, ',', '.'); ?> ₫</div>

@@ -324,9 +324,9 @@ function up_l(){
         if($ma_user == '') continue;
 
         // ✅ CHECK GIÁ TRỊ PHÂN QUYỀN
-        if($phan_quyen != 'admin' && $phan_quyen != 'nhan_vien'){
+        if($phan_quyen != 'admin' && $phan_quyen != 'nhan_vien' && $phan_quyen != 'khach_hang'){
             echo "<script>
-                alert('Phân quyền không hợp lệ cho user $ma_user! Chỉ cho phép admin hoặc nhan_vien.');
+                alert('Phân quyền không hợp lệ cho user $ma_user! Chỉ cho phép admin, nhan_vien hoặc khach_hang.');
                 window.location.href='http://localhost/QLSP/Users/import_form';
             </script>";
             return;
