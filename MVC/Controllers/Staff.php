@@ -292,6 +292,14 @@
                 $order_row = mysqli_fetch_array($order);
                 $order_data = $order_row; // Pass the order row directly
 
+                // Check if order is paid before allowing invoice generation
+                if ($order_row['trang_thai_thanh_toan'] !== 'da_thanh_toan') {
+                    // Clean the output buffer and show error
+                    ob_clean();
+                    echo '<p>Chỉ được in hóa đơn khi đơn hàng đã được thanh toán.</p>';
+                    return;
+                }
+
                 // Get order details from database
                 $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
 
@@ -343,7 +351,8 @@
             ob_clean();
 
             // Create PDF
-            $pdf = new InvoicePDF($order_data, $order_details, $order_data['tong_tien'] ?? 0);
+            $discount_amount = $order_data['tien_khuyen_mai'] ?? 0;
+            $pdf = new InvoicePDF($order_data, $order_details, $order_data['tong_tien'] ?? 0, $discount_amount);
             $pdf->generateInvoice();
 
             // Output PDF

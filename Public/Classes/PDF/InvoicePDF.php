@@ -6,28 +6,30 @@ class InvoicePDF extends TCPDF
     private $order_data;
     private $order_details;
     private $order_total;
+    private $discount_amount;
 
-    public function __construct($order_data, $order_details, $order_total)
+    public function __construct($order_data, $order_details, $order_total, $discount_amount = 0)
     {
         parent::__construct('P', 'mm', 'A4', true, 'UTF-8', false);
         $this->order_data = $order_data;
         $this->order_details = $order_details;
         $this->order_total = $order_total;
-        
+        $this->discount_amount = $discount_amount;
+
         // Set document information
         $this->SetCreator(PDF_CREATOR);
         $this->SetAuthor('QLSP System');
         $this->SetTitle('Hóa đơn #' . $order_data['ma_don_hang']);
         $this->SetSubject('Hóa đơn bán hàng');
-        
+
         // Remove default header/footer
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
-        
+
         // Set margins
         $this->SetMargins(15, 15, 15);
         $this->SetAutoPageBreak(TRUE, 15);
-        
+
         // Set font - using default TCPDF font that supports UTF-8
         $this->SetFont('dejavusans', '', 12);
     }
@@ -135,6 +137,21 @@ class InvoicePDF extends TCPDF
         $this->SetFont('dejavusans', 'B', 12);
         $this->Cell(array_sum($w) - 30, 6, 'Tổng cộng:', 'T', 0, 'R');
         $this->Cell(30, 6, number_format($this->order_total, 0, '.', '') . 'đ', 'TB', 0, 'R');
+        $this->Ln(6);
+
+        // Discount
+        if ($this->discount_amount > 0) {
+            $this->SetFont('dejavusans', '', 12);
+            $this->Cell(array_sum($w) - 30, 6, 'Giảm giá:', 0, 0, 'R');
+            $this->Cell(30, 6, '-' . number_format($this->discount_amount, 0, '.', '') . 'đ', 0, 0, 'R');
+            $this->Ln(6);
+        }
+
+        // Amount to pay
+        $amount_to_pay = $this->order_total - $this->discount_amount;
+        $this->SetFont('dejavusans', 'B', 12);
+        $this->Cell(array_sum($w) - 30, 6, 'Số tiền cần thanh toán:', 0, 0, 'R');
+        $this->Cell(30, 6, number_format($amount_to_pay, 0, '.', '') . 'đ', 0, 0, 'R');
         $this->Ln(12);
 
         // Footer text
