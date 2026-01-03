@@ -104,6 +104,8 @@ $status_text  = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'Đã thanh
 $status_class = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'paid' : '';
 $order_ma_ban = $order['ma_ban'];
 $order_tong_tien = $order['tong_tien'];
+$tien_khuyen_mai = $order['tien_khuyen_mai'] ?? 0;
+$so_tien_can_thanh_toan = $order_tong_tien - $tien_khuyen_mai;
 ?>
 
     <h1>Chi tiết đơn hàng bàn <b><?= htmlspecialchars($order_ma_ban) ?></b></h1>
@@ -147,7 +149,9 @@ $order_tong_tien = $order['tong_tien'];
     </table>
 
     <div class="total">
-        Tổng cộng: <?= number_format($order_tong_tien, 0, '.', '') ?>đ
+        Tổng cộng: <?= number_format($order_tong_tien, 0, '.', '') ?>đ<br>
+        Giảm giá: -<?= number_format($tien_khuyen_mai, 0, '.', '') ?>đ<br>
+        <strong>Số tiền cần thanh toán: <?= number_format($so_tien_can_thanh_toan, 0, '.', '') ?>đ</strong>
     </div>
 
     <div class="action-buttons">

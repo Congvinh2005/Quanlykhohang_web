@@ -6,6 +6,7 @@
                     <th>ID</th>
                     <th>Bàn</th>
                     <th>Tổng tiền</th>
+                    <th>Thanh toán</th>
                     <th>Trạng thái</th>
                     <th>Thời gian</th>
                     <th>Hành động</th>
@@ -17,11 +18,16 @@
                         while($order = mysqli_fetch_array($data['orders'])) {
                             $status_text = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'Đã thanh toán' : 'Chưa thanh toán';
                             $status_class = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'paid' : '';
+                            // Calculate amount to pay (total amount minus discount)
+                            $tong_tien = $order['tong_tien'];
+                            $tien_khuyen_mai = $order['tien_khuyen_mai'] ?? 0;
+                            $so_tien_can_thanh_toan = $tong_tien - $tien_khuyen_mai;
                 ?>
                 <tr>
                     <td><?php echo htmlspecialchars($order['ma_don_hang']); ?></td>
                     <td><?php echo htmlspecialchars($order['ten_ban']); ?></td>
                     <td><?php echo number_format($order['tong_tien'], 0, '.', '') . 'đ'; ?></td>
+                    <td><?php echo number_format($so_tien_can_thanh_toan, 0, '.', '') . 'đ'; ?></td>
                     <td class="<?php echo $status_class; ?>"><?php echo $status_text; ?></td>
                     <td><?php echo date('H:i d/m/Y', strtotime($order['ngay_tao'])); ?></td>
                     <td><button class="btn-view"
@@ -31,7 +37,7 @@
                 <?php
                         }
                     } else {
-                        echo '<tr><td colspan="6">Không có dữ liệu đơn hàng.</td></tr>';
+                        echo '<tr><td colspan="7">Không có dữ liệu đơn hàng.</td></tr>';
                     }
                 ?>
             </tbody>

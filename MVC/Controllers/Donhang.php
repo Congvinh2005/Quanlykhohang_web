@@ -62,8 +62,10 @@
             $sheet->setCellValue('B1', 'Tên Bàn');
             $sheet->setCellValue('C1', 'Tên User');
             $sheet->setCellValue('D1', 'Tổng Tiền');
-            $sheet->setCellValue('E1', 'Trạng Thái Thanh Toán');
-            $sheet->setCellValue('F1', 'Ngày Tạo');
+            $sheet->setCellValue('E1', 'Tiền Khuyến Mãi');
+            $sheet->setCellValue('F1', 'Số Tiền Cần Thanh Toán');
+            $sheet->setCellValue('G1', 'Trạng Thái Thanh Toán');
+            $sheet->setCellValue('H1', 'Ngày Tạo');
 
             $rowCount = 2; // Starting from row 2 since row 1 is headers
             mysqli_data_seek($result, 0); // Reset result pointer to beginning
@@ -73,12 +75,14 @@
                 $sheet->setCellValue('B'.$rowCount, $row['ten_ban']);
                 $sheet->setCellValue('C'.$rowCount, $row['ten_user']);
                 $sheet->setCellValue('D'.$rowCount, $row['tong_tien']);
-                $sheet->setCellValue('E'.$rowCount, $row['trang_thai_thanh_toan']);
-                $sheet->setCellValue('F'.$rowCount, $row['ngay_tao']);
+                $sheet->setCellValue('E'.$rowCount, $row['tien_khuyen_mai']);
+                $sheet->setCellValue('F'.$rowCount, $row['tong_tien'] - $row['tien_khuyen_mai']);
+                $sheet->setCellValue('G'.$rowCount, $row['trang_thai_thanh_toan']);
+                $sheet->setCellValue('H'.$rowCount, $row['ngay_tao']);
                 $rowCount++;
             }
 
-            foreach (range('A','F') as $col) {
+            foreach (range('A','H') as $col) {
                 $sheet->getColumnDimension($col)->setAutoSize(true);
             }
 
@@ -117,6 +121,8 @@
                         'ma_ban' => $r['ma_ban'],
                         'ma_user' => $r['ma_user'],
                         'tong_tien' => $r['tong_tien'],
+                        'tien_khuyen_mai' => $r['tien_khuyen_mai'],
+                        'so_tien_can_thanh_toan' => $r['tong_tien'] - $r['tien_khuyen_mai'],
                         'trang_thai_thanh_toan' => $r['trang_thai_thanh_toan'],
                         'ngay_tao' => $r['ngay_tao']
                     ];
@@ -204,8 +210,10 @@
             $sheet->setCellValue('B1', 'Mã Bàn');
             $sheet->setCellValue('C1', 'Mã User');
             $sheet->setCellValue('D1', 'Tổng Tiền');
-            $sheet->setCellValue('E1', 'Trạng Thái Thanh Toán');
-            $sheet->setCellValue('F1', 'Ngày Tạo');
+            $sheet->setCellValue('E1', 'Tiền Khuyến Mãi');
+            $sheet->setCellValue('F1', 'Số Tiền Cần Thanh Toán');
+            $sheet->setCellValue('G1', 'Trạng Thái Thanh Toán');
+            $sheet->setCellValue('H1', 'Ngày Tạo');
 
             $rowCount = 2; // Starting from row 2 since row 1 is headers
             mysqli_data_seek($result, 0); // Reset result pointer to beginning
@@ -214,12 +222,14 @@
                 $sheet->setCellValue('B'.$rowCount, $row['ma_ban']);
                 $sheet->setCellValue('C'.$rowCount, $row['ma_user']);
                 $sheet->setCellValue('D'.$rowCount, $row['tong_tien']);
-                $sheet->setCellValue('E'.$rowCount, $row['trang_thai_thanh_toan']);
-                $sheet->setCellValue('F'.$rowCount, $row['ngay_tao']);
+                $sheet->setCellValue('E'.$rowCount, $row['tien_khuyen_mai']);
+                $sheet->setCellValue('F'.$rowCount, $row['tong_tien'] - $row['tien_khuyen_mai']);
+                $sheet->setCellValue('G'.$rowCount, $row['trang_thai_thanh_toan']);
+                $sheet->setCellValue('H'.$rowCount, $row['ngay_tao']);
                 $rowCount++;
             }
 
-            foreach (range('A','F') as $col) {
+            foreach (range('A','H') as $col) {
                 $sheet->getColumnDimension($col)->setAutoSize(true);
             }
 
