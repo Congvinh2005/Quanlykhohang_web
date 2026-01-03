@@ -234,6 +234,23 @@
         // Cập nhật giảm giá cho đơn hàng
         function update_order_discount($ma_don_hang) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Get order information to check access rights
+                $order_data = $this->dh->Donhang_getById($ma_don_hang);
+
+                if (!$order_data || mysqli_num_rows($order_data) == 0) {
+                    echo json_encode(['status' => 'error', 'message' => 'Không tìm thấy đơn hàng']);
+                    exit;
+                }
+
+                $order_row = mysqli_fetch_array($order_data);
+
+                // Check if the order belongs to a guest customer (ma_ban = 'KHACH_HANG')
+                // If not a guest order, only allow admin/staff to update discount
+                if ($order_row['ma_ban'] !== 'KHACH_HANG' && $_SESSION['user_role'] === 'khach_hang') {
+                    echo json_encode(['status' => 'error', 'message' => 'Bạn không có quyền truy cập đơn hàng này']);
+                    exit;
+                }
+
                 $data = json_decode(file_get_contents('php://input'), true);
                 $ma_khuyen_mai = $data['ma_khuyen_mai'];
 
@@ -273,6 +290,23 @@
         // Cập nhật trạng thái thanh toán cho đơn hàng
         function update_payment_status($ma_don_hang){
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Get order information to check access rights
+                $order_data = $this->dh->Donhang_getById($ma_don_hang);
+
+                if (!$order_data || mysqli_num_rows($order_data) == 0) {
+                    echo json_encode(['status' => 'error', 'message' => 'Không tìm thấy đơn hàng']);
+                    exit;
+                }
+
+                $order_row = mysqli_fetch_array($order_data);
+
+                // Check if the order belongs to a guest customer (ma_ban = 'KHACH_HANG')
+                // If not a guest order, only allow admin/staff to update payment status
+                if ($order_row['ma_ban'] !== 'KHACH_HANG' && $_SESSION['user_role'] === 'khach_hang') {
+                    echo json_encode(['status' => 'error', 'message' => 'Bạn không có quyền truy cập đơn hàng này']);
+                    exit;
+                }
+
                 $result = $this->dh->update_order_status($ma_don_hang, 'da_thanh_toan');
 
                 if ($result) {

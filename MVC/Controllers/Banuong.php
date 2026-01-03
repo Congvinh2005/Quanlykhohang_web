@@ -6,6 +6,12 @@
 
         function __construct()
         {
+            // Kiểm tra xem người dùng đã đăng nhập và có vai trò phù hợp không
+            if(!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'khach_hang' && $_SESSION['user_role'] !== 'nhan_vien')){
+                header('Location: http://localhost/QLSP/Users/login');
+                exit;
+            }
+
             $this->bu = $this->model("Banuong_m");
             $this->dh = $this->model("Donhang_m");
             $this->ctdh = $this->model("Chitietdonhang_m");
@@ -667,13 +673,26 @@ function Timkiem()
             // Get discount vouchers
             $discount_vouchers = $this->dh->getDiscountVouchers();
 
-            $this->view('StaffMaster', [
-                'page' => 'Staff/Chi_tiet_don_hang_v',
-                'order' => $order_result, // Pass the mysqli_result as expected by the view
-                'order_details' => $order_details,
-                'discount_vouchers' => $discount_vouchers
-            ]);
+            // Check if the order belongs to a guest customer (ma_ban = 'KHACH_HANG')
+            // If so, use the customer view instead of staff view
+            $order_row = mysqli_fetch_array($order_result);
+            mysqli_data_seek($order_result, 0); // Reset pointer again for the view
 
+            if ($order_row['ma_ban'] === 'KHACH_HANG') {
+                $this->view('KhachhangMaster', [
+                    'page' => 'Khachhang/Chi_tiet_don_hang_v',
+                    'order' => $order_result, // Pass the mysqli_result as expected by the view
+                    'order_details' => $order_details,
+                    'discount_vouchers' => $discount_vouchers
+                ]);
+            } else {
+                $this->view('StaffMaster', [
+                    'page' => 'Staff/Chi_tiet_don_hang_v',
+                    'order' => $order_result, // Pass the mysqli_result as expected by the view
+                    'order_details' => $order_details,
+                    'discount_vouchers' => $discount_vouchers
+                ]);
+            }
         }
 
         // Method to view order details for viewing only (without payment functionality)
