@@ -59,10 +59,11 @@
             $limit = 10; // Number of orders per page
             $offset = ($page - 1) * $limit;
 
-            $total_orders = $this->dh->getTotalOrdersCount();
+            $user_id = $_SESSION['user_id'];
+            $total_orders = $this->dh->getTotalEmployeeOrdersCount($user_id);
             $total_pages = ceil($total_orders / $limit);
 
-            $orders = $this->dh->getOrdersForStaffWithPagination($limit, $offset);
+            $orders = $this->dh->getOrdersForEmployeeWithPagination($user_id, $limit, $offset);
 
             $this->view('StaffMaster', [
                 'page' => 'Staff/orders_v',

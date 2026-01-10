@@ -61,6 +61,8 @@
                     header('Location: http://localhost/QLSP/Home');
                 } elseif($_SESSION['user_role'] === 'nhan_vien'){
                     header('Location: http://localhost/QLSP/Staff');
+                } elseif($_SESSION['user_role'] === 'khach_hang'){
+                    header('Location: http://localhost/QLSP/Khachhang');
                 } else {
                     // For customer role or any other role
                     header('Location: http://localhost/QLSP/Khachhang');
@@ -74,6 +76,8 @@
                     header('Location: http://localhost/QLSP/Home');
                 } elseif($_SESSION['user_role'] === 'nhan_vien'){
                     header('Location: http://localhost/QLSP/Staff');
+                } elseif($_SESSION['user_role'] === 'khach_hang'){
+                    header('Location: http://localhost/QLSP/Khachhang');
                 } else {
                     // For customer role or any other role
                     header('Location: http://localhost/QLSP/Khachhang');
@@ -93,13 +97,13 @@
                 exit;
             }
         }
-        
-       
+
+
         function isLoggedIn(){
             return isset($_SESSION['user_id']);
         }
-        
-        
+
+
         function processURL(){
             if(isset($_GET['url'])){
                 return explode('/',filter_var(trim($_GET['url']),FILTER_DEFAULT));

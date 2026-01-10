@@ -166,35 +166,31 @@
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card tables">
-                <div class="stat-label">Bàn đang hoạt động</div>
-                <div class="stat-value"><?php echo $data['active_tables']['total_tables']; ?></div>
-                <div class="stat-title">Bàn</div>
-            </div>
+
             <div class="stat-card orders">
                 <div class="stat-label">Đơn hàng hôm nay</div>
                 <div class="stat-value"><?php echo $data['todays_orders']['total_orders']; ?></div>
                 <div class="stat-title">Đơn</div>
             </div>
             <div class="stat-card revenue">
-                <div class="stat-label">Doanh thu hôm nay</div>
+                <div class="stat-label">Số tiền đã thanh toán</div>
                 <div class="stat-value">
-                    <?php echo number_format($data['todays_revenue']['total_revenue'], 0, ',', '.'); ?> ₫</div>
+                    <?php echo number_format($data['todays_revenue']['total_revenue'], 0, ',', '.'); ?> </div>
                 <div class="stat-title">VND</div>
             </div>
         </div>
 
         <h2>Liên kết nhanh</h2>
         <div class="quick-links">
-            <a href="http://localhost/QLSP/Khachhang/table" class="link-card">
+            <a href="http://localhost/QLSP/Khachhang/direct_menu" class="link-card">
                 <div class="link-icon"><i class="fa-solid fa-chair"></i></div>
-                <div class="link-title">Quản lý bàn</div>
-                <div class="link-desc">Xem và quản lý các bàn đang sử dụng</div>
+                <div class="link-title">Chọn món</div>
+                <div class="link-desc">Lựa chọn món để tạo đơn hàng</div>
             </a>
             <a href="http://localhost/QLSP/Khachhang/orders" class="link-card">
                 <div class="link-icon"><i class="fa-solid fa-receipt"></i></div>
                 <div class="link-title">Quản lý đơn hàng</div>
-                <div class="link-desc">Theo dõi và cập nhật đơn hàng</div>
+                <div class="link-desc">Theo dõi và và xem chi tiết đơn hàng</div>
             </a>
         </div>
 

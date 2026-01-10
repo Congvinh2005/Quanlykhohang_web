@@ -85,6 +85,17 @@
             return mysqli_query($this->con, $sql);
         }
 
+        // Hàm lấy các đơn hàng cho nhân viên (theo user_id) với phân trang
+        function getOrdersForEmployeeWithPagination($user_id, $limit, $offset){
+            $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
+                    LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
+                    LEFT JOIN users u ON d.ma_user = u.ma_user
+                    WHERE d.ma_user = '$user_id'
+                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC
+                    LIMIT $limit OFFSET $offset";
+            return mysqli_query($this->con, $sql);
+        }
+
         // Hàm lấy các đơn hàng cho khách hàng với phân trang
         function getOrdersForKhachhangWithPagination($limit, $offset){
             $user_id = $_SESSION['user_id'] ?? 0;
@@ -95,6 +106,14 @@
                     ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC
                     LIMIT $limit OFFSET $offset";
             return mysqli_query($this->con, $sql);
+        }
+
+        // Hàm đếm tổng số đơn hàng cho nhân viên
+        function getTotalEmployeeOrdersCount($user_id){
+            $sql = "SELECT COUNT(*) as total FROM don_hang WHERE ma_user = '$user_id'";
+            $result = mysqli_query($this->con, $sql);
+            $row = mysqli_fetch_assoc($result);
+            return $row['total'];
         }
 
         // Hàm cập nhật trạng thái đơn hàng

@@ -1,4 +1,4 @@
-<?php 
+<?php
     class Users_m extends connectDB{
         // Thêm user
         function users_ins($ma_user, $ten_user, $password, $email, $phan_quyen){
@@ -15,8 +15,8 @@
 
         public function checktrungEmail($email, $ma_user)
     {
-        $sql = "SELECT * FROM users 
-            WHERE email = '$email' 
+        $sql = "SELECT * FROM users
+            WHERE email = '$email'
             AND ma_user != '$ma_user'";
         return mysqli_query($this->con, $sql);
     }

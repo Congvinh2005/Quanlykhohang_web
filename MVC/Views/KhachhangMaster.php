@@ -243,11 +243,11 @@
             <?php $current = isset($data['page']) ? $data['page'] : ''; ?>
             <ul class="menu">
 
-                <li class="<?php echo ($current === 'Khachhang/Dashboard_v') ? 'active' : ''; ?>">
+                <!-- <li class="<?php echo ($current === 'Khachhang/Dashboard_v') ? 'active' : ''; ?>">
                     <a href="http://localhost/QLSP/Khachhang/dashboard">
                         <i class="fa-solid fa-home"></i> Dashboard
                     </a>
-                </li>
+                </li> -->
 
                 <li class="<?php echo ($current === 'Khachhang/Direct_menu_v') ? 'active' : ''; ?>">
                     <a href="http://localhost/QLSP/Khachhang/direct_menu">

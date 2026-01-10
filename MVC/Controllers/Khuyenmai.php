@@ -1,6 +1,6 @@
 <?php
     class Khuyenmai extends controller{
-        private $km; // khuyen_mai
+        private $km; 
 
         function __construct()
         {
@@ -8,7 +8,6 @@
         }
 
         function Get_data(){
-            // Hàm mặc định - hiển thị danh sách khuyến mãi
             $this->danhsach();
         }
 
