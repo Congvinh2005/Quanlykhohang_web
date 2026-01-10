@@ -177,8 +177,9 @@
                 <div class="stat-title">Đơn</div>
             </div>
             <div class="stat-card revenue">
-                <div class="stat-label">Doanh thu hôm nay</div>
-                <div class="stat-value"><?php echo number_format($data['todays_revenue']['total_revenue'], 0, ',', '.'); ?> ₫</div>
+                <div class="stat-label">Số tiền khách đã thanh toán</div>
+                <div class="stat-value">
+                    <?php echo number_format($data['todays_revenue']['total_revenue'], 0, ',', '.'); ?> ₫</div>
                 <div class="stat-title">VND</div>
             </div>
         </div>
@@ -201,8 +202,9 @@
             <h2>Đơn hàng gần đây</h2>
             <div class="order-list">
                 <?php
-                // Get recent orders
-                $recent_orders = $this->model("Donhang_m")->getOrdersForStaffWithPagination(5, 0);
+                // Get recent orders for this employee only
+                $user_id = $_SESSION['user_id'];
+                $recent_orders = $this->model("Donhang_m")->getOrdersForEmployeeWithPagination($user_id, 5, 0);
                 if ($recent_orders && mysqli_num_rows($recent_orders) > 0) {
                     while($order = mysqli_fetch_array($recent_orders)) {
                         $status_class = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'status-paid' : 'status-unpaid';
@@ -210,8 +212,10 @@
                 ?>
                 <div class="order-item">
                     <div class="order-info">
-                        <div><strong><?php echo htmlspecialchars($order['ma_don_hang']); ?></strong> - Bàn <?php echo htmlspecialchars($order['ma_ban']); ?></div>
-                        <div style="font-size: 14px; color: #6b7280;"><?php echo htmlspecialchars($order['ngay_tao']); ?></div>
+                        <div><strong><?php echo htmlspecialchars($order['ma_don_hang']); ?></strong> - Bàn
+                            <?php echo htmlspecialchars($order['ma_ban']); ?></div>
+                        <div style="font-size: 14px; color: #6b7280;">
+                            <?php echo htmlspecialchars($order['ngay_tao']); ?></div>
                     </div>
                     <div class="order-info" style="text-align: right;">
                         <div><?php echo number_format($order['tong_tien'], 0, ',', '.'); ?> ₫</div>

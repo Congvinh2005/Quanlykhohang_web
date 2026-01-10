@@ -228,5 +228,21 @@
             $result = mysqli_query($this->con, $sql);
             return mysqli_fetch_assoc($result);
         }
+
+        // Hàm lấy số đơn hàng trong ngày hôm nay cho nhân viên
+        function getTodaysOrdersByStaff($staff_id){
+            $today = date('Y-m-d');
+            $sql = "SELECT COUNT(*) as total_orders FROM don_hang WHERE DATE(ngay_tao) = '$today' AND ma_user = '$staff_id'";
+            $result = mysqli_query($this->con, $sql);
+            return mysqli_fetch_assoc($result);
+        }
+
+        // Hàm lấy doanh thu trong ngày hôm nay cho nhân viên
+        function getTodaysRevenueByStaff($staff_id){
+            $today = date('Y-m-d');
+            $sql = "SELECT COALESCE(SUM(tong_tien), 0) as total_revenue FROM don_hang WHERE DATE(ngay_tao) = '$today' AND trang_thai_thanh_toan = 'da_thanh_toan' AND ma_user = '$staff_id'";
+            $result = mysqli_query($this->con, $sql);
+            return mysqli_fetch_assoc($result);
+        }
     }
 ?>

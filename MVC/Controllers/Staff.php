@@ -33,8 +33,12 @@
                 'total_tables' => mysqli_num_rows($active_tables_result)
             ];
 
-            $todays_orders = $this->dh->getTodaysOrders();
-            $todays_revenue = $this->dh->getTodaysRevenue();
+            // Lấy ID của nhân viên hiện tại từ session
+            $current_staff_id = $_SESSION['user_id'];
+
+            // Lấy số lượng đơn hàng và doanh thu trong ngày hôm nay cho nhân viên hiện tại
+            $todays_orders = $this->dh->getTodaysOrdersByStaff($current_staff_id);
+            $todays_revenue = $this->dh->getTodaysRevenueByStaff($current_staff_id);
 
             $this->view('StaffMaster', [
                 'page' => 'Staff/dashboard_v',
