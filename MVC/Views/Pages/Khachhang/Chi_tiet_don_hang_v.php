@@ -684,6 +684,22 @@
         const applyDiscountBtn = document.getElementById('apply-discount-btn');
         const orderId = paymentButton ? paymentButton.getAttribute('data-order-id') : null;
 
+        // Check if order is paid by looking at the status element
+        const statusElement = document.querySelector('.status span');
+        const isOrderPaid = statusElement && statusElement.classList.contains('status-paid');
+
+        // Add beforeunload event listener to warn user if order is unpaid
+        // pop up a confirmation dialog when trying to leave the page
+        window.addEventListener('beforeunload', function(e) {
+            if (!isOrderPaid) {
+                const confirmationMessage = 'Bạn phải thanh toán đơn hàng trước khi thoát trang này.';
+                e.returnValue = confirmationMessage;
+                return confirmationMessage;
+            }
+        });
+
+
+
         // Payment modal elements
         const paymentModal = document.getElementById('paymentModal');
         const closeModal = document.getElementById('closeModal');
@@ -1035,6 +1051,7 @@
         }
     });
     </script>
+
 
 </body>
 
