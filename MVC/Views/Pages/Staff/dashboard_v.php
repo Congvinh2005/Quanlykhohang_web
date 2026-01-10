@@ -184,7 +184,7 @@
             </div>
         </div>
 
-        <h2>Liên kết nhanh</h2>
+        <!-- <h2>Liên kết nhanh</h2>
         <div class="quick-links">
             <a href="http://localhost/QLSP/Staff/table" class="link-card">
                 <div class="link-icon"><i class="fa-solid fa-chair"></i></div>
@@ -196,7 +196,7 @@
                 <div class="link-title">Quản lý đơn hàng</div>
                 <div class="link-desc">Theo dõi và cập nhật đơn hàng</div>
             </a>
-        </div>
+        </div> -->
 
         <div class="recent-orders">
             <h2>Đơn hàng gần đây</h2>
