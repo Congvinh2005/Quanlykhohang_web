@@ -4,7 +4,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Bàn</th>
+                    <!-- <th>Bàn</th> -->
                     <th>Tổng tiền</th>
                     <th>Thanh toán</th>
                     <th>Trạng thái</th>
@@ -25,7 +25,7 @@
                 ?>
                 <tr>
                     <td><?php echo htmlspecialchars($order['ma_don_hang']); ?></td>
-                    <td><?php echo htmlspecialchars($order['ten_ban']); ?></td>
+                    <!-- <td><?php echo htmlspecialchars($order['ten_ban']); ?></td> -->
                     <td><?php echo number_format($order['tong_tien'], 0, '.', '') . 'đ'; ?></td>
                     <td><?php echo number_format($so_tien_can_thanh_toan, 0, '.', '') . 'đ'; ?></td>
                     <td class="<?php echo $status_class; ?>"><?php echo $status_text; ?></td>

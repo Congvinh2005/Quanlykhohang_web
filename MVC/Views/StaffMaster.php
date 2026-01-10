@@ -280,7 +280,8 @@
                 echo '</div>';
 
                 echo '<div class="alert">';
-                echo 'Chào mừng nhân viên!';
+                $ten_user = isset($_SESSION['ten_user']) ? $_SESSION['ten_user'] : (isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'khách hàng');
+                echo 'Chào mừng nhân viên ' . $ten_user . '!';   
                 echo '</div>';
             } else if(strpos($current, 'tables') !== false) {
                 echo '<h1>🪑 Sơ đồ bàn hiện tại</h1>';
