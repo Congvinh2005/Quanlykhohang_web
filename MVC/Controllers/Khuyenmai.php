@@ -173,7 +173,7 @@
 
                 $kq = $this->km->Khuyenmai_update($ma_khuyen_mai, $ten_khuyen_mai, $tien_khuyen_mai, $ghi_chu);
                 if($kq)
-                    echo "<script>alert('Cập nhật thành công!'); window.location='http://localhost/QLSP/Khuyenmai/danhsach';</script>";
+                    echo "<script>alert('Cập nhật thành công!'); window.location='" . $this->url('Khuyenmai/danhsach') . "';</script>";
                 else
                     echo "<script>alert('Cập nhật thất bại!');</script>";
 
@@ -187,9 +187,9 @@
         function xoa($ma_khuyen_mai){
             $kq = $this->km->Khuyenmai_delete($ma_khuyen_mai);
             if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='http://localhost/QLSP/Khuyenmai/danhsach';</script>"; // Chuyển về trang danh sách
+                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Khuyenmai/danhsach') . "';</script>"; // Chuyển về trang danh sách
             else
-                echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Khuyenmai/danhsach';</script>"; // Quay lại trang danh sách
+                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Khuyenmai/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
         // Xuất Excel danh sách khuyến mãi (theo tìm kiếm nếu có)
@@ -260,7 +260,7 @@
             if($this->km->checktrungMaKhuyenMai($ma_khuyen_mai)){
                 echo "<script>
                     alert('Mã khuyến mãi $ma_khuyen_mai đã tồn tại! Vui lòng kiểm tra lại file.');
-                    window.location.href='http://localhost/QLSP/Khuyenmai/import_form';
+                    window.location.href='" . $this->url('Khuyenmai/import_form') . "';
                 </script>";
                 return;
             }

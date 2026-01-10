@@ -8,7 +8,7 @@
         {
             // Kiểm tra xem người dùng đã đăng nhập và có vai trò nhân viên không
             if(!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'khach_hang' && $_SESSION['user_role'] !== 'nhan_vien')){
-                header('Location: http://localhost/QLSP/Users/login');
+                header('Location: ' . $this->url('Users/login'));
                 exit;
             }
 

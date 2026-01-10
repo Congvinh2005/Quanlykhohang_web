@@ -5,6 +5,7 @@
     include_once __DIR__.'/../Public/Classes/PHPExcel.php';
     include_once __DIR__.'/../Public/Classes/PHPExcel/IOFactory.php';
     include_once __DIR__.'/../Public/Classes/TimezoneHelper.php';
+    include_once __DIR__.'/../Public/Classes/UrlHelper.php';
 
     // Set default timezone for the application
     TimezoneHelper::setDefaultTimezone();

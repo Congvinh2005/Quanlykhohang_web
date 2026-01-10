@@ -1,6 +1,7 @@
 <?php
-// Include the timezone helper to make it available in all views
+// Include the helpers to make them available in all views
 include_once __DIR__.'/../../Public/Classes/TimezoneHelper.php';
+include_once __DIR__.'/../../Public/Classes/UrlHelper.php';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -8,7 +9,7 @@ include_once __DIR__.'/../../Public/Classes/TimezoneHelper.php';
 <head>
     <meta charset="UTF-8">
     <title>Cafe Manager Staff</title>
-    <base href="/QLSP/">
+    <base href="<?php echo UrlHelper::baseUrl(); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
     * {

@@ -17,12 +17,12 @@
             if(isset($_SESSION['user_id'])){
                 // Nếu đã đăng nhập, chuyển hướng theo vai trò
                 if($_SESSION['user_role'] === 'admin'){
-                    header('Location: http://localhost/QLSP/Home');
+                    header('Location: ' . $this->url('Home'));
                 } elseif($_SESSION['user_role'] === 'nhan_vien'){
-                    header('Location: http://localhost/QLSP/Staff');
+                    header('Location: ' . $this->url('Staff'));
                 } else {
                     // For customer role or any other role
-                    header('Location: http://localhost/QLSP/Khachhang');
+                    header('Location: ' . $this->url('Khachhang'));
                 }
                 exit;
             } else {
@@ -47,22 +47,22 @@
 
                     // Chuyển hướng theo vai trò
                     if($user['phan_quyen'] == 'admin'){
-                        header('Location: http://localhost/QLSP/Home');
+                        header('Location: ' . $this->url('Home'));
                     } elseif($user['phan_quyen'] == 'nhan_vien'){
-                        header('Location: http://localhost/QLSP/Staff');
+                        header('Location: ' . $this->url('Staff'));
                     } else {
                         // For customer role or any other role
-                        header('Location: http://localhost/QLSP/Khachhang');
+                        header('Location: ' . $this->url('Khachhang'));
                     }
                     exit;
                 } else {
                     // Thông tin đăng nhập không hợp lệ - chuyển hướng đến đăng nhập với lỗi
-                    header('Location: http://localhost/QLSP/Login?error=' . urlencode('Tên đăng nhập hoặc mật khẩu không đúng!'));
+                    header('Location: ' . $this->url('Login?error=' . urlencode('Tên đăng nhập hoặc mật khẩu không đúng!')));
                     exit;
                 }
             } else {
                 // Nếu không có dữ liệu POST, chuyển hướng đến trang đăng nhập
-                header('Location: http://localhost/QLSP/Login');
+                header('Location: ' . $this->url('Login'));
                 exit;
             }
         }

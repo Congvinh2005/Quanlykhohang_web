@@ -224,7 +224,7 @@
             if($this->sp->checktrungMaSP($masp)){
                 echo "<script>
                     alert('Mã sản phẩm $masp đã tồn tại! Vui lòng kiểm tra lại file.');
-                    window.location.href='http://localhost/QLSP/Sanpham/import_form';
+                    window.location.href='" . $this->url('Sanpham/import_form') . "';
                 </script>";
                 return;
             }
@@ -261,9 +261,9 @@
         function xoa($masp){
             $kq = $this->sp->Sanpham_delete($masp);
             if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='http://localhost/QLSP/Sanpham/danhsach';</script>"; // Chuyển về trang danh sách
+                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Sanpham/danhsach') . "';</script>"; // Chuyển về trang danh sách
             else
-                echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Sanpham/danhsach';</script>"; // Quay lại trang danh sách
+                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Sanpham/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
         // Method to export current search results or all products

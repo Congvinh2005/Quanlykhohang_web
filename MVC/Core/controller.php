@@ -22,5 +22,14 @@
             // Use the timezone helper to format the date
             return TimezoneHelper::formatForDisplay($datetime, $format);
         }
+
+        /**
+         * Generate a URL relative to the application base
+         * @param string $path The path to append to the base URL
+         * @return string The complete URL
+         */
+        public function url($path = '') {
+            return UrlHelper::url($path);
+        }
     }
 ?>

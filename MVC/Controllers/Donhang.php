@@ -168,7 +168,7 @@
             if($this->dh->checktrungMaDonhang($ma_don_hang)){
                 echo "<script>
                     alert('Mã đơn hàng $ma_don_hang đã tồn tại! Vui lòng kiểm tra lại file.');
-                    window.location.href='http://localhost/QLSP/Donhang/import_form';
+                    window.location.href='" . $this->url('Donhang/import_form') . "';
                 </script>";
                 return;
             }
@@ -186,9 +186,9 @@
         function xoa($ma_don_hang){
             $kq = $this->dh->Donhang_delete($ma_don_hang);
             if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='http://localhost/QLSP/Donhang/danhsach';</script>"; // Chuyển về trang danh sách
+                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Donhang/danhsach') . "';</script>"; // Chuyển về trang danh sách
             else
-                echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Donhang/danhsach';</script>"; // Quay lại trang danh sách
+                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Donhang/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
         // Method to export current search results or all orders

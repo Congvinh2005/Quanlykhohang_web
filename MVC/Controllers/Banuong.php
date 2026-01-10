@@ -8,7 +8,7 @@
         {
             // Kiểm tra xem người dùng đã đăng nhập và có vai trò phù hợp không
             if(!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'khach_hang' && $_SESSION['user_role'] !== 'nhan_vien')){
-                header('Location: http://localhost/QLSP/Users/login');
+                header('Location: ' . $this->url('Users/login'));
                 exit;
             }
 
@@ -183,7 +183,7 @@ function Timkiem()
 
                 $kq = $this->bu->Banuong_update($ma_ban, $ten_ban, $so_cho_ngoi, $trang_thai_ban);
                 if($kq)
-                    echo "<script>alert('Cập nhật thành công!'); window.location='http://localhost/QLSP/Banuong/danhsach';</script>";
+                    echo "<script>alert('Cập nhật thành công!'); window.location='" . $this->url('Banuong/danhsach') . "';</script>";
                 else
                     echo "<script>alert('Cập nhật thất bại!');</script>";
 
@@ -197,9 +197,9 @@ function Timkiem()
         function xoa($ma_ban){
             $kq = $this->bu->Banuong_delete($ma_ban);
             if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='http://localhost/QLSP/Banuong/danhsach';</script>"; // Chuyển về trang danh sách
+                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Banuong/danhsach') . "';</script>"; // Chuyển về trang danh sách
             else
-                echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Banuong/danhsach';</script>"; // Quay lại trang danh sách
+                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Banuong/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
         // Xuất Excel danh sách bàn uống (theo tìm kiếm nếu có)
@@ -271,7 +271,7 @@ function Timkiem()
         if($this->bu->checktrungMaBan($ma_ban)){
             echo "<script>
                 alert('Mã bàn $ma_ban đã tồn tại! Vui lòng kiểm tra lại file.');
-                window.location.href='http://localhost/QLSP/Banuong/import_form';
+                window.location.href='" . $this->url('Banuong/import_form') . "';
             </script>";
             return;
         }
@@ -303,7 +303,7 @@ function Timkiem()
 
                 if ($unpaid_order) {
                     // Redirect to order detail view for the existing order
-                    header('Location: http://localhost/QLSP/Banuong/order_detail/' . $unpaid_order['ma_don_hang']);
+                    header('Location: ' . $this->url('Banuong/order_detail/' . $unpaid_order['ma_don_hang']));
                     exit;
                 }
             }
@@ -340,7 +340,7 @@ function Timkiem()
 
                 if ($unpaid_order) {
                     // Redirect to order detail view for the existing order
-                    header('Location: http://localhost/QLSP/Banuong/order_detail/' . $unpaid_order['ma_don_hang']);
+                    header('Location: ' . $this->url('Banuong/order_detail/' . $unpaid_order['ma_don_hang']));
                     exit;
                 }
             }

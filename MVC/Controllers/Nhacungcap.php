@@ -202,7 +202,7 @@
 
                 $kq = $this->ncc->Nhacungcap_update($mancc, $tenncc, $diachi, $dienthoai);
                 if($kq)
-                    echo "<script>alert('Cập nhật thành công!'); window.location='http://localhost/QLSP/Nhacungcap/danhsach';</script>";
+                    echo "<script>alert('Cập nhật thành công!'); window.location='" . $this->url('Nhacungcap/danhsach') . "';</script>";
                 else
                     echo "<script>alert('Cập nhật thất bại!');</script>";
 
@@ -222,9 +222,9 @@
         function xoa($mancc){
             $kq = $this->ncc->Nhacungcap_delete($mancc);
             if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='http://localhost/QLSP/Nhacungcap/danhsach';</script>"; // Chuyển về trang danh sách
+                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Nhacungcap/danhsach') . "';</script>"; // Chuyển về trang danh sách
             else
-                echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Nhacungcap/danhsach';</script>"; // Quay lại trang danh sách
+                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Nhacungcap/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
         // Xuất Excel danh sách nhà cung cấp (theo tìm kiếm nếu có)

@@ -17,7 +17,7 @@
         function index($ma_ban = null){
             // Kiểm tra xem người dùng đã đăng nhập chưa
             if(!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'nhan_vien' && $_SESSION['user_role'] !== 'khach_hang')){
-                header('Location: http://localhost/QLSP/Users/login');
+                header('Location: ' . $this->url('Users/login'));
                 exit;
             }
 
@@ -307,7 +307,7 @@
             if($this->td->checktrungMaThucdon($ma_thuc_don)){
                 echo "<script>
                     alert('Mã thực đơn $ma_thuc_don đã tồn tại! Vui lòng kiểm tra lại file.');
-                    window.location.href='http://localhost/QLSP/Thucdon/import_form';
+                    window.location.href='" . $this->url('Thucdon/import_form') . "';
                 </script>";
                 return;
             }
@@ -389,9 +389,9 @@
         function xoa($ma_thuc_don){
             $kq = $this->td->Thucdon_delete($ma_thuc_don);
             if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='http://localhost/QLSP/Thucdon/danhsach';</script>"; // Chuyển về trang danh sách
+                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>"; // Chuyển về trang danh sách
             else
-                echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Thucdon/danhsach';</script>"; // Quay lại trang danh sách
+                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
         // Method to add item to cart for customers
@@ -460,7 +460,7 @@
             }
 
             // If not POST request, redirect to menu
-            header('Location: http://localhost/QLSP/Thucdon');
+            header('Location: ' . $this->url('Thucdon'));
             exit;
         }
 
@@ -468,7 +468,7 @@
         function viewCart($table_id = null) {
             // Check if user is logged in as customer
             if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'khach_hang') {
-                header('Location: http://localhost/QLSP/Users/login');
+                header('Location: ' . $this->url('Users/login'));
                 exit;
             }
 
@@ -587,7 +587,7 @@
             }
 
             // If not POST request, redirect to customer menu
-            header('Location: http://localhost/QLSP/Khachhang/menu');
+            header('Location: ' . $this->url('Khachhang/menu'));
             exit;
         }
 

@@ -241,7 +241,7 @@ function Timkiem()
 
                 $kq = $this->dm->Danhmuc_update($ma_danh_muc, $ten_danh_muc, $image);
                 if($kq)
-                    echo "<script>alert('Cập nhật thành công!'); window.location='http://localhost/QLSP/Danhmuc/danhsach';</script>";
+                    echo "<script>alert('Cập nhật thành công!'); window.location='" . $this->url('Danhmuc/danhsach') . "';</script>";
                 else
                     echo "<script>alert('Cập nhật thất bại!');</script>";
 
@@ -255,9 +255,9 @@ function Timkiem()
         function xoa($ma_danh_muc){
             $kq = $this->dm->Danhmuc_delete($ma_danh_muc);
             if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='http://localhost/QLSP/Danhmuc/danhsach';</script>"; // Chuyển về trang danh sách
+                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Danhmuc/danhsach') . "';</script>"; // Chuyển về trang danh sách
             else
-                echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Danhmuc/danhsach';</script>"; // Quay lại trang danh sách
+                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Danhmuc/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
         // Xuất Excel danh sách danh mục (theo tìm kiếm nếu có)
@@ -356,7 +356,7 @@ function Timkiem()
         if($this->dm->checktrungMaDanhmuc($ma_danh_muc)){
             echo "<script>
                 alert('Mã danh mục $ma_danh_muc đã tồn tại! Vui lòng kiểm tra lại file.');
-                window.location.href='http://localhost/QLSP/Danhmuc/import_form';
+                window.location.href='" . $this->url('Danhmuc/import_form') . "';
             </script>";
             return;
         }

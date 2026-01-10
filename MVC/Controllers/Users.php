@@ -203,7 +203,7 @@
 
             $kq = $this->user->Users_update($ma_user, $ten_user, $password, $email, $phan_quyen);
             if ($kq)
-                echo "<script>alert('Cập nhật thành công!'); window.location='http://localhost/QLSP/Users/danhsach';</script>";
+                echo "<script>alert('Cập nhật thành công!'); window.location='" . $this->url('Users/danhsach') . "';</script>";
             else
                 echo "<script>alert('Cập nhật thất bại!')</script>";
         }
@@ -212,9 +212,9 @@
         function xoa($ma_user){
             $kq = $this->user->Users_delete($ma_user);
             if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='http://localhost/QLSP/Users/danhsach';</script>";
+                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Users/danhsach') . "';</script>";
             else
-                echo "<script>alert('Xóa thất bại!'); window.location='http://localhost/QLSP/Users/danhsach';</script>";
+                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Users/danhsach') . "';</script>";
         }
 
         // Xuất Excel danh sách users
@@ -283,7 +283,7 @@
         //         if($this->user->checktrungMaUser($ma_user)){
         //             echo "<script>
         //                 alert('Mã user $ma_user đã tồn tại! Vui lòng kiểm tra lại file.');
-        //                 window.location.href='http://localhost/QLSP/Users/import_form';
+        //                 window.location.href='" . $this->url('Users/import_form') . "';
         //             </script>";
         //             return;
         //         }
@@ -327,7 +327,7 @@ function up_l(){
         if($phan_quyen != 'admin' && $phan_quyen != 'nhan_vien' && $phan_quyen != 'khach_hang'){
             echo "<script>
                 alert('Phân quyền không hợp lệ cho user $ma_user! Chỉ cho phép admin, nhan_vien hoặc khach_hang.');
-                window.location.href='http://localhost/QLSP/Users/import_form';
+                window.location.href='" . $this->url('Users/import_form') . "';
             </script>";
             return;
         }
@@ -336,7 +336,7 @@ function up_l(){
         if($this->user->checktrungMaUser($ma_user)){
             echo "<script>
                 alert('Mã user $ma_user đã tồn tại! Vui lòng kiểm tra lại file.');
-                window.location.href='http://localhost/QLSP/Users/import_form';
+                window.location.href='" . $this->url('Users/import_form') . "';
             </script>";
             return;
         }
@@ -346,7 +346,7 @@ function up_l(){
         if(mysqli_num_rows($checkEmail) > 0){
             echo "<script>
                 alert('Email $email đã được sử dụng! Vui lòng kiểm tra lại file.');
-                window.location.href='http://localhost/QLSP/Users/import_form';
+                window.location.href='" . $this->url('Users/import_form') . "';
             </script>";
             return;
         }
@@ -369,17 +369,17 @@ function up_l(){
             // Điều này đảm bảo tất cả logic xác thực nằm ở một nơi
             if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 // Nếu là yêu cầu POST (gửi form), chuyển hướng đến phương thức xử lý của Login
-                header('Location: http://localhost/QLSP/Login/process');
+                header('Location: ' . $this->url('Login/process'));
             } else {
                 // Nếu là yêu cầu GET (xem trang đăng nhập), chuyển hướng đến phương thức index của Login
-                header('Location: http://localhost/QLSP/Login');
+                header('Location: ' . $this->url('Login'));
             }
             exit;
         }
 
         function logout(){
             session_destroy();
-            header('Location: http://localhost/QLSP/Login');
+            header('Location: ' . $this->url('Login'));
             exit;
         }
     }
