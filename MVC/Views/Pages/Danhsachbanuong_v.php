@@ -314,7 +314,7 @@
                                 <?php echo $row['trang_thai_ban'] == 'trong' ? 'Trống' : 'Đang sử dụng'; ?>
                             </span>
                         </td>
-                        <td><?php echo htmlspecialchars($row['ngay_tao']) ?></td>
+                        <td><?php echo isset($row['ngay_tao']) ? htmlspecialchars(TimezoneHelper::formatForDisplay($row['ngay_tao'], 'H:i:s d/m/Y')) : '' ?></td>
                         <td style="text-align:right">
                             <a href="http://localhost/QLSP/Banuong/sua/<?php echo urlencode($row['ma_ban']) ?>"><button
                                     class="btn-edit">✏️

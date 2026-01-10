@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../tcpdf/tcpdf.php';
+require_once __DIR__ . '/../../TimezoneHelper.php';
 
 class InvoicePDF extends TCPDF
 {
@@ -42,12 +43,12 @@ class InvoicePDF extends TCPDF
     //     if (file_exists($image_file)) {
     //         $this->Image($image_file, 15, 10, 30, '', 'JPG', '', 'T', false, 300, '', false, false, 0, false, false, false);
     //     }
-        
+
     //     // Title
     //     $this->SetFont('dejavusans', 'B', 18);
     //     $this->Cell(0, 10, 'HÓA ĐƠN BÁN HÀNG', 0, false, 'C', 0, '', 0, false, 'M', 'M');
     //     $this->Ln(10);
-        
+
     //     // Add line separator
     //     $this->Line(15, $this->GetY(), 195, $this->GetY());
     //     $this->Ln(5);
@@ -100,14 +101,14 @@ class InvoicePDF extends TCPDF
     public function generateInvoice()
     {
         $this->AddPage();
-        
+
         // Header
         $this->Header();
-        
+
         // Order information
         $this->SetFont('dejavusans', '', 12);
         $this->Cell(0, 6, 'Mã đơn hàng: ' . ($this->order_data['ma_don_hang'] ?? 'N/A'), 0, 1);
-        $this->Cell(0, 6, 'Ngày đặt: ' . (isset($this->order_data['ngay_tao']) ? date('d/m/Y H:i:s', strtotime($this->order_data['ngay_tao'])) : 'N/A'), 0, 1);
+        $this->Cell(0, 6, 'Ngày đặt: ' . (isset($this->order_data['ngay_tao']) ? TimezoneHelper::formatForDisplay($this->order_data['ngay_tao'], 'd/m/Y H:i:s') : 'N/A'), 0, 1);
         // $this->Cell(0, 6, 'Người tạo: ' . ($this->order_data['ten_user'] ?? 'N/A'), 0, 1);
         // $this->Cell(0, 6, 'Khách hàng: ' . ($this->order_data['ten_khach_hang'] ?? 'N/A'), 0, 1);
         // $this->Cell(0, 6, 'Điện thoại: ' . ($this->order_data['sdt_khach_hang'] ?? 'N/A'), 0, 1);
@@ -165,7 +166,7 @@ class InvoicePDF extends TCPDF
         $this->Cell(90, 10, 'Nhân viên bán hàng', 0, 1, 'C');
         $this->Ln(15);
         $this->Cell(90, 10, '(Ký và ghi rõ họ tên)', 0, 0, 'C');
-        
+
         $text = "(Ký và ghi rõ họ tên)\nNgười tạo: " . ($this->order_data['ten_user'] ?? 'N/A');
         $this->MultiCell(90, 6, $text, 0, 'C');
 

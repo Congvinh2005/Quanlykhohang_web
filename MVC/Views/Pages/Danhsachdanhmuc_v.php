@@ -80,11 +80,11 @@
         flex: 1;
     }
 
-    .search-fields > div {
+    .search-fields>div {
         flex: 1 1 200px;
     }
 
-    .form-search > .actions {
+    .form-search>.actions {
         flex: 0 0 auto;
         display: flex;
         gap: 12px;
@@ -309,7 +309,8 @@
                             <span>Không có hình</span>
                             <?php endif; ?>
                         </td>
-                        <td><?php echo htmlspecialchars($row['ngay_tao']) ?></td>
+                        <td><?php echo isset($row['ngay_tao']) ? htmlspecialchars(TimezoneHelper::formatForDisplay($row['ngay_tao'], 'H:i:s d/m/Y')) : '' ?>
+                        </td>
                         <td style="text-align:right">
                             <a href="http://localhost/QLSP/Danhmuc/sua/<?php echo urlencode($row['ma_danh_muc']) ?>"><button
                                     class="btn-edit">✏️

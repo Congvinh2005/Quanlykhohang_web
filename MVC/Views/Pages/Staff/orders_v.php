@@ -29,7 +29,7 @@
                     <td><?php echo number_format($order['tong_tien'], 0, '.', '') . 'đ'; ?></td>
                     <td><?php echo number_format($so_tien_can_thanh_toan, 0, '.', '') . 'đ'; ?></td>
                     <td class="<?php echo $status_class; ?>"><?php echo $status_text; ?></td>
-                    <td><?php echo date('H:i d/m/Y', strtotime($order['ngay_tao'])); ?></td>
+                    <td><?php echo isset($order['ngay_tao']) ? TimezoneHelper::formatForDisplay($order['ngay_tao'], 'H:i:s d/m/Y') : ''; ?></td>
                     <td><button class="btn-view"
                             onclick="window.location.href='http://localhost/QLSP/Staff/order_detail/<?php echo urlencode($order['ma_don_hang']); ?>'">Xem</button>
                     </td>

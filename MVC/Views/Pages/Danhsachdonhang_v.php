@@ -584,7 +584,7 @@
                                 <?php echo $row['trang_thai_thanh_toan'] == 'chua_thanh_toan' ? 'Not' : 'Done'; ?>
                             </span>
                         </td>
-                        <td><?php echo htmlspecialchars($row['ngay_tao']) ?></td>
+                        <td><?php echo isset($row['ngay_tao']) ? htmlspecialchars(TimezoneHelper::formatForDisplay($row['ngay_tao'], 'H:i:s d/m/Y')) : '' ?></td>
                         <td>
                             <button class="detail-btn" onclick="showOrderDetails('<?php echo $row['ma_don_hang']; ?>')">
                                 <i class="fa-solid fa-eye"></i> Xem

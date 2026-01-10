@@ -304,7 +304,7 @@
                         <td><?php echo htmlspecialchars($row['password']) ?></td>
                         <td><?php echo htmlspecialchars($row['email']) ?></td>
                         <td><?php echo htmlspecialchars($row['phan_quyen']) ?></td>
-                        <td><?php echo htmlspecialchars($row['ngay_tao']) ?></td>
+                        <td><?php echo isset($row['ngay_tao']) ? htmlspecialchars(TimezoneHelper::formatForDisplay($row['ngay_tao'], 'H:i:s d/m/Y')) : '' ?></td>
                         <td style="text-align:right">
                             <a href="http://localhost/QLSP/Users/sua/<?php echo urlencode($row['ma_user']) ?>"><button
                                     class="btn-edit">✏️

@@ -1,3 +1,7 @@
+<?php
+// Include the timezone helper to make it available in all views
+include_once __DIR__.'/../../Public/Classes/TimezoneHelper.php';
+?>
 <!DOCTYPE html>
 <html lang="vi">
 

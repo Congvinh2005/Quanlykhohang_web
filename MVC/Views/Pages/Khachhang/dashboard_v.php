@@ -210,7 +210,7 @@
                         <div><strong><?php echo htmlspecialchars($order['ma_don_hang']); ?></strong> - Bàn
                             <?php echo htmlspecialchars($order['ma_ban']); ?></div>
                         <div style="font-size: 14px; color: #6b7280;">
-                            <?php echo htmlspecialchars($order['ngay_tao']); ?></div>
+                            <?php echo isset($order['ngay_tao']) ? htmlspecialchars(TimezoneHelper::formatForDisplay($order['ngay_tao'], 'H:i:s d/m/Y')) : ''; ?></div>
                     </div>
                     <div class="order-info" style="text-align: right;">
                         <div><?php echo number_format($order['tong_tien'], 0, ',', '.'); ?> ₫</div>
