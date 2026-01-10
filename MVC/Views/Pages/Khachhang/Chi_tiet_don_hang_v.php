@@ -505,7 +505,7 @@
                             <th>Số lượng</th>
                             <th>Đơn giá</th>
                             <th>Tổng</th>
-                            <th>Hành động</th>
+                            <!-- <th>Hành động</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -533,7 +533,7 @@
                             <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'], 0, '.', '.') . 'đ'; ?></td>
                             <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'] * $detail['so_luong'], 0, '.', '.') . 'đ'; ?>
                             </td>
-                            <td><button class="btn-delete">Xóa</button></td>
+                            <!-- <td><button class="btn-delete">Xóa</button></td> -->
                         </tr>
                         <?php
                                 }
@@ -657,6 +657,7 @@
                                             src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=<?php echo urlencode('Thanh toan don hang ' . $order['ma_don_hang'] . ' - So tien: ' . ($order['tong_tien'] - $order['tien_khuyen_mai'])); ?>"
                                             alt="QR Code thanh toán" style="width: 200px; height: 200px;">
                                     </div>
+                                    <div>Cà phê 123 QR</div>
                                 </div>
                                 <button class="btn btn-success" id="confirmQRPayment">Xác nhận thanh toán</button>
                             </div>

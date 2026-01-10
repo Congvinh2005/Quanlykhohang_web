@@ -505,7 +505,7 @@
                             <th>Số lượng</th>
                             <th>Đơn giá</th>
                             <th>Tổng</th>
-                            <th>Hành động</th>
+                            <!-- <th>Hành động</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -533,7 +533,7 @@
                             <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'], 0, '.', '.') . 'đ'; ?></td>
                             <td><?php echo number_format($detail['gia_tai_thoi_diem_dat'] * $detail['so_luong'], 0, '.', '.') . 'đ'; ?>
                             </td>
-                            <td><button class="btn-delete">Xóa</button></td>
+                            <!-- <td><button class="btn-delete">Xóa</button></td> -->
                         </tr>
                         <?php
                                 }
