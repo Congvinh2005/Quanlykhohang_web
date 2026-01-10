@@ -82,14 +82,25 @@
             $order = $this->dh->Donhang_getByIdWithDiscount($ma_don_hang);
 
             // Initialize variables
-            $order_data = [];
             $order_details = [];
 
             // Check if order exists in database
             if ($order && mysqli_num_rows($order) > 0) {
-                // Order exists in database - format as array for consistency
+                // Order exists in database - get the order row for processing
                 $order_row = mysqli_fetch_array($order);
-                $order_data = [$order_row]; // Wrap in array to match the view's expected format
+
+                // Check access rights - staff (admin/nhan_vien) should be able to access any order
+                // Only restrict access if the current user is a customer and the order is not theirs
+                if ($_SESSION['user_role'] === 'khach_hang') {
+                    // For customer role, check if the order belongs to them
+                    if ($order_row['ma_ban'] !== 'KHACH_HANG' && $order_row['ma_user'] !== $_SESSION['user_id']) {
+                        echo '<p>Bạn không có quyền truy cập đơn hàng này.</p>';
+                        return;
+                    }
+                }
+
+                // Reset the result pointer so the view can fetch it again
+                mysqli_data_seek($order, 0);
 
                 // Get order details from database
                 $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
@@ -147,8 +158,8 @@
             $discount_vouchers = $this->dh->getDiscountVouchers();
 
             $this->view('StaffMaster', [
-                'page' => 'Staff/Chi_tiet_don_hang_v',
-                'order' => $order_data, // Pass the formatted order data
+                'page' => 'Staff/order_detail_v',
+                'order' => $order, // Pass the mysqli_result object as expected by the view
                 'order_details' => $order_details,
                 'discount_vouchers' => $discount_vouchers
             ]);
@@ -226,7 +237,7 @@
 
             $this->view('StaffMaster', [
                 'page' => 'Staff/order_detail_v',
-                'order' => $order_data, // Pass the formatted order data
+                'order' => $order, // Pass the formatted order data
                 'order_details' => $order_details,
                 'discount_vouchers' => $discount_vouchers
             ]);
