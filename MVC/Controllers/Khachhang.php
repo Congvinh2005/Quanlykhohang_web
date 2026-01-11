@@ -497,5 +497,79 @@
         //     $pdf->Output('HoaDon_' . $ma_don_hang . '.pdf', 'I'); // 'I' for inline display, 'D' for download
         // }
 
+        // Method to view order details for payment (specifically for existing orders)
+        function order_detail_payment($ma_don_hang) {
+            // Get order information
+            $order_result = $this->dh->Donhang_getByIdWithDiscount($ma_don_hang);
+
+            // Check if order exists in database
+            if ($order_result && mysqli_num_rows($order_result) > 0) {
+                $order_row = mysqli_fetch_array($order_result);
+                // Reset pointer to beginning so the view can fetch it again
+                mysqli_data_seek($order_result, 0);
+
+                // Get order details from database
+                $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
+
+                // Debug: Log the order status and details count
+                error_log("Order $ma_don_hang status: " . $order_row['trang_thai_thanh_toan'] . ", details count: " . count($order_details));
+
+                // For paid orders, we should always have order details in the database
+                // The fallback to session cart should only be for temporary orders that haven't been saved yet
+                // If order is paid and no details found in database, it indicates a data inconsistency
+                if ($order_row['trang_thai_thanh_toan'] === 'da_thanh_toan') {
+                    // For paid orders, always use database details and ignore session cart
+                    // This ensures that after payment, only the saved order details are shown
+                    // If no details found in database for a paid order, it's an error state
+                    if (empty($order_details)) {
+                        // Log this as an error state - paid order should have details in DB
+                        error_log("ERROR: Paid order $ma_don_hang has no details in database");
+                        // Still show the order but with empty details
+                    }
+                } else if (empty($order_details)) {
+                    // Only try to get from session cart for unpaid orders that might not have been saved to DB yet
+                    $ma_ban = $order_row['ma_ban'];
+
+                    // Get cart from session for this table
+                    $session_cart = $this->getCartForTable($ma_ban);
+
+                    // Convert session cart to the same format as database order details
+                    if (!empty($session_cart)) {
+                        $order_details = [];
+                        foreach ($session_cart as $item) {
+                            // Get item details from database to get name and image
+                            $thucdon = $this->model("Thucdon_m");
+                            $item_details = $thucdon->Thucdon_getById($item['id']);
+
+                            if ($item_details && mysqli_num_rows($item_details) > 0) {
+                                $item_db = mysqli_fetch_array($item_details);
+                                $order_details[] = [
+                                    'ma_thuc_don' => $item['id'],
+                                    'so_luong' => $item['quantity'],
+                                    'gia_tai_thoi_diem_dat' => $item['price'],
+                                    'ten_mon' => $item_db['ten_mon'],
+                                    'img_thuc_don' => $item_db['img_thuc_don']
+                                ];
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Order doesn't exist in database
+                echo '<p>Không tìm thấy đơn hàng.</p>';
+                return;
+            }
+
+            // Get discount vouchers
+            $discount_vouchers = $this->dh->getDiscountVouchers();
+
+            // Load the payment view (Chi_tiet_don_hang_v) instead of the view-only page
+            $this->view('KhachhangMaster', [
+                'page' => 'Khachhang/Chi_tiet_don_hang_v',
+                'order' => $order_result, // Pass the mysqli_result as expected by the view
+                'order_details' => $order_details,
+                'discount_vouchers' => $discount_vouchers
+            ]);
+        }
     }
 ?>

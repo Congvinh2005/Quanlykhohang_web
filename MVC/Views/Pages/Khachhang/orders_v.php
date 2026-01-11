@@ -29,9 +29,17 @@
                     <td><?php echo number_format($order['tong_tien'], 0, '.', '') . 'đ'; ?></td>
                     <td><?php echo number_format($so_tien_can_thanh_toan, 0, '.', '') . 'đ'; ?></td>
                     <td class="<?php echo $status_class; ?>"><?php echo $status_text; ?></td>
-                    <td><?php echo isset($order['ngay_tao']) ? TimezoneHelper::formatForDisplay($order['ngay_tao'], 'H:i:s d/m/Y') : ''; ?></td>
-                    <td><button class="btn-view"
-                            onclick="window.location.href='http://localhost/QLSP/Khachhang/order_detail/<?php echo urlencode($order['ma_don_hang']); ?>'">Xem</button>
+                    <td><?php echo isset($order['ngay_tao']) ? TimezoneHelper::formatForDisplay($order['ngay_tao'], 'H:i:s d/m/Y') : ''; ?>
+                    </td>
+                    <td>
+                        <?php if ($order['trang_thai_thanh_toan'] === 'chua_thanh_toan'): ?>
+                        <button class="btn-pay"
+                            onclick="window.location.href='http://localhost/QLSP/Khachhang/order_detail_payment/<?php echo urlencode($order['ma_don_hang']); ?>'">Thanh toán</button>
+                        <?php else: ?>
+                        <button class="btn-view"
+                            onclick="window.location.href='http://localhost/QLSP/Khachhang/order_detail/<?php echo urlencode($order['ma_don_hang']); ?>'">Xem
+                            chi tiết</button>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php
@@ -141,6 +149,21 @@
     padding: 8px 4px;
     display: flex;
     align-items: center;
+}
+
+.btn-pay {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-weight: bold;
+}
+
+.btn-pay:hover {
+    background: #c82333;
 }
         </style>
         </body>
