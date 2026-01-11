@@ -189,10 +189,11 @@
             // Header tương ứng với ảnh CSDL
             $sheet->setCellValue('A1', 'Mã TD');
             $sheet->setCellValue('B1', 'Tên Món');
-            $sheet->setCellValue('C1', 'Giá');
-            $sheet->setCellValue('D1', 'Số Lượng');
-            $sheet->setCellValue('E1', 'Mã DM');
-            $sheet->setCellValue('F1', 'Hình Ảnh');
+             $sheet->setCellValue('C1', 'Hình Ảnh');
+            $sheet->setCellValue('D1', 'Giá');
+            $sheet->setCellValue('E1', 'Số Lượng');
+            $sheet->setCellValue('F1', 'Tên Danh Mục');
+           
 
             $rowCount = 2; // Starting from row 2 since row 1 is headers
             mysqli_data_seek($result, 0); // Reset result pointer to beginning
@@ -200,10 +201,11 @@
                 // Mapping field according to database table
                 $sheet->setCellValue('A'.$rowCount, $row['ma_thuc_don']);
                 $sheet->setCellValue('B'.$rowCount, $row['ten_mon']);
-                $sheet->setCellValue('C'.$rowCount, $row['gia']);
-                $sheet->setCellValue('D'.$rowCount, $row['so_luong']);
-                $sheet->setCellValue('E'.$rowCount, $row['ma_danh_muc']);
-                $sheet->setCellValue('F'.$rowCount, $row['img_thuc_don']);
+                $sheet->setCellValue('C'.$rowCount, $row['img_thuc_don']);
+                $sheet->setCellValue('D'.$rowCount, $row['gia']);
+                $sheet->setCellValue('E'.$rowCount, $row['so_luong']);
+                $sheet->setCellValue('F'.$rowCount, $row['ten_danh_muc']);
+
                 $rowCount++;
             }
 
