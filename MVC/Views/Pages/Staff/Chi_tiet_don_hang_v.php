@@ -484,6 +484,12 @@
             <p class="status">Trạng thái: <span class="<?php echo $status_class; ?>"><?php echo $status_text; ?></span>
             </p>
 
+            <?php if (!empty($order['ghi_chu'])): ?>
+            <div class="temp-order-note">
+                <strong>Ghi chú đơn hàng:</strong> <?php echo htmlspecialchars($order['ghi_chu']); ?>
+            </div>
+            <?php endif; ?>
+
             <?php
             // Check if we're displaying session cart items (temporary order)
             $is_temp_order = false;

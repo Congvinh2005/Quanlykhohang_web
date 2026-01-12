@@ -112,6 +112,7 @@ CREATE TABLE `don_hang` (
   `tien_khuyen_mai` decimal(10,2) DEFAULT 0.00,
   `tong_tien` decimal(12,2) DEFAULT 0.00,
   `trang_thai_thanh_toan` enum('chua_thanh_toan','da_thanh_toan') DEFAULT 'chua_thanh_toan',
+  `ghi_chu` varchar(255) DEFAULT NULL,
   `ngay_tao` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

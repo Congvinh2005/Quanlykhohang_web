@@ -165,6 +165,12 @@
 .btn-pay:hover {
     background: #c82333;
 }
+
+.order-table th:nth-child(6),
+.order-table td:nth-child(6) {
+    max-width: 100px;
+    word-break: break-word;
+}
         </style>
         </body>
 

@@ -368,6 +368,11 @@
                     <span id="totalAmount">0 ₫</span>
                 </div>
 
+                <div style="margin-top: 15px;">
+                    <label for="orderNotes" style="display: block; margin-bottom: 5px; font-weight: 600;">Ghi chú đơn hàng:</label>
+                    <textarea id="orderNotes" placeholder="Ví dụ: ít đá, ít đường,..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e3e7ef; resize: vertical; min-height: 60px;"></textarea>
+                </div>
+
                 <div class="order-actions">
                     <a href="http://localhost/QLSP/Staff/table" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i>
                         Quay
@@ -733,10 +738,14 @@
             return;
         }
 
+        // Get order notes from textarea
+        const orderNotes = document.getElementById('orderNotes').value.trim();
+
         // Prepare order data
         const orderData = {
             ma_ban: '<?php echo $data['table_info']['ma_ban']; ?>',
-            cart: cart
+            cart: cart,
+            ghi_chu: orderNotes // Include order notes
         };
 
         // Send to server to create order

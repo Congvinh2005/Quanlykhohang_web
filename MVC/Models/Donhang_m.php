@@ -1,8 +1,8 @@
 <?php
     class Donhang_m extends connectDB{
         // Hàm thêm đơn hàng
-        function Donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, $trang_thai_thanh_toan, $ngay_tao){
-            $sql = "INSERT INTO don_hang (ma_don_hang, ma_ban, ma_user, tong_tien, trang_thai_thanh_toan, ngay_tao, ma_khuyen_mai, tien_khuyen_mai) VALUES ('$ma_don_hang', '$ma_ban', '$ma_user', '$tong_tien', '$trang_thai_thanh_toan', '$ngay_tao', NULL, 0.00)";
+        function Donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, $trang_thai_thanh_toan, $ngay_tao, $ghi_chu = null){
+            $sql = "INSERT INTO don_hang (ma_don_hang, ma_ban, ma_user, tong_tien, trang_thai_thanh_toan, ngay_tao, ma_khuyen_mai, tien_khuyen_mai, ghi_chu) VALUES ('$ma_don_hang', '$ma_ban', '$ma_user', '$tong_tien', '$trang_thai_thanh_toan', '$ngay_tao', NULL, 0.00, '$ghi_chu')";
             return mysqli_query($this->con, $sql);
         }
 

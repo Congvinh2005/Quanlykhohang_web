@@ -427,8 +427,11 @@ function Timkiem()
                 $ma_user = $_SESSION['user_id'] ?? 'U01'; // Default user if not set
             }
 
+            // Get order notes from the request
+            $ghi_chu = $data['ghi_chu'] ?? null;
+
             // Create new order using the Donhang model's insert method
-            $result = $this->dh->donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, 'chua_thanh_toan', date('Y-m-d H:i:s'));
+            $result = $this->dh->donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, 'chua_thanh_toan', date('Y-m-d H:i:s'), $ghi_chu);
             if(!$result) {
                 echo json_encode(['success' => false, 'message' => 'Không thể tạo đơn hàng']);
                 exit;

@@ -120,6 +120,12 @@ $so_tien_can_thanh_toan = $order_tong_tien - $tien_khuyen_mai;
         <span class="<?= $status_class ?>"><?= $status_text ?></span>
     </p>
 
+    <?php if (!empty($order['ghi_chu'])): ?>
+    <div class="temp-order-note" style="background: #fff3cd; padding: 10px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #ffc107; color: #856404;">
+        <strong>Ghi chú đơn hàng:</strong> <?= htmlspecialchars($order['ghi_chu']); ?>
+    </div>
+    <?php endif; ?>
+
     <table class="detail-table">
         <thead>
             <tr>

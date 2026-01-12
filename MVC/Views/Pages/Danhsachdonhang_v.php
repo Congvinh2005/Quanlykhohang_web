@@ -260,12 +260,16 @@
     }
 
     /* Chi tiết */
-    th:nth-child(11),
-    td:nth-child(11) {
+    th:nth-child(10),
+    td:nth-child(10) {
         width: 8%;
     }
 
     /* Thao tác */
+    th:nth-child(11),
+    td:nth-child(11) {
+        width: 10%;
+    }
 
     th,
     td {
@@ -584,7 +588,8 @@
                                 <?php echo $row['trang_thai_thanh_toan'] == 'chua_thanh_toan' ? 'Not' : 'Done'; ?>
                             </span>
                         </td>
-                        <td><?php echo isset($row['ngay_tao']) ? htmlspecialchars(TimezoneHelper::formatForDisplay($row['ngay_tao'], 'H:i:s d/m/Y')) : '' ?></td>
+                        <td><?php echo isset($row['ngay_tao']) ? htmlspecialchars(TimezoneHelper::formatForDisplay($row['ngay_tao'], 'H:i:s d/m/Y')) : '' ?>
+                        </td>
                         <td>
                             <button class="detail-btn" onclick="showOrderDetails('<?php echo $row['ma_don_hang']; ?>')">
                                 <i class="fa-solid fa-eye"></i> Xem
@@ -659,10 +664,15 @@
                                         <th>Tên món</th>
                                         <th>Số lượng</th>
                                         <th>Giá tại thời điểm đặt</th>
-                                        <th>Ghi chú</th>
                                     </tr>
                                 </thead>
                                 <tbody>`;
+
+                        // Display order notes in all rows
+                        const orderNotes = data.order_notes ? '<span title="' + data.order_notes + '">' + (data
+                                .order_notes.length > 20 ? data.order_notes.substring(0, 20) + '...' : data
+                                .order_notes) + '</span>' :
+                            '<span style="color: #9ca3af; font-style: italic;">Không có</span>';
 
                         data.order_details.forEach(item => {
                             orderDetailHtml += `
@@ -673,9 +683,18 @@
                                     <td>${item.ten_mon}</td>
                                     <td>${item.so_luong}</td>
                                     <td>${parseFloat(item.gia_tai_thoi_diem_dat).toLocaleString('vi-VN')} ₫</td>
-                                    <td>${item.ghi_chu || ''}</td>
                                 </tr>`;
                         });
+
+                        // Add overall order notes section if available
+                        if (data.order_notes) {
+                            orderDetailHtml += `
+                                <tr>
+                                    <td colspan="4" style="background-color: #fff3cd; border-top: 2px solid #dee2e6; padding: 10px;">
+                                        <strong>Ghi chú đơn hàng:</strong> ${data.order_notes}
+                                    </td>
+                                </tr>`;
+                        }
 
                         orderDetailHtml += `
                                 </tbody>

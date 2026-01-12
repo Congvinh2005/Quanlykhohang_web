@@ -33,9 +33,14 @@
         function get_order_details($ma_don_hang){
             $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
 
+            // Lấy thông tin đơn hàng để lấy ghi chú
+            $order_info = $this->dh->Donhang_getById($ma_don_hang);
+            $order_data = mysqli_fetch_array($order_info);
+
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode([
-                'order_details' => $order_details
+                'order_details' => $order_details,
+                'order_notes' => $order_data['ghi_chu'] ?? ''
             ]);
             exit;
         }
