@@ -225,7 +225,8 @@
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
                 <?php elseif($_SESSION['user_role'] === 'khach_hang' && isset($data['ma_ban'])): ?>
-                
+                <?php endif; ?>
+
 
 
             </div>
@@ -330,7 +331,7 @@
                         </td>
                         <td><?php echo isset($row['ten_danh_muc']) ? htmlspecialchars($row['ten_danh_muc']) : 'N/A' ?>
                         </td>
-                                        <td style="text-align:right">
+                        <td style="text-align:right">
                             <?php if($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'khach_hang' || $_SESSION['user_role'] === 'nhan_vien'): ?>
                             <a href="http://localhost/QLSP/Thucdon/sua/<?php echo urlencode($row['ma_thuc_don']) ?>"><button
                                     class="btn-edit">✏️
@@ -340,13 +341,15 @@
                                     class="btn-delete">🗑️
                                     Xóa</button></a>
                             <?php elseif($_SESSION['user_role'] === 'khach_hang' && isset($data['ma_ban'])): ?>
-                            <button class="btn-add-to-cart" onclick="addToCart('<?php echo $row['ma_thuc_don']; ?>', '<?php echo $data['ma_ban']; ?>', <?php echo $row['gia']; ?>)">
+                            <button class="btn-add-to-cart"
+                                onclick="addToCart('<?php echo $row['ma_thuc_don']; ?>', '<?php echo $data['ma_ban']; ?>', <?php echo $row['gia']; ?>)">
                                 <i class="fa-solid fa-cart-plus"></i> Thêm
                             </button>
                             <?php endif; ?>
                         </td>
                     </tr>
-                    <?php } } ?>
+                    <?php } ?>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
@@ -376,31 +379,31 @@
                 }
             };
             xhr.send('product_id=' + encodeURIComponent(productId) +
-                    '&table_id=' + encodeURIComponent(tableId) +
-                    '&price=' + encodeURIComponent(price));
+                '&table_id=' + encodeURIComponent(tableId) +
+                '&price=' + encodeURIComponent(price));
         }
         </script>
         <?php } ?>
-        <?php if(isset($data['dulieu']) && mysqli_num_rows($data['dulieu']) === 0){ ?>
+        <?php if(isset($data['dulieu']) && mysqli_num_rows($data['dulieu']) === 0): ?>
         <div class="hint">Không có kết quả phù hợp.</div>
-        <?php } ?>
+        <?php endif; ?>
 
     </div>
 
     <style>
-        .btn-add-to-cart {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
+    .btn-add-to-cart {
+        background: #3b82f6;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
 
-        .btn-add-to-cart:hover {
-            background: #2563eb;
-        }
+    .btn-add-to-cart:hover {
+        background: #2563eb;
+    }
     </style>
 </body>
 

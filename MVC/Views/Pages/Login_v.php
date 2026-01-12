@@ -18,7 +18,7 @@
 
     body {
         min-height: 100vh;
-        background: linear-gradient(135deg, #6f4e37, #a47148);
+        background: url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb') no-repeat center/cover;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -27,6 +27,8 @@
     .container {
         width: 900px;
         background: white;
+        background: rgba(255, 255, 255, 0.6);
+        /* More transparent white for better readability */
         border-radius: 15px;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
         display: flex;
@@ -37,6 +39,8 @@
     .left {
         width: 50%;
         padding: 40px;
+        background: rgba(255, 255, 255, 0.3);
+        /* More transparent white */
     }
 
     .logo {
@@ -108,7 +112,8 @@
     /* RIGHT - INFO */
     .right {
         width: 50%;
-        background: linear-gradient(135deg, #6f4e37, #a47148);
+        background: rgba(111, 78, 55, 0.7);
+        /* More transparent coffee brown */
         color: white;
         padding: 40px;
         text-align: center;
@@ -129,17 +134,29 @@
 
     .right ul {
         list-style: none;
-        text-align: left;
-        margin-top: 20px;
+        text-align: center;
+        margin-top: 40px;
+        padding-left: 0;
     }
 
     .right ul li {
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         font-size: 15px;
+        text-align: center;
     }
 
     .right ul li::before {
-        content: "✔ ";
+        /* content: "✔ "; */
+        content: " - ";
+
+        color: #c8e6c9;
+        font-weight: bold;
+    }
+
+    .right ul li::after {
+        /* content: "✔ "; */
+        content: " - ";
+
         color: #c8e6c9;
         font-weight: bold;
     }

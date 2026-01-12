@@ -10,7 +10,7 @@
     /* Cards for statistics */
     .stat-cards {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 20px;
         margin-bottom: 30px;
     }
@@ -26,15 +26,19 @@
     }
 
     .stat-card.success {
-        border-left-color: #10b981;
+        border-left-color: #9bddc5;
     }
 
     .stat-card.warning {
-        border-left-color: #f59e0b;
+        border-left-color: #e4cba1;
     }
 
     .stat-card.danger {
-        border-left-color: #ef4444;
+        border-left-color: #ce8e8e;
+    }
+
+    .stat-card.destroy {
+        border-left-color: #9585be;
     }
 
     .stat-label {
@@ -190,17 +194,20 @@
             </div>
             <div class="stat-card warning">
                 <div class="stat-label">Tổng doanh thu</div>
-                <div class="stat-value"><?php echo number_format($data['stats']['total_revenue'], 0, ',', '.'); ?> ₫</div>
-                <div class="stat-title">VND</div>
+                <div class="stat-value"><?php echo number_format($data['stats']['total_revenue'], 0, ',', '.'); ?> ₫
+                </div>
+                <div class="stat-title">Trước giảm giá</div>
             </div>
             <div class="stat-card danger">
                 <div class="stat-label">Tổng khuyến mãi</div>
-                <div class="stat-value"><?php echo number_format($data['stats']['total_discount'], 0, ',', '.'); ?> ₫</div>
+                <div class="stat-value"><?php echo number_format($data['stats']['total_discount'], 0, ',', '.'); ?> ₫
+                </div>
                 <div class="stat-title">Giảm giá</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card destroy">
                 <div class="stat-label">Doanh thu thực tế</div>
-                <div class="stat-value"><?php echo number_format($data['stats']['actual_revenue'], 0, ',', '.'); ?> ₫</div>
+                <div class="stat-value"><?php echo number_format($data['stats']['actual_revenue'], 0, ',', '.'); ?> ₫
+                </div>
                 <div class="stat-title">Sau giảm giá</div>
             </div>
         </div>
@@ -239,7 +246,8 @@
         const denNgay = '<?php echo $data['den_ngay']; ?>';
 
         try {
-            const response = await fetch(`http://localhost/QLSP/Thongke/getChartData?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+            const response = await fetch(
+                `http://localhost/QLSP/Thongke/getChartData?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
             const data = await response.json();
 
             // Initialize revenue chart (line chart)

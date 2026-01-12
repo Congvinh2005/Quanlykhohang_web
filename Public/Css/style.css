@@ -17,7 +17,7 @@
   --border: #e2e8f0;
   --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --radius: 16px; /* Bo góc lớn hiện đại */
+  --radius: 16px;
   --sidebar-width: 260px;
 }
 
@@ -139,7 +139,7 @@ ul {
   font-weight: bold;
 } */
 
-.logout-btn {
+/* .logout-btn {
   background: var(--danger);
   color: var(--white);
   border: none;
@@ -153,11 +153,11 @@ ul {
   font-size: 12px;
   transition: background-color 0.2s;
   margin-left: 10px;
-}
+} */
 
-.logout-btn:hover {
+/* .logout-btn:hover {
   background: #dc2626;
-}
+} */
 
 .user-role {
   font-size: 12px;

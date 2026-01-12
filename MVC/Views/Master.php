@@ -11,8 +11,10 @@ include_once __DIR__.'/../../Public/Classes/UrlHelper.php';
     <title>Quản Lý Sản Phẩm Pro</title>
     <base href="<?php echo UrlHelper::baseUrl(); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet"
-        href="<?php echo UrlHelper::url('Public/Css/style.css?v=2'); ?>">
+    <link rel="stylesheet" href="<?php echo UrlHelper::url('Public/Css/style.css?v=2'); ?>">
+    <style>
+
+    </style>
 </head>
 
 <body>
@@ -89,6 +91,11 @@ include_once __DIR__.'/../../Public/Classes/UrlHelper.php';
                             <i class="fa-solid fa-chart-line"></i> Thống kê
                         </a>
                     </li>
+                    <li>
+                        <a href="http://localhost/QLSP/Users/logout" class="logout-btn1" title="Đăng xuất">
+                            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </aside>
@@ -124,11 +131,9 @@ include_once __DIR__.'/../../Public/Classes/UrlHelper.php';
                         <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
                             alt="Avatar">
                     </div>
-                    <a href="http://localhost/QLSP/Users/logout" class="logout-btn" title="Đăng xuất">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </a>
+
                     <?php else: ?>
-                    <span>Đào Văn Vinh</span>
+                    <!-- <span>Đào Văn Vinh</span> -->
                     <div class="avatar">
                         <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
                             alt="Avatar">
