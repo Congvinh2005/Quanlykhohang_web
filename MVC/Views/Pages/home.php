@@ -1,184 +1,3 @@
-<div class="dashboard-container">
-    <!-- Welcome Section -->
-    <div class="welcome-section">
-        <div class="welcome-card">
-            <div class="welcome-content">
-                <h1>Xin chào,
-                    <?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Đào Văn Vinh'; ?>!
-                    👋</h1>
-                <p>Chào mừng bạn quay trở lại hệ thống quản lý cà phê chuyên nghiệp</p>
-                <div class="date-time">
-                    <i class="fa-solid fa-calendar-day"></i>
-                    <span><?php echo date('l, d/m/Y'); ?></span>
-                </div>
-            </div>
-            <div class="welcome-icon">
-                <i class="fa-solid fa-mug-hot"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- Stats Overview -->
-    <!-- <div class="stats-section">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon bg-primary">
-                    <i class="fa-solid fa-utensils"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>128</h3>
-                    <p>Thực đơn</p>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon bg-success">
-                    <i class="fa-solid fa-chair"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>24</h3>
-                    <p>Bàn</p>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon bg-warning">
-                    <i class="fa-solid fa-receipt"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>86</h3>
-                    <p>Đơn hàng hôm nay</p>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon bg-danger">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-                <div class="stat-info">
-                    <h3>14.2M</h3>
-                    <p>Doanh thu</p>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-    <!-- Main Content Grid -->
-    <div class="main-grid">
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <h2><i class="fa-solid fa-bolt"></i> Hành động nhanh</h2>
-            <div class="actions-grid">
-                <a href="http://localhost/QLSP/Sanpham/danhsach" class="action-card">
-                    <div class="action-icon bg-blue">
-                        <i class="fa-solid fa-box-open"></i>
-                    </div>
-                    <div class="action-content">
-                        <h3>Quản lý nguyên liệu</h3>
-                        <p>Thêm, sửa, xóa nguyên liệu</p>
-                    </div>
-                </a>
-
-                <a href="http://localhost/QLSP/Thucdon/danhsach" class="action-card">
-                    <div class="action-icon bg-green">
-                        <i class="fa-solid fa-utensils"></i>
-                    </div>
-                    <div class="action-content">
-                        <h3>Thực đơn</h3>
-                        <p>Quản lý danh mục món</p>
-                    </div>
-                </a>
-
-                <a href="http://localhost/QLSP/Donhang/danhsach" class="action-card">
-                    <div class="action-icon bg-orange">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                    </div>
-                    <div class="action-content">
-                        <h3>Đơn hàng</h3>
-                        <p>Theo dõi đơn hàng mới</p>
-                    </div>
-                </a>
-
-                <a href="http://localhost/QLSP/Danhmuc/danhsach" class="action-card">
-                    <div class="action-icon bg-purple">
-                        <i class="fa-solid fa-file-excel"></i>
-                    </div>
-                    <div class="action-content">
-                        <h3>Danh mục</h3>
-                        <p>Quản lý danh mục</p>
-                    </div>
-                </a>
-
-                <a href="http://localhost/QLSP/Khuyenmai/danhsach" class="action-card">
-                    <div class="action-icon bg-pink">
-                        <i class="fa-solid fa-gift"></i>
-                    </div>
-                    <div class="action-content">
-                        <h3>Khuyến mãi</h3>
-                        <p>Chương trình ưu đãi</p>
-                    </div>
-                </a>
-
-                <a href="http://localhost/QLSP/Thongke/thongke" class="action-card">
-                    <div class="action-icon bg-teal">
-                        <i class="fa-solid fa-chart-simple"></i>
-                    </div>
-                    <div class="action-content">
-                        <h3>Thống kê</h3>
-                        <p>Báo cáo doanh thu</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Recent Activity -->
-        <div class="recent-activity">
-            <h2><i class="fa-solid fa-clock-rotate-left"></i> Hoạt động gần đây</h2>
-            <div class="activity-list">
-                <div class="activity-item">
-                    <div class="activity-icon success">
-                        <i class="fa-solid fa-check"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h4>Đơn hàng #ORD-00123 đã hoàn thành</h4>
-                        <p>Khách hàng: Nguyễn Văn A • 10 phút trước</p>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon warning">
-                        <i class="fa-solid fa-box"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h4>Nhập hàng nguyên liệu mới</h4>
-                        <p>Cà phê Arabica • 30 phút trước</p>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon info">
-                        <i class="fa-solid fa-user-plus"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h4>Thêm nhân viên mới</h4>
-                        <p>Phạm Thị B • 1 giờ trước</p>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon danger">
-                        <i class="fa-solid fa-exclamation"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h4>Sản phẩm sắp hết hàng</h4>
-                        <p>Cà phê Robusta • 2 giờ trước</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style>
 .dashboard-container {
     max-width: 1200px;
@@ -316,6 +135,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 15px;
+    width: 100%;
 }
 
 .action-card {
@@ -380,7 +200,19 @@
 }
 
 .bg-teal {
-    background: #14b8a6;
+    background: #1e4e48;
+}
+
+.bg-indigo {
+    background: #f17d63;
+}
+
+.bg-cyan {
+    background: #06b6d4;
+}
+
+.bg-yellow {
+    background: #e13b41;
 }
 
 .recent-activity {
@@ -464,3 +296,167 @@
     }
 }
 </style>
+<div class="dashboard-container">
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+        <div class="welcome-card">
+            <div class="welcome-content">
+                <h1>Xin chào,
+                    <?php echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Đào Văn Vinh'; ?>!
+                    👋</h1>
+                <p>Chào mừng bạn quay trở lại hệ thống quản lý cà phê chuyên nghiệp</p>
+                <div class="date-time">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    <span><?php echo date('l, d/m/Y'); ?></span>
+                </div>
+            </div>
+            <div class="welcome-icon">
+                <i class="fa-solid fa-mug-hot"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <!-- <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon bg-primary">
+                    <i class="fa-solid fa-utensils"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>128</h3>
+                    <p>Thực đơn</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon bg-success">
+                    <i class="fa-solid fa-chair"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>24</h3>
+                    <p>Bàn</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon bg-warning">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>86</h3>
+                    <p>Đơn hàng hôm nay</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon bg-danger">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>14.2M</h3>
+                    <p>Doanh thu</p>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Main Content Grid -->
+    <div class="main-grid">
+        <!-- Quick Actions -->
+        <div class="quick-actions" style="grid-column: 1 / -1;">
+            <h2><i class="fa-solid fa-bolt"></i> Hành động nhanh</h2>
+            <div class="actions-grid">
+                <a href="http://localhost/QLSP/Users/danhsach" class="action-card">
+                    <div class="action-icon bg-blue">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Quản lý người dùng</h3>
+                        <p>Thêm, sửa, xóa người dùng</p>
+                    </div>
+                </a>
+
+                <a href="http://localhost/QLSP/Nhacungcap/danhsach" class="action-card">
+                    <div class="action-icon bg-indigo">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Nhà cung cấp</h3>
+                        <p>Quản lý nhà cung cấp</p>
+                    </div>
+                </a>
+
+                <a href="http://localhost/QLSP/Banuong/danhsach" class="action-card">
+                    <div class="action-icon bg-cyan">
+                        <i class="fa-solid fa-chair"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Bàn uống</h3>
+                        <p>Quản lý bàn uống</p>
+                    </div>
+                </a>
+
+                <a href="http://localhost/QLSP/Sanpham/danhsach" class="action-card">
+                    <div class="action-icon bg-green">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Nguyên liệu</h3>
+                        <p>Quản lý nguyên liệu</p>
+                    </div>
+                </a>
+
+                <a href="http://localhost/QLSP/Danhmuc/danhsach" class="action-card">
+                    <div class="action-icon bg-purple">
+                        <i class="fa-solid fa-file-excel"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Danh mục</h3>
+                        <p>Quản lý danh mục</p>
+                    </div>
+                </a>
+
+                <a href="http://localhost/QLSP/Khuyenmai/danhsach" class="action-card">
+                    <div class="action-icon bg-pink">
+                        <i class="fa-solid fa-gift"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Khuyến mãi</h3>
+                        <p>Chương trình ưu đãi</p>
+                    </div>
+                </a>
+
+                <a href="http://localhost/QLSP/Thucdon/danhsach" class="action-card">
+                    <div class="action-icon bg-yellow">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Thực đơn</h3>
+                        <p>Quản lý món ăn</p>
+                    </div>
+                </a>
+
+                <a href="http://localhost/QLSP/Donhang/danhsach" class="action-card">
+                    <div class="action-icon bg-orange">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Đơn hàng</h3>
+                        <p>Quản lý đơn hàng</p>
+                    </div>
+                </a>
+
+                <a href="http://localhost/QLSP/Thongke/thongke" class="action-card">
+                    <div class="action-icon bg-teal">
+                        <i class="fa-solid fa-chart-simple"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Thống kê</h3>
+                        <p>Báo cáo doanh thu</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
