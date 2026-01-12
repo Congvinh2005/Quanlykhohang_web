@@ -266,51 +266,8 @@
                 echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Sanpham/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
-        // Method to export current search results or all products
-        function export(){
-            // Check if coming from search context - get parameters from URL if available
-            $masp = $_GET['masp'] ?? '';
-            $masx = $_GET['masx'] ?? '';
+      
 
-            // Get the filtered data based on search parameters, or all if none provided
-            $result = $this->sanpham->Sanpham_find($masp, $masx);
-
-            $objExcel = new PHPExcel();
-            $objExcel->setActiveSheetIndex(0);
-            $sheet = $objExcel->getActiveSheet()->setTitle('DanhSachSanPham');
-
-            // Header tương ứng với ảnh CSDL
-            $sheet->setCellValue('A1', 'Mã sản phẩm');
-            $sheet->setCellValue('B1', 'Tên sản phẩm');
-            $sheet->setCellValue('C1', 'Giá');
-            $sheet->setCellValue('D1', 'Số lượng');
-            $sheet->setCellValue('E1', 'Thời gian bảo hành'); // Thêm cột E
-            $sheet->setCellValue('F1', 'Nhà sản xuất');       // Đẩy cột Nhà SX sang F
-
-            $rowCount = 1;
-            while ($row = mysqli_fetch_assoc($result)) {
-                $rowCount++;
-                // Mapping field theo bảng SANPHAM và NHASANXUAT
-                $sheet->setCellValue('A'.$rowCount, $row['Masp']);
-                $sheet->setCellValue('B'.$rowCount, $row['Tensp']);
-                $sheet->setCellValue('C'.$rowCount, $row['Gia']);
-                $sheet->setCellValue('D'.$rowCount, $row['Soluong']); // Sửa: Solg → Soluong
-                $sheet->setCellValue('E'.$rowCount, date('d/m/Y', strtotime($row['Tgbaohanh']))); // Format ngày tương ứng với view
-                $sheet->setCellValue('F'.$rowCount, $row['Tensx']);
-            }
-
-            foreach (range('A','F') as $col) {
-                $sheet->getColumnDimension($col)->setAutoSize(true);
-            }
-
-            if (ob_get_length()) ob_end_clean();
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment; filename="DanhSachSanPham.xlsx"');
-            header('Cache-Control: max-age=0');
-
-            $writer = PHPExcel_IOFactory::createWriter($objExcel, 'Excel2007');
-            $writer->save('php://output');
-            exit;
-        }
+           
     }
 ?>

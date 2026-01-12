@@ -9,10 +9,10 @@
         }
 
         /**
-         * Format datetime for display in the correct timezone
-         * @param string $datetime The datetime string from database
-         * @param string $format The format to display (optional)
-         * @return string Formatted datetime
+         * Định dạng ngày giờ để hiển thị theo múi giờ chính xác
+         * @param string $datetime Chuỗi ngày giờ từ cơ sở dữ liệu
+         * @param string $format Định dạng để hiển thị (tùy chọn)
+         * @return string Ngày giờ đã định dạng
          */
         public function formatDate($datetime, $format = 'd/m/Y H:i:s') {
             if (empty($datetime)) {
@@ -24,9 +24,9 @@
         }
 
         /**
-         * Generate a URL relative to the application base
-         * @param string $path The path to append to the base URL
-         * @return string The complete URL
+         * Tạo URL tương đối với cơ sở ứng dụng
+         * @param string $path Đường dẫn để thêm vào URL cơ sở
+         * @return string URL hoàn chỉnh
          */
         public function url($path = '') {
             return UrlHelper::url($path);

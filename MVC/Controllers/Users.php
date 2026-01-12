@@ -95,7 +95,7 @@
 
     function Timkiem()
     {
-        // Get the search parameters from the form
+        // Lấy các tham số tìm kiếm từ form
         $ma_user = $_POST['txtMauser'] ?? '';
         $ten_user = $_POST['txtTenuser'] ?? '';
 
@@ -117,10 +117,10 @@
             $sheet->setCellValue('F1', 'Ngay Tạo');
 
 
-            $rowCount = 2; // Starting from row 2 since row 1 is headers
-            mysqli_data_seek($result, 0); // Reset result pointer to beginning
+            $rowCount = 2; // Bắt đầu từ hàng 2 vì hàng 1 là tiêu đề
+            mysqli_data_seek($result, 0); // Đặt lại con trỏ kết quả về đầu
             while ($row = mysqli_fetch_assoc($result)) {
-                // Mapping field according to database table
+                // Ánh xạ trường theo bảng cơ sở dữ liệu
                 $sheet->setCellValue('A'.$rowCount, $row['ma_user']);
                 $sheet->setCellValue('B'.$rowCount, $row['ten_user']);
                 $sheet->setCellValue('C'.$rowCount, $row['password']);
@@ -153,25 +153,7 @@
         ]);
     }
 
-        function tim_ajax(){
-            header('Content-Type: application/json; charset=utf-8');
-            $ma_user = isset($_POST['q_mauser']) ? $_POST['q_mauser'] : '';
-            $ten_user = isset($_POST['q_tenuser']) ? $_POST['q_tenuser'] : '';
-            $result = $this->user->Users_find($ma_user, $ten_user);
-            $rows = [];
-            if($result){
-                while($r = mysqli_fetch_assoc($result)){
-                    $rows[] = [
-                        'ma_user' => $r['ma_user'],
-                        'ten_user' => $r['ten_user'],
-                        'email' => $r['email'],
-                        'phan_quyen' => $r['phan_quyen']
-                    ];
-                }
-            }
-            echo json_encode(['data' => $rows]);
-            exit;
-        }
+       
 
         function sua($ma_user){
             $result = $this->user->Users_getById($ma_user);
@@ -217,34 +199,7 @@
                 echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Users/danhsach') . "';</script>";
         }
 
-        // Xuất Excel danh sách users
-        function export(){
-            $data = $this->user->Users_getAll();
-            $excel = new PHPExcel();
-            $excel->getProperties()->setCreator("QLSP")->setTitle("Danh sách người dùng");
-            $sheet = $excel->setActiveSheetIndex(0);
-            $sheet->setTitle('Users');
-            // Header
-            $sheet->setCellValue('A1','Mã User');
-            $sheet->setCellValue('B1','Tên');
-            $sheet->setCellValue('C1','Email');
-            $sheet->setCellValue('D1','Quyền');
-            // Rows
-            $rowIndex = 2;
-            while($r = mysqli_fetch_array($data)){
-                $sheet->setCellValue('A'.$rowIndex,$r['ma_user']);
-                $sheet->setCellValue('B'.$rowIndex,$r['ten_user']);
-                $sheet->setCellValue('C'.$rowIndex,$r['email']);
-                $sheet->setCellValue('D'.$rowIndex,$r['phan_quyen']);
-                $rowIndex++;
-            }
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="users.xlsx"');
-            header('Cache-Control: max-age=0');
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-            $writer->save('php://output');
-            exit;
-        }
+      
 
         // Hiển thị form nhập Excel
         function import_form(){
@@ -253,52 +208,7 @@
             ]);
         }
 
-        //     // Xử lý nhập Excel
-        // function up_l(){
-        //     if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
-        //         echo "<script>alert('Upload file lỗi')</script>";
-        //         return;
-        //     }
-
-        //     $file = $_FILES['txtfile']['tmp_name'];
-
-        //     $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-        //     $objExcel  = $objReader->load($file);
-
-        //     $sheet     = $objExcel->getSheet(0);
-        //     $sheetData = $sheet->toArray(null,true,true,true);
-
-        //     for($i = 2; $i <= count($sheetData); $i++){
-
-        //         $ma_user    = trim($sheetData[$i]['A']);
-        //         $ten_user   = trim($sheetData[$i]['B']);
-        //         $password   = trim($sheetData[$i]['C']);
-        //         $email      = trim($sheetData[$i]['D']);
-        //         $phan_quyen = trim($sheetData[$i]['E']);
-        //         // $ngaytao    = trim($sheetData[$i]['F']);
-
-        //         if($ma_user == '') continue;
-
-        //         // ✅ CHECK TRÙNG MÃ USER
-        //         if($this->user->checktrungMaUser($ma_user)){
-        //             echo "<script>
-        //                 alert('Mã user $ma_user đã tồn tại! Vui lòng kiểm tra lại file.');
-        //                 window.location.href='" . $this->url('Users/import_form') . "';
-        //             </script>";
-        //             return;
-        //         }
-
-        //         // Insert
-        //         if(!$this->user->users_ins($ma_user,$ten_user,$password,$email,$phan_quyen)){
-        //             die(mysqli_error($this->user->con));
-        //         }
-        //     }
-
-        //     echo "<script>alert('Upload người dùng thành công!')</script>";
-        //     $this->view('Master',['page'=>'Users_up_v']);
-        // }
-
-        // Xử lý nhập Excel
+      
 function up_l(){
     if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
         echo "<script>alert('Upload file lỗi')</script>";

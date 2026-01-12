@@ -29,7 +29,7 @@
             ]);
         }
 
-        // Function to get order details for a specific order
+        // Hàm để lấy chi tiết đơn hàng cho một đơn hàng cụ thể
         function get_order_details($ma_don_hang){
             $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
 
@@ -42,7 +42,7 @@
 
         function Timkiem()
     {
-        // Get the search parameters from the form
+        // Lấy các tham số tìm kiếm từ form
         $ma_don_hang = $_POST['txtMadonhang'] ?? '';
         $ten_ban = $_POST['txtTenban'] ?? '';
         $ten_user = $_POST['txtTenuser'] ?? '';
@@ -67,10 +67,10 @@
             $sheet->setCellValue('G1', 'Trạng Thái Thanh Toán');
             $sheet->setCellValue('H1', 'Ngày Tạo');
 
-            $rowCount = 2; // Starting from row 2 since row 1 is headers
-            mysqli_data_seek($result, 0); // Reset result pointer to beginning
+            $rowCount = 2; // Bắt đầu từ hàng 2 vì hàng 1 là tiêu đề
+            mysqli_data_seek($result, 0); // Đặt lại con trỏ kết quả về đầu
             while ($row = mysqli_fetch_assoc($result)) {
-                // Mapping field according to database table
+                // Ánh xạ trường theo bảng cơ sở dữ liệu
                 $sheet->setCellValue('A'.$rowCount, $row['ma_don_hang']);
                 $sheet->setCellValue('B'.$rowCount, $row['ten_ban']);
                 $sheet->setCellValue('C'.$rowCount, $row['ten_user']);
@@ -106,31 +106,7 @@
         ]);
     }
 
-        // AJAX search (JSON)
-        function tim_ajax(){
-            header('Content-Type: application/json; charset=utf-8');
-            $ma_don_hang = isset($_POST['q_madh']) ? $_POST['q_madh'] : '';
-            $ma_ban = isset($_POST['q_maban']) ? $_POST['q_maban'] : '';
-            $ten_user = isset($_POST['q_tenuser']) ? $_POST['q_tenuser'] : '';
-            $result = $this->dh->Donhang_find($ma_don_hang, $ma_ban, $ten_user);
-            $rows = [];
-            if($result){
-                while($r = mysqli_fetch_assoc($result)){
-                    $rows[] = [
-                        'ma_don_hang' => $r['ma_don_hang'],
-                        'ma_ban' => $r['ma_ban'],
-                        'ma_user' => $r['ma_user'],
-                        'tong_tien' => $r['tong_tien'],
-                        'tien_khuyen_mai' => $r['tien_khuyen_mai'],
-                        'so_tien_can_thanh_toan' => $r['tong_tien'] - $r['tien_khuyen_mai'],
-                        'trang_thai_thanh_toan' => $r['trang_thai_thanh_toan'],
-                        'ngay_tao' => $r['ngay_tao']
-                    ];
-                }
-            }
-            echo json_encode(['data' => $rows]);
-            exit;
-        }
+        
 
         // Hiển thị form nhập Excel
         function import_form(){
@@ -191,58 +167,7 @@
                 echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Donhang/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
-        // Method to export current search results or all orders
-        function export(){
-            // Check if coming from search context - get parameters from URL if available
-            $ma_don_hang = $_GET['ma_don_hang'] ?? '';
-            $ma_ban = $_GET['ma_ban'] ?? '';
-            $ten_user = $_GET['ten_user'] ?? '';
-
-            // Get the filtered data based on search parameters, or all if none provided
-            $result = $this->dh->Donhang_find($ma_don_hang, $ma_ban, $ten_user);
-
-            $objExcel = new PHPExcel();
-            $objExcel->setActiveSheetIndex(0);
-            $sheet = $objExcel->getActiveSheet()->setTitle('DanhSachDonHang');
-
-            // Header tương ứng với ảnh CSDL
-            $sheet->setCellValue('A1', 'Mã Đơn Hàng');
-            $sheet->setCellValue('B1', 'Mã Bàn');
-            $sheet->setCellValue('C1', 'Mã User');
-            $sheet->setCellValue('D1', 'Tổng Tiền');
-            $sheet->setCellValue('E1', 'Tiền Khuyến Mãi');
-            $sheet->setCellValue('F1', 'Số Tiền Cần Thanh Toán');
-            $sheet->setCellValue('G1', 'Trạng Thái Thanh Toán');
-            $sheet->setCellValue('H1', 'Ngày Tạo');
-
-            $rowCount = 2; // Starting from row 2 since row 1 is headers
-            mysqli_data_seek($result, 0); // Reset result pointer to beginning
-            while ($row = mysqli_fetch_assoc($result)) {
-                $sheet->setCellValue('A'.$rowCount, $row['ma_don_hang']);
-                $sheet->setCellValue('B'.$rowCount, $row['ma_ban']);
-                $sheet->setCellValue('C'.$rowCount, $row['ma_user']);
-                $sheet->setCellValue('D'.$rowCount, $row['tong_tien']);
-                $sheet->setCellValue('E'.$rowCount, $row['tien_khuyen_mai']);
-                $sheet->setCellValue('F'.$rowCount, $row['tong_tien'] - $row['tien_khuyen_mai']);
-                $sheet->setCellValue('G'.$rowCount, $row['trang_thai_thanh_toan']);
-                $sheet->setCellValue('H'.$rowCount, $row['ngay_tao']);
-                $rowCount++;
-            }
-
-            foreach (range('A','H') as $col) {
-                $sheet->getColumnDimension($col)->setAutoSize(true);
-            }
-
-            if (ob_get_length()) ob_end_clean();
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment; filename="DanhSachDonHang.xlsx"');
-            header('Cache-Control: max-age=0');
-
-            $writer = PHPExcel_IOFactory::createWriter($objExcel, 'Excel2007');
-            $writer->save('php://output');
-            exit;
-        }
-
+       
         // Cập nhật trạng thái thanh toán cho đơn hàng (dành cho admin)
         function update_payment_status($ma_don_hang){
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {

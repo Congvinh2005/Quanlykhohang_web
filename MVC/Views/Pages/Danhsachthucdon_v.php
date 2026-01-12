@@ -225,12 +225,7 @@
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
                 <?php elseif($_SESSION['user_role'] === 'khach_hang' && isset($data['ma_ban'])): ?>
-                <a href="http://localhost/QLSP/Thucdon/viewCart/<?php echo $data['ma_ban']; ?>" class="btn-create"><i class="fa-solid fa-shopping-cart"></i>
-                    Giỏ hàng </a>
-                <?php endif; ?>
-                <!-- <a href="http://localhost/QLSP/Thucdon/Timkiem" class="btn-excel"><i class="fa-solid fa-file-excel"></i>
-                    Xuất
-                    Excel</a> -->
+                
 
 
             </div>

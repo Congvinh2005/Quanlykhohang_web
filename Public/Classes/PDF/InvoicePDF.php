@@ -109,10 +109,7 @@ class InvoicePDF extends TCPDF
         $this->SetFont('dejavusans', '', 12);
         $this->Cell(0, 6, 'Mã đơn hàng: ' . ($this->order_data['ma_don_hang'] ?? 'N/A'), 0, 1);
         $this->Cell(0, 6, 'Ngày đặt: ' . (isset($this->order_data['ngay_tao']) ? TimezoneHelper::formatForDisplay($this->order_data['ngay_tao'], 'H:i:s d/m/Y') : 'N/A'), 0, 1);
-        // $this->Cell(0, 6, 'Người tạo: ' . ($this->order_data['ten_user'] ?? 'N/A'), 0, 1);
-        // $this->Cell(0, 6, 'Khách hàng: ' . ($this->order_data['ten_khach_hang'] ?? 'N/A'), 0, 1);
-        // $this->Cell(0, 6, 'Điện thoại: ' . ($this->order_data['sdt_khach_hang'] ?? 'N/A'), 0, 1);
-        // $this->Cell(0, 6, 'Địa chỉ: ' . ($this->order_data['dia_chi_khach_hang'] ?? 'N/A'), 0, 1);
+    
         $this->Ln(8);
 
         // Table header

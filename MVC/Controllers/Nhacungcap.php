@@ -151,26 +151,7 @@
     }
 
 
-        // AJAX search (JSON) - Giữ nguyên
-        function tim_ajax(){
-            header('Content-Type: application/json; charset=utf-8');
-            $mancc = isset($_POST['q_mancc']) ? $_POST['q_mancc'] : '';
-            $tenncc = isset($_POST['q_tenncc']) ? $_POST['q_tenncc'] : '';
-            $result = $this->ncc->Nhacungcap_find($mancc, $tenncc);
-            $rows = [];
-            if($result){
-                while($r = mysqli_fetch_assoc($result)){
-                    $rows[] = [
-                        'mancc' => $r['mancc'],
-                        'tenncc' => $r['tenncc'],
-                        'diachi' => $r['diachi'],
-                        'dienthoai' => $r['dienthoai']
-                    ];
-                }
-            }
-            echo json_encode(['data' => $rows]);
-            exit;
-        }
+      
         
         function sua($mancc){
             $result = $this->ncc->Nhacungcap_find($mancc, '');
@@ -227,39 +208,7 @@
                 echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Nhacungcap/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
-        // Xuất Excel danh sách nhà cung cấp (theo tìm kiếm nếu có)
-        function export(){
-            // Get search parameters from URL or POST
-            $mancc = $_GET['mancc'] ?? '';
-            $tenncc = $_GET['tenncc'] ?? '';
-
-            // Find data based on search parameters (if provided) or all records (if not)
-            $data = $this->ncc->Nhacungcap_find($mancc, $tenncc);
-            $excel = new PHPExcel();
-            $excel->getProperties()->setCreator("QLSP")->setTitle("Danh sách nhà cung cấp");
-            $sheet = $excel->setActiveSheetIndex(0);
-            $sheet->setTitle('Nhacungcap');
-            // Header
-            $sheet->setCellValue('A1','Mã NCC');
-            $sheet->setCellValue('B1','Tên NCC');
-            $sheet->setCellValue('C1','Địa chỉ');
-            $sheet->setCellValue('D1','Điện thoại');
-            // Rows
-            $rowIndex = 2;
-            while($r = mysqli_fetch_array($data)){
-                $sheet->setCellValue('A'.$rowIndex,$r['mancc']);
-                $sheet->setCellValue('B'.$rowIndex,$r['tenncc']);
-                $sheet->setCellValue('C'.$rowIndex,$r['diachi']);
-                $sheet->setCellValue('D'.$rowIndex,$r['dienthoai']);
-                $rowIndex++;
-            }
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="nhacungcap.xlsx"');
-            header('Cache-Control: max-age=0');
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-            $writer->save('php://output');
-            exit;
-        }
+       
 
         // Hiển thị form nhập Excel - Giữ nguyên
         function import_form(){
@@ -267,44 +216,6 @@
                 'page' => 'Nhacungcap_up_v'
             ]);
         }
-
-        // Xử lý nhập Excel - Sửa redirect về danhsach
-        //     function up_l(){
-        //     if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
-        //         echo "<script>alert('Upload file lỗi')</script>";
-        //         return;
-        //     }
-
-        //     $file = $_FILES['txtfile']['tmp_name'];
-
-        //     $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-        //     $objExcel  = $objReader->load($file);
-
-        //     $sheet     = $objExcel->getSheet(0);
-        //     $sheetData = $sheet->toArray(null,true,true,true);
-
-        //     for($i = 2; $i <= count($sheetData); $i++){
-
-        //         $mancc   = trim((string)$sheetData[$i]['A']);
-        //         $tenncc = trim((string)$sheetData[$i]['B']);
-        //         $diachi     = trim((string)$sheetData[$i]['C']);
-        //         $dienthoai  = trim((string)$sheetData[$i]['D']);
-
-        //         // Kiểm tra số điện thoại có đúng 10 chữ số không nếu không để trống
-        //         if($dienthoai != '' && !preg_match('/^\d{10}$/', $dienthoai)){
-        //             echo "<script>alert('Số điện thoại ở dòng $i không đúng định dạng 10 chữ số. Dữ liệu không được nhập.')</script>";
-        //             return;
-        //         }
-
-        //         if($mancc == '') continue;
-        //         if(!$this->ncc->Nhacungcap_ins($mancc,$tenncc,$diachi,$dienthoai)){
-        //             die(mysqli_error($this->ncc->con));
-        //         }
-        //     }
-
-        //     echo "<script>alert('Upload nhà cung cấp thành công!')</script>";
-        //     $this->view('Master',['page'=>'Nhacungcap_up_v']);
-        // }
 
 
                 function up_l(){
@@ -365,21 +276,6 @@
             $this->view('Master',['page'=>'Nhacungcap_up_v']);
         }   
 
-        // Tải mẫu Excel (chỉ header) - Giữ nguyên
-        function template(){
-            $excel = new PHPExcel();
-            $sheet = $excel->setActiveSheetIndex(0);
-            $sheet->setTitle('Nhacungcap');
-            $sheet->setCellValue('A1','Mã NCC');
-            $sheet->setCellValue('B1','Tên NCC');
-            $sheet->setCellValue('C1','Địa chỉ');
-            $sheet->setCellValue('D1','Điện thoại');
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="mau_nhacungcap.xlsx"');
-            header('Cache-Control: max-age=0');
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-            $writer->save('php://output');
-            exit;
-        }
+       
     }
 ?>

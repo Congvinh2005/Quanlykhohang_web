@@ -207,8 +207,8 @@
                 <p class="lead">Cập nhật thông tin chương trình khuyến mãi.</p>
             </div>
             <div class="actions">
-                <a href="http://localhost/QLSP/Khuyenmai/danhsach" class="btn-ghost"><i
-                        class="fa-solid fa-list"></i> Danh sách</a>
+                <a href="http://localhost/QLSP/Khuyenmai/danhsach" class="btn-ghost"><i class="fa-solid fa-list"></i>
+                    Danh sách</a>
             </div>
         </div>
 
@@ -236,7 +236,8 @@
             </div>
 
             <div class="actions" style="margin-top:0;">
-                <button type="submit" class="btn-primary" name="btnCapnhat"><i class="fa-solid fa-sync"></i> Cập nhật</button>
+                <button type="submit" class="btn-primary" name="btnCapnhat"><i class="fa-solid fa-sync"></i> Cập
+                    nhật</button>
                 <a href="http://localhost/QLSP/Khuyenmai/danhsach" class="btn-ghost">Hủy</a>
             </div>
         </form>

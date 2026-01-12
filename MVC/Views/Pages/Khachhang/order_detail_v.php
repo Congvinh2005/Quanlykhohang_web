@@ -164,17 +164,7 @@ $so_tien_can_thanh_toan = $order_tong_tien - $tien_khuyen_mai;
             <i class="fa-solid fa-arrow-left"></i> Quay lại
         </a>
 
-        <?php if ($order['trang_thai_thanh_toan'] === 'da_thanh_toan'): ?>
-        <!-- <a href="http://localhost/QLSP/Khachhang/generateInvoice/<?= $order['ma_don_hang'] ?>" class="btn-print"
-            target="_blank">
-            <i class="fa-solid fa-print"></i> In hóa đơn
-        </a> -->
-        <?php else: ?>
-        <!-- <span class="btn-print disabled" style="background: #ccc; cursor: not-allowed;"
-            title="Chỉ được in hóa đơn khi đơn hàng đã được thanh toán">
-            <i class="fa-solid fa-print"></i> Chưa thanh toán nên không thể in hóa đơn
-        </span> -->
-        <?php endif; ?>
+       
     </div>
 
 </body>

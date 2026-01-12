@@ -165,25 +165,7 @@ function Timkiem()
         ]);
     }
 
-        // AJAX search (JSON)
-        function tim_ajax(){
-            header('Content-Type: application/json; charset=utf-8');
-            $ma_danh_muc = isset($_POST['q_madanhmuc']) ? $_POST['q_madanhmuc'] : '';
-            $ten_danh_muc = isset($_POST['q_tendanhmuc']) ? $_POST['q_tendanhmuc'] : '';
-            $result = $this->dm->Danhmuc_find($ma_danh_muc, $ten_danh_muc);
-            $rows = [];
-            if($result){
-                while($r = mysqli_fetch_assoc($result)){
-                    $rows[] = [
-                        'ma_danh_muc' => $r['ma_danh_muc'],
-                        'ten_danh_muc' => $r['ten_danh_muc'],
-                        'image' => $r['image']
-                    ];
-                }
-            }
-            echo json_encode(['data' => $rows]);
-            exit;
-        }
+       
 
         function sua($ma_danh_muc){
             $result = $this->dm->Danhmuc_find($ma_danh_muc, '');
@@ -260,37 +242,7 @@ function Timkiem()
                 echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Danhmuc/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
-        // Xuất Excel danh sách danh mục (theo tìm kiếm nếu có)
-        function export(){
-            // Get search parameters from URL or POST
-            $ma_danh_muc = $_GET['ma_danh_muc'] ?? '';
-            $ten_danh_muc = $_GET['ten_danh_muc'] ?? '';
-
-            // Find data based on search parameters (if provided) or all records (if not)
-            $data = $this->dm->Danhmuc_find($ma_danh_muc, $ten_danh_muc);
-            $excel = new PHPExcel();
-            $excel->getProperties()->setCreator("QLSP")->setTitle("Danh sách danh mục");
-            $sheet = $excel->setActiveSheetIndex(0);
-            $sheet->setTitle('Danhmuc');
-            // Header
-            $sheet->setCellValue('A1','Mã DM');
-            $sheet->setCellValue('B1','Tên DM');
-            $sheet->setCellValue('C1','Hình ảnh');
-            // Rows
-            $rowIndex = 2;
-            while($r = mysqli_fetch_array($data)){
-                $sheet->setCellValue('A'.$rowIndex,$r['ma_danh_muc']);
-                $sheet->setCellValue('B'.$rowIndex,$r['ten_danh_muc']);
-                $sheet->setCellValue('C'.$rowIndex,$r['image']);
-                $rowIndex++;
-            }
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="danhmuc.xlsx"');
-            header('Cache-Control: max-age=0');
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-            $writer->save('php://output');
-            exit;
-        }
+      
 
         // Hiển thị form nhập Excel
         function import_form(){
@@ -299,37 +251,7 @@ function Timkiem()
             ]);
         }
 
-        // Xử lý nhập Excel
-        // function up_l(){
-        //     if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
-        //         echo "<script>alert('Upload file lỗi')</script>";
-        //         return;
-        //     }
-
-        //     $file = $_FILES['txtfile']['tmp_name'];
-
-        //     $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-        //     $objExcel  = $objReader->load($file);
-
-        //     $sheet     = $objExcel->getSheet(0);
-        //     $sheetData = $sheet->toArray(null,true,true,true);
-
-        //     for($i = 2; $i <= count($sheetData); $i++){
-
-        //         $ma_danh_muc   = trim((string)$sheetData[$i]['A']);
-        //         $ten_danh_muc = trim((string)$sheetData[$i]['B']);
-        //         $image     = trim((string)$sheetData[$i]['C']);
-
-        //         if($ma_danh_muc == '') continue;
-        //         if(!$this->dm->Danhmuc_ins($ma_danh_muc,$ten_danh_muc,$image)){
-        //             die(mysqli_error($this->dm->con));
-        //         }
-        //     }
-
-        //     echo "<script>alert('Upload danh mục thành công!')</script>";
-        //     $this->view('Master',['page'=>'Danhmuc_up_v']);
-        // }
-
+       
         function up_l(){
     if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
         echo "<script>alert('Upload file lỗi')</script>";
@@ -371,20 +293,6 @@ function Timkiem()
     $this->view('Master',['page'=>'Danhmuc_up_v']);
 }
 
-        // Tải mẫu Excel (chỉ header)
-        function template(){
-            $excel = new PHPExcel();
-            $sheet = $excel->setActiveSheetIndex(0);
-            $sheet->setTitle('Danhmuc');
-            $sheet->setCellValue('A1','Mã DM');
-            $sheet->setCellValue('B1','Tên DM');
-            $sheet->setCellValue('C1','Hình ảnh');
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="mau_danhmuc.xlsx"');
-            header('Cache-Control: max-age=0');
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-            $writer->save('php://output');
-            exit;
-        }
+        
     }
 ?>

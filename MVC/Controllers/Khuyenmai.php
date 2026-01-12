@@ -130,26 +130,7 @@
         ]);
     }
 
-        // AJAX search (JSON)
-        function tim_ajax(){
-            header('Content-Type: application/json; charset=utf-8');
-            $ma_khuyen_mai = isset($_POST['q_makhuyenmai']) ? $_POST['q_makhuyenmai'] : '';
-            $ten_khuyen_mai = isset($_POST['q_tenkhuyenmai']) ? $_POST['q_tenkhuyenmai'] : '';
-            $result = $this->km->Khuyenmai_find($ma_khuyen_mai, $ten_khuyen_mai);
-            $rows = [];
-            if($result){
-                while($r = mysqli_fetch_assoc($result)){
-                    $rows[] = [
-                        'ma_khuyen_mai' => $r['ma_khuyen_mai'],
-                        'ten_khuyen_mai' => $r['ten_khuyen_mai'],
-                        'tien_khuyen_mai' => $r['tien_khuyen_mai'],
-                        'ghi_chu' => $r['ghi_chu']
-                    ];
-                }
-            }
-            echo json_encode(['data' => $rows]);
-            exit;
-        }
+   
 
         function sua($ma_khuyen_mai){
             $result = $this->km->Khuyenmai_find($ma_khuyen_mai, '');
@@ -192,39 +173,7 @@
                 echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Khuyenmai/danhsach') . "';</script>"; // Quay lại trang danh sách
         }
 
-        // Xuất Excel danh sách khuyến mãi (theo tìm kiếm nếu có)
-        function export(){
-            // Get search parameters from URL or POST
-            $ma_khuyen_mai = $_GET['ma_khuyen_mai'] ?? '';
-            $ten_khuyen_mai = $_GET['ten_khuyen_mai'] ?? '';
-
-            // Find data based on search parameters (if provided) or all records (if not)
-            $data = $this->km->Khuyenmai_find($ma_khuyen_mai, $ten_khuyen_mai);
-            $excel = new PHPExcel();
-            $excel->getProperties()->setCreator("QLSP")->setTitle("Danh sách khuyến mãi");
-            $sheet = $excel->setActiveSheetIndex(0);
-            $sheet->setTitle('KhuyenMai');
-            // Header
-            $sheet->setCellValue('A1','Mã Khuyến Mãi');
-            $sheet->setCellValue('B1','Tên Khuyến Mãi');
-            $sheet->setCellValue('C1','Tiền Khuyến Mãi');
-            $sheet->setCellValue('D1','Ghi Chú');
-            // Rows
-            $rowIndex = 2;
-            while($r = mysqli_fetch_array($data)){
-                $sheet->setCellValue('A'.$rowIndex,$r['ma_khuyen_mai']);
-                $sheet->setCellValue('B'.$rowIndex,$r['ten_khuyen_mai']);
-                $sheet->setCellValue('C'.$rowIndex,$r['tien_khuyen_mai']);
-                $sheet->setCellValue('D'.$rowIndex,$r['ghi_chu']);
-                $rowIndex++;
-            }
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="khuyenmai.xlsx"');
-            header('Cache-Control: max-age=0');
-            $writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
-            $writer->save('php://output');
-            exit;
-        }
+       
 
         // Hiển thị form nhập Excel
         function import_form(){

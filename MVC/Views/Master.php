@@ -1,5 +1,4 @@
 <?php
-// Include the helpers to make them available in all views
 include_once __DIR__.'/../../Public/Classes/TimezoneHelper.php';
 include_once __DIR__.'/../../Public/Classes/UrlHelper.php';
 ?>
