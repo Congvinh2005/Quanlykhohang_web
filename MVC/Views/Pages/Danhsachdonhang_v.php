@@ -668,7 +668,7 @@
                             orderDetailHtml += `
                                 <tr>
                                     <td>
-                                        ${item.img_thuc_don ? `<img src="${item.img_thuc_don}" alt="${item.ten_mon}">` : '<span>Không có</span>'}
+                                        ${item.img_thuc_don ? `<img src="/qlsp/Public/Pictures/thucdon/${item.img_thuc_don}" alt="${item.ten_mon}">` : '<span>Không có</span>'}
                                     </td>
                                     <td>${item.ten_mon}</td>
                                     <td>${item.so_luong}</td>

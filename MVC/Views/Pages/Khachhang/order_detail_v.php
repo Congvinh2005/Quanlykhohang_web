@@ -135,7 +135,7 @@ $so_tien_can_thanh_toan = $order_tong_tien - $tien_khuyen_mai;
             <tr>
                 <td style="text-align:left">
                     <?php if (!empty($detail['img_thuc_don'])): ?>
-                    <img src="<?= htmlspecialchars($detail['img_thuc_don']) ?>"
+                    <img src="<?= !empty($detail['img_thuc_don']) ? '/qlsp/Public/Pictures/thucdon/' . htmlspecialchars($detail['img_thuc_don']) : '/qlsp/Public/Pictures/no-image.png'; ?>"
                         style="width:30px;height:30px;object-fit:cover;border-radius:4px;margin-right:8px;vertical-align:middle;">
                     <?php endif; ?>
                     <?= htmlspecialchars($detail['ten_mon']) ?>

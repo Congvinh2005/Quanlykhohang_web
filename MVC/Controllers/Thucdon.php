@@ -75,19 +75,33 @@
                     $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
                     if(in_array($ext, $allowed)) {
-                        $new_filename = 'td_' . $ma_thuc_don . '_' . time() . '.' . $ext;
+                        // Làm sạch tên tệp gốc
+                        $original_name = pathinfo($filename, PATHINFO_FILENAME);
+                        $original_name = preg_replace('/[^a-zA-Z0-9_-]/', '_', $original_name); // Chỉ giữ các ký tự an toàn
+                        $original_name = str_replace('-', '_', $original_name); // Thay thế dấu gạch nối bằng dấu gạch dưới
+                        $new_filename = $original_name . '.' . $ext;
+
+                        // Kiểm tra nếu tên tệp đã tồn tại, thêm hậu tố cho đến khi không trùng
+                        $counter = 1;
+                        $final_filename = $new_filename;
+                        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/thucdon/';
+
+                        while (file_exists($upload_dir . $final_filename)) {
+                            $final_filename = $original_name . '_' . $counter . '.' . $ext;
+                            $counter++;
+                        }
+
                         // Sử dụng đường dẫn tuyệt đối đến thư mục Public/Pictures/thucdon
-                        $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/thucdon/' . $new_filename;
+                        $upload_path = $upload_dir . $final_filename;
 
                         // Tạo thư mục nếu chưa tồn tại
-                        $upload_dir = dirname($upload_path);
                         if (!is_dir($upload_dir)) {
                             // Tạo thư mục với quyền cao hơn và đảm bảo thư mục cha tồn tại
                             mkdir($upload_dir, 0777, true);
                         }
 
                         if(move_uploaded_file($filetmp, $upload_path)) {
-                            $img_thuc_don = $new_filename; // Chỉ lưu tên tệp vào DB
+                            $img_thuc_don = $final_filename; // Chỉ lưu tên tệp vào DB
                         } else {
                             echo "<script>alert('Upload hình ảnh thất bại!');</script>";
                             $this->view('Master',[
@@ -276,12 +290,32 @@
                     $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
                     if(in_array($ext, $allowed)) {
-                        $new_filename = 'td_' . $ma_thuc_don . '_' . time() . '.' . $ext;
+                        // Làm sạch tên tệp gốc
+                        $original_name = pathinfo($filename, PATHINFO_FILENAME);
+                        $original_name = preg_replace('/[^a-zA-Z0-9_-]/', '_', $original_name); // Chỉ giữ các ký tự an toàn
+                        $original_name = str_replace('-', '_', $original_name); // Thay thế dấu gạch nối bằng dấu gạch dưới
+                        $new_filename = $original_name . '.' . $ext;
+
+                        // Kiểm tra nếu tên tệp đã tồn tại, thêm hậu tố cho đến khi không trùng
+                        $counter = 1;
+                        $final_filename = $new_filename;
+                        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/thucdon/';
+
+                        while (file_exists($upload_dir . $final_filename)) {
+                            $final_filename = $original_name . '_' . $counter . '.' . $ext;
+                            $counter++;
+                        }
+
+                        // Nếu tên tệp mới khác với tên tệp gốc, có nghĩa là đã có tệp trùng
+                        if ($final_filename !== $new_filename) {
+                            // Tạo tên tệp mới với timestamp để đảm bảo duy nhất
+                            $final_filename = $original_name . '_' . time() . '.' . $ext;
+                        }
+
                         // Sử dụng đường dẫn tuyệt đối đến thư mục Public/Pictures/thucdon
-                        $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/thucdon/' . $new_filename;
+                        $upload_path = $upload_dir . $final_filename;
 
                         // Tạo thư mục nếu chưa tồn tại
-                        $upload_dir = dirname($upload_path);
                         if (!is_dir($upload_dir)) {
                             // Tạo thư mục với quyền cao hơn
                             mkdir($upload_dir, 0777, true);
@@ -294,7 +328,7 @@
                                 unlink($old_image_path);
                             }
 
-                            $img_thuc_don = $new_filename; // Chỉ lưu tên tệp vào DB
+                            $img_thuc_don = $final_filename; // Chỉ lưu tên tệp vào DB
                         } else {
                             echo "<script>alert('Upload hình ảnh thất bại!');</script>";
                             $this->sua($ma_thuc_don);

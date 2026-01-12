@@ -517,7 +517,7 @@
                             <td>
                                 <div class="cart-item-details">
                                     <?php if(isset($detail['img_thuc_don']) && $detail['img_thuc_don']): ?>
-                                    <img src="<?php echo htmlspecialchars($detail['img_thuc_don']); ?>"
+                                    <img src="<?php echo !empty($detail['img_thuc_don']) ? '/qlsp/Public/Pictures/thucdon/' . htmlspecialchars($detail['img_thuc_don']) : '/qlsp/Public/Pictures/no-image.png'; ?>"
                                         alt="<?php echo htmlspecialchars($detail['ten_mon']); ?>"
                                         class="cart-item-image" />
                                     <?php else: ?>

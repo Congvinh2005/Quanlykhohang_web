@@ -331,7 +331,7 @@
                     <div class="menu-item" data-category="<?php echo $item['ma_danh_muc']; ?>"
                          onclick="addItemToCart('<?php echo $item['ma_thuc_don']; ?>', '<?php echo addslashes(htmlspecialchars($item['ten_mon'])); ?>', <?php echo $item['gia']; ?>)">
                         <?php if($item['img_thuc_don']): ?>
-                        <img src="<?php echo htmlspecialchars($item['img_thuc_don']); ?>"
+                        <img src="<?php echo !empty($item['img_thuc_don']) ? '/qlsp/Public/Pictures/thucdon/' . htmlspecialchars($item['img_thuc_don']) : '/qlsp/Public/Pictures/no-image.png'; ?>"
                             alt="<?php echo htmlspecialchars($item['ten_mon']); ?>" />
                         <?php else: ?>
                         <div
