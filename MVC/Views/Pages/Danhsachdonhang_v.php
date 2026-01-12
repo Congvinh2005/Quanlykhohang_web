@@ -723,9 +723,22 @@
                                     border-radius: 6px;
                                     cursor: pointer;
                                     font-size: 14px;
-                                    font-weight: bold;">
+                                    font-weight: bold;
+                                    margin-right: 10px;">
                                     <i class="fa-solid fa-print"></i> In toàn bộ đơn
                                 </button>
+                                <a href="http://localhost/QLSP/Staff/generateInvoice_admin/${orderId}" class="btn-print" target="_blank" style="
+                                    background: #ffc107;
+                                    color: #212529;
+                                    border: none;
+                                    padding: 10px 20px;
+                                    border-radius: 6px;
+                                    text-decoration: none;
+                                    font-size: 14px;
+                                    font-weight: bold;
+                                    display: inline-block;">
+                                    <i class="fa-solid fa-file-invoice"></i> In đơn cho bartender
+                                </a>
                             </div>`;
 
                         modalBody.innerHTML = orderDetailHtml;
