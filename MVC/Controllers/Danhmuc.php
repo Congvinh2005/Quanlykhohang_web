@@ -54,7 +54,7 @@
                         $upload_path = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/danhmuc/' . $new_filename;
 
                         if(move_uploaded_file($filetmp, $upload_path)) {
-                            $image = '/qlsp/Public/Pictures/danhmuc/' . $new_filename;
+                            $image = $new_filename; // Chỉ lưu tên tệp vào DB
                         } else {
                             echo "<script>alert('Upload hình ảnh thất bại!');</script>";
                             $this->view('Master',[
@@ -202,12 +202,12 @@ function Timkiem()
 
                         if(move_uploaded_file($filetmp, $upload_path)) {
                             // Xóa hình ảnh cũ nếu tồn tại
-                            $old_image_path = $_SERVER['DOCUMENT_ROOT'] . $current_row['image'];
+                            $old_image_path = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/danhmuc/' . $current_row['image'];
                             if(!empty($current_row['image']) && file_exists($old_image_path) && strpos($old_image_path, '/Public/Pictures/danhmuc/') !== false) {
                                 unlink($old_image_path);
                             }
 
-                            $image = '/qlsp/Public/Pictures/danhmuc/' . $new_filename;
+                            $image = $new_filename; // Chỉ lưu tên tệp vào DB
                         } else {
                             echo "<script>alert('Upload hình ảnh thất bại!');</script>";
                             $this->sua($ma_danh_muc);

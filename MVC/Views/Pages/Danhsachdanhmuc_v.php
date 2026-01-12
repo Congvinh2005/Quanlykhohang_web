@@ -302,7 +302,7 @@
                         <td><?php echo htmlspecialchars($row['ten_danh_muc']) ?></td>
                         <td>
                             <?php if($row['image']): ?>
-                            <img src="<?php echo htmlspecialchars($row['image']) ?>"
+                            <img src="<?php echo !empty($row['image']) ? '/qlsp/Public/Pictures/danhmuc/' . htmlspecialchars($row['image']) : '/qlsp/Public/Pictures/no-image.png'; ?>"
                                 alt="<?php echo htmlspecialchars($row['ten_danh_muc']) ?>"
                                 style="width:50px;height:50px;object-fit:cover;border-radius:5px;" />
                             <?php else: ?>

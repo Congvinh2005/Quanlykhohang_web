@@ -155,7 +155,7 @@
                 <?php if(!empty($data['img_thuc_don'])): ?>
                 <div class="current-image">
                     <p>Hình ảnh hiện tại:</p>
-                    <img src="<?php echo htmlspecialchars($data['img_thuc_don']); ?>" alt="<?php echo htmlspecialchars($data['ten_mon']); ?>" />
+                    <img src="/qlsp/Public/Pictures/thucdon/<?php echo htmlspecialchars($data['img_thuc_don']); ?>" alt="<?php echo htmlspecialchars($data['ten_mon']); ?>" />
                 </div>
                 <?php endif; ?>
             </div>

@@ -308,7 +308,7 @@
                         <td><?php echo htmlspecialchars($row['ten_mon']) ?></td>
                         <td>
                             <?php if($row['img_thuc_don']): ?>
-                            <img src="<?php echo htmlspecialchars($row['img_thuc_don']) ?>"
+                            <img src="<?php echo !empty($row['img_thuc_don']) ? '/qlsp/Public/Pictures/thucdon/' . htmlspecialchars($row['img_thuc_don']) : '/qlsp/Public/Pictures/no-image.png'; ?>"
                                 alt="<?php echo htmlspecialchars($row['ten_mon']) ?>"
                                 style="width:50px;height:50px;object-fit:cover;border-radius:5px;" />
                             <?php else: ?>

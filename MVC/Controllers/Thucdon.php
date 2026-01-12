@@ -87,7 +87,7 @@
                         }
 
                         if(move_uploaded_file($filetmp, $upload_path)) {
-                            $img_thuc_don = '/qlsp/Public/Pictures/thucdon/' . $new_filename;
+                            $img_thuc_don = $new_filename; // Chỉ lưu tên tệp vào DB
                         } else {
                             echo "<script>alert('Upload hình ảnh thất bại!');</script>";
                             $this->view('Master',[
@@ -289,12 +289,12 @@
 
                         if(move_uploaded_file($filetmp, $upload_path)) {
                             // Xóa hình ảnh cũ nếu tồn tại
-                            $old_image_path = $_SERVER['DOCUMENT_ROOT'] . $current_row['img_thuc_don'];
+                            $old_image_path = $_SERVER['DOCUMENT_ROOT'] . '/qlsp/Public/Pictures/thucdon/' . $current_row['img_thuc_don'];
                             if(!empty($current_row['img_thuc_don']) && file_exists($old_image_path) && strpos($old_image_path, '/Public/Pictures/thucdon/') !== false) {
                                 unlink($old_image_path);
                             }
 
-                            $img_thuc_don = '/qlsp/Public/Pictures/thucdon/' . $new_filename;
+                            $img_thuc_don = $new_filename; // Chỉ lưu tên tệp vào DB
                         } else {
                             echo "<script>alert('Upload hình ảnh thất bại!');</script>";
                             $this->sua($ma_thuc_don);
