@@ -19,7 +19,7 @@
     </div>
 
     <!-- Stats Overview -->
-    <div class="stats-section">
+    <!-- <div class="stats-section">
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon bg-primary">
@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Main Content Grid -->
     <div class="main-grid">

@@ -138,6 +138,17 @@
     .btn-primary:hover {
         background: #1d4ed8;
     }
+
+    .chart-wrapper {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+
+    canvas {
+        max-height: 300px;
+        width: 100% !important;
+    }
     </style>
 </head>
 
@@ -154,11 +165,11 @@
             <div class="date-controls">
                 <div class="form-group">
                     <label for="tu_ngay">Từ ngày:</label>
-                    <input type="date" id="tu_ngay" value="<?php echo $data['tu_ngay']; ?>">
+                    <input type="date" id="tu_ngay" autocomplete="off" value="<?php echo $data['tu_ngay']; ?>">
                 </div>
                 <div class="form-group">
                     <label for="den_ngay">Đến ngày:</label>
-                    <input type="date" id="den_ngay" value="<?php echo $data['den_ngay']; ?>">
+                    <input type="date" id="den_ngay" autocomplete="off" value="<?php echo $data['den_ngay']; ?>">
                 </div>
                 <button class="btn-primary" onclick="filterData()">
                     <i class="fa-solid fa-filter"></i> Lọc
@@ -182,23 +193,35 @@
                 <div class="stat-value"><?php echo number_format($data['stats']['total_revenue'], 0, ',', '.'); ?> ₫</div>
                 <div class="stat-title">VND</div>
             </div>
+            <div class="stat-card danger">
+                <div class="stat-label">Tổng khuyến mãi</div>
+                <div class="stat-value"><?php echo number_format($data['stats']['total_discount'], 0, ',', '.'); ?> ₫</div>
+                <div class="stat-title">Giảm giá</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Doanh thu thực tế</div>
+                <div class="stat-value"><?php echo number_format($data['stats']['actual_revenue'], 0, ',', '.'); ?> ₫</div>
+                <div class="stat-title">Sau giảm giá</div>
+            </div>
         </div>
 
         <div class="chart-row">
             <div class="chart-container">
                 <h3>Doanh thu theo ngày</h3>
-                <canvas id="revenueChart" height="300"></canvas>
+                <div class="chart-wrapper">
+                    <canvas id="revenueChart"></canvas>
+                </div>
             </div>
             <div class="chart-container">
                 <h3>Doanh thu theo danh mục</h3>
-                <canvas id="categoryChart" height="300"></canvas>
+                <div class="chart-wrapper">
+                    <canvas id="categoryChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-    let revenueChart, categoryChart;
-
     function filterData() {
         const tuNgay = document.getElementById('tu_ngay').value;
         const denNgay = document.getElementById('den_ngay').value;
@@ -207,13 +230,16 @@
         window.location.href = `http://localhost/QLSP/Thongke/thongke?tu_ngay=${tuNgay}&den_ngay=${denNgay}`;
     }
 
+    let revenueChart, categoryChart;
+
+
     // Fetch chart data and initialize charts
     async function loadChartData() {
         const tuNgay = '<?php echo $data['tu_ngay']; ?>';
         const denNgay = '<?php echo $data['den_ngay']; ?>';
 
         try {
-            const response = await fetch(`http://localhost/QLSP/Donhang/getChartData?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+            const response = await fetch(`http://localhost/QLSP/Thongke/getChartData?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
             const data = await response.json();
 
             // Initialize revenue chart (line chart)
