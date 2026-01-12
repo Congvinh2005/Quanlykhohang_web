@@ -134,46 +134,26 @@
         <!-- Recent Activity -->
         <div class="recent-activity">
             <h2><i class="fa-solid fa-clock-rotate-left"></i> Hoạt động gần đây</h2>
-            <div class="activity-list">
+            <div class="activity-list" style="max-height: 400px; overflow-y: auto;">
+                <?php if(isset($data['recent_activities']) && !empty($data['recent_activities'])): ?>
+                <?php foreach($data['recent_activities'] as $activity): ?>
                 <div class="activity-item">
-                    <div class="activity-icon success">
-                        <i class="fa-solid fa-check"></i>
+                    <div class="activity-icon <?php echo $activity['status']; ?>">
+                        <i class="fa-solid <?php echo $activity['icon']; ?>"></i>
                     </div>
                     <div class="activity-content">
-                        <h4>Đơn hàng #ORD-00123 đã hoàn thành</h4>
-                        <p>Khách hàng: Nguyễn Văn A • 10 phút trước</p>
+                        <h4><?php echo htmlspecialchars($activity['title']); ?></h4>
+                        <p><?php echo htmlspecialchars($activity['description']); ?></p>
                     </div>
                 </div>
-
+                <?php endforeach; ?>
+                <?php else: ?>
                 <div class="activity-item">
-                    <div class="activity-icon warning">
-                        <i class="fa-solid fa-box"></i>
-                    </div>
                     <div class="activity-content">
-                        <h4>Nhập hàng nguyên liệu mới</h4>
-                        <p>Cà phê Arabica • 30 phút trước</p>
+                        <p>Không có hoạt động gần đây</p>
                     </div>
                 </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon info">
-                        <i class="fa-solid fa-user-plus"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h4>Thêm nhân viên mới</h4>
-                        <p>Phạm Thị B • 1 giờ trước</p>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon danger">
-                        <i class="fa-solid fa-exclamation"></i>
-                    </div>
-                    <div class="activity-content">
-                        <h4>Sản phẩm sắp hết hàng</h4>
-                        <p>Cà phê Robusta • 2 giờ trước</p>
-                    </div>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

@@ -225,7 +225,8 @@
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
                 <?php elseif($_SESSION['user_role'] === 'khach_hang' && isset($data['ma_ban'])): ?>
-                
+                <?php endif; ?>
+
 
 
             </div>
@@ -346,7 +347,8 @@
                             <?php endif; ?>
                         </td>
                     </tr>
-                    <?php } } ?>
+                    <?php } ?>
+                <?php } ?>
                 </tbody>
             </table>
         </div>
@@ -381,9 +383,9 @@
         }
         </script>
         <?php } ?>
-        <?php if(isset($data['dulieu']) && mysqli_num_rows($data['dulieu']) === 0){ ?>
+        <?php if(isset($data['dulieu']) && mysqli_num_rows($data['dulieu']) === 0): ?>
         <div class="hint">Không có kết quả phù hợp.</div>
-        <?php } ?>
+        <?php endif; ?>
 
     </div>
 
