@@ -413,7 +413,95 @@
             // Output PDF
             $pdf->Output('HoaDon_' . $ma_don_hang . '.pdf', 'I'); // 'I' for inline display, 'D' for download
         }
-         public function generateInvoice_admin($ma_don_hang) {
+        //  public function generateInvoice_admin($ma_don_hang) {
+        //     // Start output buffering to prevent any output before PDF headers
+        //     ob_start();
+
+        //     // Include the PDF generation class
+        //     require_once __DIR__ . '/../../Public/Classes/PDF/in_don_hang.php';
+
+        //     // Get order information
+        //     $order = $this->dh->Donhang_getByIdWithDiscount($ma_don_hang);
+
+        //     // Initialize variables
+        //     $order_data = [];
+        //     $order_details = [];
+
+        //     // Check if order exists in database
+        //     if ($order && mysqli_num_rows($order) > 0) {
+        //         // Order exists in database - format as array for consistency
+        //         $order_row = mysqli_fetch_array($order);
+        //         $order_data = $order_row; // Pass the order row directly
+
+        //         // Check if order is paid before allowing invoice generation
+        //         if ($order_row['trang_thai_thanh_toan'] !== 'da_thanh_toan') {
+        //             // Clean the output buffer and show error
+        //             ob_clean();
+        //             echo '<p>Chỉ được in hóa đơn khi đơn hàng đã được thanh toán.</p>';
+        //             return;
+        //         }
+
+        //         // Get order details from database
+        //         $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
+
+        //         // For paid orders, we should always have order details in the database
+        //         if ($order_row['trang_thai_thanh_toan'] === 'da_thanh_toan') {
+        //             // For paid orders, always use database details and ignore session cart
+        //             if (empty($order_details)) {
+        //                 // Log this as an error state - paid order should have details in DB
+        //                 error_log("ERROR: Paid order $ma_don_hang has no details in database");
+        //                 // Still show the order but with empty details
+        //             }
+        //         } else if (empty($order_details)) {
+        //             // Only try to get from session cart for unpaid orders that might not have been saved to DB yet
+        //             $ma_ban = $order_row['ma_ban'];
+
+        //             // Get cart from session for this table
+        //             $session_cart = $this->getCartForTable($ma_ban);
+
+        //             // Convert session cart to the same format as database order details
+        //             if (!empty($session_cart)) {
+        //                 $order_details = [];
+        //                 foreach ($session_cart as $item) {
+        //                     // Get item details from database to get name and image
+        //                     $thucdon = $this->model("Thucdon_m");
+        //                     $item_details = $thucdon->Thucdon_getById($item['id']);
+
+        //                     if ($item_details && mysqli_num_rows($item_details) > 0) {
+        //                         $item_db = mysqli_fetch_array($item_details);
+        //                         $order_details[] = [
+        //                             'ma_thuc_don' => $item['id'],
+        //                             'so_luong' => $item['quantity'],
+        //                             'gia_tai_thoi_diem_dat' => $item['price'],
+        //                             'ten_mon' => $item_db['ten_mon'],
+        //                             'img_thuc_don' => $item_db['img_thuc_don']
+        //                         ];
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     } else {
+        //         // Order doesn't exist in database
+        //         // Clean the output buffer and show error
+        //         ob_clean();
+        //         echo '<p>Không tìm thấy đơn hàng.</p>';
+        //         return;
+        //     }
+
+        //     // Clean the output buffer before generating PDF
+        //     ob_clean();
+
+        //     // Create PDF
+        //     $discount_amount = $order_data['tien_khuyen_mai'] ?? 0;
+        //     $pdf = new InvoicePDF($order_data, $order_details, $order_data['tong_tien'] ?? 0, $discount_amount);
+        //     $pdf->generateInvoice();
+
+        //     // Output PDF
+        //     $pdf->Output('HoaDon_' . $ma_don_hang . '.pdf', 'I'); // 'I' for inline display, 'D' for download
+        // }
+
+
+        public function generateInvoice_admin($ma_don_hang) {
             // Start output buffering to prevent any output before PDF headers
             ob_start();
 
@@ -433,27 +521,11 @@
                 $order_row = mysqli_fetch_array($order);
                 $order_data = $order_row; // Pass the order row directly
 
-                // Check if order is paid before allowing invoice generation
-                if ($order_row['trang_thai_thanh_toan'] !== 'da_thanh_toan') {
-                    // Clean the output buffer and show error
-                    ob_clean();
-                    echo '<p>Chỉ được in hóa đơn khi đơn hàng đã được thanh toán.</p>';
-                    return;
-                }
-
                 // Get order details from database
                 $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
 
-                // For paid orders, we should always have order details in the database
-                if ($order_row['trang_thai_thanh_toan'] === 'da_thanh_toan') {
-                    // For paid orders, always use database details and ignore session cart
-                    if (empty($order_details)) {
-                        // Log this as an error state - paid order should have details in DB
-                        error_log("ERROR: Paid order $ma_don_hang has no details in database");
-                        // Still show the order but with empty details
-                    }
-                } else if (empty($order_details)) {
-                    // Only try to get from session cart for unpaid orders that might not have been saved to DB yet
+                // If no details found in database, try to get from session cart
+                if (empty($order_details)) {
                     $ma_ban = $order_row['ma_ban'];
 
                     // Get cart from session for this table
