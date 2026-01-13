@@ -7,152 +7,152 @@
     <title>Thống kê - Quản lý quán</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-    /* Cards for statistics */
-    .stat-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-
-    .stat-card {
-        background: var(--card);
-        border-radius: var(--radius);
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        display: flex;
-        flex-direction: column;
-        border-left: 4px solid var(--accent);
-    }
-
-    .stat-card.success {
-        border-left-color: #9bddc5;
-    }
-
-    .stat-card.warning {
-        border-left-color: #e4cba1;
-    }
-
-    .stat-card.danger {
-        border-left-color: #ce8e8e;
-    }
-
-    .stat-card.destroy {
-        border-left-color: #9585be;
-    }
-
-    .stat-label {
-        color: var(--muted);
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
-
-    .stat-value {
-        font-size: 28px;
-        font-weight: 700;
-        color: #253243;
-    }
-
-    .stat-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: #253243;
-        margin-bottom: 10px;
-    }
-
-    .chart-container {
-        background: var(--card);
-        border-radius: var(--radius);
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        margin-bottom: 20px;
-    }
-
-    .chart-row {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 20px;
-    }
-
-    @media (max-width: 768px) {
-        .chart-row {
-            grid-template-columns: 1fr;
+        /* Cards for statistics */
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
-    }
 
-    .date-filter {
-        background: var(--card);
-        border-radius: var(--radius);
-        padding: 20px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        margin-bottom: 20px;
-    }
+        .stat-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            border-left: 4px solid var(--accent);
+        }
 
-    .date-controls {
-        display: flex;
-        gap: 15px;
-        align-items: end;
-        flex-wrap: wrap;
-    }
+        .stat-card.success {
+            border-left-color: #9bddc5;
+        }
 
-    .form-group {
-        flex: 1;
-        min-width: 200px;
-    }
+        .stat-card.warning {
+            border-left-color: #e4cba1;
+        }
 
-    label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: 600;
-        color: #253243;
-        font-size: 14px;
-    }
+        .stat-card.danger {
+            border-left-color: #ce8e8e;
+        }
 
-    input[type="date"] {
-        width: 100%;
-        padding: 10px 12px;
-        border: 1px solid #e3e7ef;
-        border-radius: 10px;
-        background: #fbfdff;
-        font-size: 14px;
-        outline: none;
-    }
+        .stat-card.destroy {
+            border-left-color: #9585be;
+        }
 
-    input:focus {
-        box-shadow: 0 0 0 4px rgba(36, 99, 255, 0.08);
-        border-color: var(--accent);
-    }
+        .stat-label {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
 
-    button {
-        padding: 12px 20px;
-        border-radius: 10px;
-        border: 0;
-        font-size: 14px;
-        cursor: pointer;
-        font-weight: 600;
-    }
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #253243;
+        }
 
-    .btn-primary {
-        background: var(--accent);
-        color: #fff;
-        transition: 0.2s;
-        border: none;
-    }
+        .stat-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #253243;
+            margin-bottom: 10px;
+        }
 
-    .btn-primary:hover {
-        background: #1d4ed8;
-    }
+        .chart-container {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
 
-    .chart-wrapper {
-        position: relative;
-        height: 300px;
-        width: 100%;
-    }
+        .chart-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
 
-    canvas {
-        max-height: 300px;
-        width: 100% !important;
-    }
+        @media (max-width: 768px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .date-filter {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .date-controls {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #253243;
+            font-size: 14px;
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e3e7ef;
+            border-radius: 10px;
+            background: #fbfdff;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            box-shadow: 0 0 0 4px rgba(36, 99, 255, 0.08);
+            border-color: var(--accent);
+        }
+
+        button {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 0;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            transition: 0.2s;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        canvas {
+            max-height: 300px;
+            width: 100% !important;
+        }
     </style>
 </head>
 
@@ -229,100 +229,100 @@
     </div>
 
     <script>
-    function filterData() {
-        const tuNgay = document.getElementById('tu_ngay').value;
-        const denNgay = document.getElementById('den_ngay').value;
+        function filterData() {
+            const tuNgay = document.getElementById('tu_ngay').value;
+            const denNgay = document.getElementById('den_ngay').value;
 
-        // Reload the page with new date parameters
-        window.location.href = `http://localhost/QLSP/Thongke/thongke?tu_ngay=${tuNgay}&den_ngay=${denNgay}`;
-    }
+            // Reload the page with new date parameters
+            window.location.href = `http://localhost/QLSP/Thongke/thongke?tu_ngay=${tuNgay}&den_ngay=${denNgay}`;
+        }
 
-    let revenueChart, categoryChart;
+        let revenueChart, categoryChart;
 
 
-    // Fetch chart data and initialize charts
-    async function loadChartData() {
-        const tuNgay = '<?php echo $data['tu_ngay']; ?>';
-        const denNgay = '<?php echo $data['den_ngay']; ?>';
+        // Fetch chart data and initialize charts
+        async function loadChartData() {
+            const tuNgay = '<?php echo $data['tu_ngay']; ?>';
+            const denNgay = '<?php echo $data['den_ngay']; ?>';
 
-        try {
-            const response = await fetch(
-                `http://localhost/QLSP/Thongke/getChartData?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
-            const data = await response.json();
+            try {
+                const response = await fetch(
+                    `http://localhost/QLSP/Thongke/getChartData?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
+                const data = await response.json();
 
-            // Initialize revenue chart (line chart)
-            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-            revenueChart = new Chart(revenueCtx, {
-                type: 'line',
-                data: {
-                    labels: data.daily_revenue.map(item => item.date),
-                    datasets: [{
-                        label: 'Doanh thu (VND)',
-                        data: data.daily_revenue.map(item => item.daily_revenue),
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return value.toLocaleString('vi-VN') + ' ₫';
+                // Initialize revenue chart (line chart)
+                const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+                revenueChart = new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.daily_revenue.map(item => item.date),
+                        datasets: [{
+                            label: 'Doanh thu (VND)',
+                            data: data.daily_revenue.map(item => item.daily_revenue),
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value.toLocaleString('vi-VN') + ' ₫';
+                                    }
                                 }
                             }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
                         }
+                    }
+                });
+
+                // Initialize category chart (pie chart)
+                const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+                categoryChart = new Chart(categoryCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: data.revenue_by_category.map(item => item.ten_danh_muc),
+                        datasets: [{
+                            label: 'Doanh thu',
+                            data: data.revenue_by_category.map(item => item.revenue),
+                            backgroundColor: [
+                                '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
+                                '#ec4899', '#f97316', '#06b6d4', '#84cc16', '#f43f5e'
+                            ],
+                            borderWidth: 1
+                        }]
                     },
-                    plugins: {
-                        legend: {
-                            position: 'top',
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            // Initialize category chart (pie chart)
-            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
-            categoryChart = new Chart(categoryCtx, {
-                type: 'pie',
-                data: {
-                    labels: data.revenue_by_category.map(item => item.ten_danh_muc),
-                    datasets: [{
-                        label: 'Doanh thu',
-                        data: data.revenue_by_category.map(item => item.revenue),
-                        backgroundColor: [
-                            '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
-                            '#ec4899', '#f97316', '#06b6d4', '#84cc16', '#f43f5e'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                        }
-                    }
-                }
-            });
-
-        } catch (error) {
-            console.error('Error loading chart data:', error);
+            } catch (error) {
+                console.error('Error loading chart data:', error);
+            }
         }
-    }
 
-    // Initialize when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-        loadChartData();
-    });
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadChartData();
+        });
     </script>
 </body>
 

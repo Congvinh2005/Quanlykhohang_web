@@ -1,10 +1,8 @@
 # Quản Lý Quán Ăn - Restaurant Management System
 
-## Mô tả dự án
+Một hệ thống quản lý quán ăn hoàn chỉnh được xây dựng bằng PHP và MySQL, sử dụng mô hình MVC (Model-View-Controller). Hệ thống hỗ trợ quản lý thực đơn, đơn hàng, bàn ăn, người dùng và các chức năng khác của một quán ăn hiện đại.
 
-Đây là một hệ thống quản lý quán ăn hoàn chỉnh được xây dựng bằng PHP và MySQL, sử dụng mô hình MVC (Model-View-Controller). Hệ thống hỗ trợ quản lý thực đơn, đơn hàng, bàn ăn, người dùng và các chức năng khác của một quán ăn hiện đại.
-
-## Tính năng nổi bật
+## 🚀 Tính năng nổi bật
 
 ### Quản lý thực đơn
 - Thêm, sửa, xóa món ăn
@@ -35,7 +33,7 @@
 - Tạo, sửa, xóa danh mục món ăn
 - Tổ chức thực đơn theo nhóm
 
-## Công nghệ sử dụng
+## 🛠️ Công nghệ sử dụng
 
 - **Backend**: PHP
 - **Database**: MySQL
@@ -45,7 +43,7 @@
 - **Icons**: Font Awesome
 - **Excel Export**: PHPExcel
 
-## Cấu trúc thư mục
+## 📁 Cấu trúc thư mục
 
 ```
 qlsp/
@@ -59,16 +57,19 @@ qlsp/
 │   ├── Js/              # File JavaScript
 │   └── Pictures/        # Hình ảnh
 ├── index.php            # Entry point
+├── database.sql         # Schema cơ sở dữ liệu
+├── quan_ly_ban_hang.sql # Cơ sở dữ liệu mẫu
 └── README.md
 ```
 
-## Cài đặt
+## 📋 Yêu cầu hệ thống
 
-### Yêu cầu hệ thống
 - PHP 7.0 trở lên
 - MySQL 5.7 trở lên
 - Apache hoặc Nginx
 - Composer (tùy chọn)
+
+## 🚀 Cài đặt
 
 ### Bước 1: Clone hoặc tải dự án
 ```bash
@@ -88,7 +89,7 @@ git clone https://github.com/yourusername/qlsp.git
 1. Khởi động máy chủ Apache và MySQL
 2. Truy cập `http://localhost/qlsp` trong trình duyệt
 
-## Cấu trúc cơ sở dữ liệu
+## 🗄️ Cấu trúc cơ sở dữ liệu
 
 ### Bảng chính
 - `ban_uong` - Quản lý bàn ăn
@@ -99,7 +100,7 @@ git clone https://github.com/yourusername/qlsp.git
 - `users` - Người dùng hệ thống
 - `khuyen_mai` - Mã giảm giá
 
-## Tính năng chi tiết
+## 🔧 Tính năng chi tiết
 
 ### Quản lý thực đơn
 - **Thêm món ăn**: Tên món, giá, số lượng, danh mục, hình ảnh
@@ -126,7 +127,7 @@ git clone https://github.com/yourusername/qlsp.git
 - **Đăng nhập**: Xác thực người dùng
 - **Thông tin cá nhân**: Quản lý thông tin người dùng
 
-## API và AJAX
+## 🌐 API và AJAX
 
 Hệ thống sử dụng AJAX cho các tính năng:
 - Tìm kiếm không tải lại trang
@@ -134,14 +135,14 @@ Hệ thống sử dụng AJAX cho các tính năng:
 - Thêm/xóa món trong giỏ hàng
 - Xác nhận thanh toán
 
-## Bảo mật
+## 🔒 Bảo mật
 
 - Xác thực người dùng
 - Phân quyền truy cập
 - Lọc dữ liệu đầu vào
-- SQL injection protection
+- Bảo vệ chống SQL injection
 
-## Giao diện người dùng
+## 👥 Giao diện người dùng
 
 ### Nhân viên
 - Giao diện thân thiện cho nhân viên phục vụ
@@ -155,7 +156,7 @@ Hệ thống sử dụng AJAX cho các tính năng:
 - Thống kê doanh thu
 - Quản lý thực đơn và danh mục
 
-## API endpoints
+## 📡 API endpoints
 
 ### Đơn hàng
 - `/Banuong/order/{ma_ban}` - Tạo đơn hàng cho bàn
@@ -172,7 +173,7 @@ Hệ thống sử dụng AJAX cho các tính năng:
 - `/Users/login` - Đăng nhập
 - `/Users/logout` - Đăng xuất
 
-## Luồng hoạt động hệ thống
+## 🔄 Luồng hoạt động hệ thống
 
 ### Tổng quan luồng dữ liệu
 
@@ -233,7 +234,7 @@ Hệ thống quản lý quán ăn hoạt động theo luồng sau từ khi chọ
 - Trạng thái bàn được cập nhật phù hợp (trống/đang sử dụng)
 - Dữ liệu không bị mất sau khi thanh toán, mà được lưu vào database để truy xuất sau này
 
-## Tùy chỉnh
+## ⚙️ Tùy chỉnh
 
 ### Thêm tính năng mới
 1. Tạo controller mới trong `MVC/Controllers/`
@@ -245,7 +246,7 @@ Hệ thống quản lý quán ăn hoạt động theo luồng sau từ khi chọ
 - Sửa file CSS trong `Public/Css/`
 - Cập nhật template trong `MVC/Views/`
 
-## Triển khai
+## 🚀 Triển khai
 
 ### Trên môi trường production
 1. Cấu hình máy chủ web (Apache/Nginx)
@@ -258,7 +259,7 @@ Hệ thống quản lý quán ăn hoạt động theo luồng sau từ khi chọ
 - Sao lưu file hình ảnh
 - Lưu trữ backup an toàn
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### Lỗi thường gặp
 - **404 Error**: Kiểm tra cấu hình `.htaccess` và mod_rewrite
@@ -270,7 +271,7 @@ Hệ thống quản lý quán ăn hoạt động theo luồng sau từ khi chọ
 - Kiểm tra log lỗi trong hệ thống
 - Sử dụng công cụ developer tools
 
-## Đóng góp
+## 🤝 Đóng góp
 
 1. Fork dự án
 2. Tạo branch tính năng (`git checkout -b feature/AmazingFeature`)
@@ -278,23 +279,23 @@ Hệ thống quản lý quán ăn hoạt động theo luồng sau từ khi chọ
 4. Push lên branch (`git push origin feature/AmazingFeature`)
 5. Tạo Pull Request
 
-## Tác giả
+## 👨‍💻 Tác giả
 
 - **Developer**: [Tên bạn]
 - **Email**: [Email bạn]
 - **GitHub**: [Link GitHub]
 
-## Giấy phép
+## 📄 Giấy phép
 
 Dự án này được cấp phép theo giấy phép MIT - xem file [LICENSE](LICENSE) để biết thêm chi tiết.
 
-## Liên hệ
+## 📞 Liên hệ
 
 - Email: [email liên hệ]
 - Website: [website nếu có]
 
 ---
 
-**Version**: 1.0.0
-**Ngày phát hành**: [Ngày tháng năm]
+**Version**: 1.0.0  
+**Ngày phát hành**: [Ngày tháng năm]  
 **Ngôn ngữ lập trình**: PHP, MySQL, HTML, CSS, JavaScript

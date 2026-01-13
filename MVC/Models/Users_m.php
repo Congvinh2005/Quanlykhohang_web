@@ -1,82 +1,78 @@
 <?php
     class Users_m extends connectDB{
-        // Thêm user
+       
         function users_ins($ma_user, $ten_user, $password, $email, $phan_quyen){
             $sql = "INSERT INTO users (ma_user, ten_user, password, email, phan_quyen) VALUES ('$ma_user', '$ten_user', '$password', '$email', '$phan_quyen')";
             return mysqli_query($this->con, $sql);
         }
 
-        // Kiểm tra trùng mã user
+        
         function checktrungMaUser($ma_user){
             $sql = "SELECT * FROM users WHERE ma_user = '$ma_user'";
             $result = mysqli_query($this->con, $sql);
             return (mysqli_num_rows($result) > 0);
         }
 
-        public function checktrungEmail($email, $ma_user)
-    {
+        public function checktrungEmail($email, $ma_user){
         $sql = "SELECT * FROM users
             WHERE email = '$email'
             AND ma_user != '$ma_user'";
         return mysqli_query($this->con, $sql);
-    }
-        // Tìm kiếm user
+         }
+        
         function Users_find($ma_user, $ten_user){
             $sql = "SELECT * FROM users WHERE ma_user LIKE '%$ma_user%' AND ten_user LIKE '%$ten_user%' ORDER BY LENGTH(ma_user), ma_user";
             return mysqli_query($this->con, $sql);
         }
 
-        // Cập nhật user
+        
         function Users_update($ma_user, $ten_user, $password, $email, $phan_quyen){
             $sql = "UPDATE users SET ten_user = '$ten_user', password = '$password', email = '$email', phan_quyen = '$phan_quyen' WHERE ma_user = '$ma_user'";
             return mysqli_query($this->con, $sql);
         }
 
-        // Xóa user
+  
         function Users_delete($ma_user){
             $sql = "DELETE FROM users WHERE ma_user = '$ma_user'";
             return mysqli_query($this->con, $sql);
         }
 
-        // Lấy tất cả user
+        
         function Users_getAll(){
             $sql = "SELECT * FROM users ORDER BY LENGTH(ma_user), ma_user";
             return mysqli_query($this->con, $sql);
         }
 
-        // Lấy user theo id
+        
         function Users_getById($ma_user){
             $sql = "SELECT * FROM users WHERE ma_user = '$ma_user'";
             return mysqli_query($this->con, $sql);
         }
 
-        // Xác thực người dùng để đăng nhập
         function validateUser($username, $password){
-            $sql = "SELECT * FROM users WHERE (ma_user = '$username' OR email = '$username' OR ten_user = '$username') AND password = '$password'";
+            $sql = "SELECT * FROM users WHERE ten_user = '$username' AND password = '$password'";
             $result = mysqli_query($this->con, $sql);
             return $result;
         }
 
-        // Xác thực người dùng và thiết lập phiên (xử lý quá trình đăng nhập)
         function authenticateUser($username, $password) {
             $result = $this->validateUser($username, $password);
 
             if($result && mysqli_num_rows($result) > 0){
                 $user = mysqli_fetch_assoc($result);
-                // Thiết lập biến phiên
                 $_SESSION['user_id'] = $user['ma_user'];
                 $_SESSION['user_name'] = $user['ten_user'];
                 $_SESSION['user_role'] = $user['phan_quyen'];
 
-                return $user; // Trả về dữ liệu người dùng để xử lý tiếp
+                return $user; 
             }
 
-            return false; // Xác thực thất bại
+            return false; 
         }
 
-        // Lấy người dùng theo tên đăng nhập
+        
         function getUserByUsername($username) {
-            $sql = "SELECT * FROM users WHERE ma_user = '$username' OR email = '$username'";
+            $sql = "SELECT * FROM users WHERE ten_user = '$username'";
             $result = mysqli_query($this->con, $sql);
             if($result && mysqli_num_rows($result) > 0) {
                 return mysqli_fetch_assoc($result);
@@ -84,19 +80,17 @@
             return false;
         }
 
-        // Tạo người dùng mới
         function createUser($username, $email, $password, $role) {
-            // Lấy mã người dùng lớn nhất hiện tại để tạo mã mới theo định dạng U01, U02, v.v.
             $sql_max = "SELECT ma_user FROM users WHERE ma_user LIKE 'U%' ORDER BY CAST(SUBSTRING(ma_user, 2) AS UNSIGNED) DESC LIMIT 1";
             $result = mysqli_query($this->con, $sql_max);
             if($result && mysqli_num_rows($result) > 0) {
                 $row = mysqli_fetch_assoc($result);
-                $last_id = substr($row['ma_user'], 1); // Lấy phần số sau chữ 'U'
+                $last_id = substr($row['ma_user'], 1); 
                 $next_id = intval($last_id) + 1;
             } else {
-                $next_id = 1; // Nếu không có bản ghi nào, bắt đầu từ 1
+                $next_id = 1; 
             }
-            $ma_user = 'U' . str_pad($next_id, 2, '0', STR_PAD_LEFT); // Format: U01, U02, ...
+            $ma_user = 'U' . str_pad($next_id, 2, '0', STR_PAD_LEFT); 
 
             $sql = "INSERT INTO users (ma_user, ten_user, email, password, phan_quyen) VALUES ('$ma_user', '$username', '$email', '$password', '$role')";
             return mysqli_query($this->con, $sql);

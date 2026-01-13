@@ -12,6 +12,7 @@
         }
 
         function Get_data(){
+            $data = ['page' => 'Danhsachusers_v'];
             $this->danhsach();
         }
 

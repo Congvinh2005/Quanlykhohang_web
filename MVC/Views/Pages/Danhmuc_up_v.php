@@ -7,170 +7,170 @@
     <title>Upload file — Tổng hợp hoàn chỉnh</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-    :root {
-        --primary: #2563eb;
-        --primary-hover: #1d4ed8;
-        --secondary: #6b7280;
-        --secondary-hover: #4b5563;
-    }
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #6b7280;
+            --secondary-hover: #4b5563;
+        }
 
-    body {
-        margin: 0;
-        font-family: Inter, system-ui, Segoe UI, Roboto, Arial;
-        background: #eef2f7;
-        color: #0f1724
-    }
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, Segoe UI, Roboto, Arial;
+            background: #eef2f7;
+            color: #0f1724
+        }
 
-    .wrap {
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 24px
-    }
+        .wrap {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px
+        }
 
-    .card {
-        width: 680px;
-        max-width: 100%;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-        padding: 30px;
-    }
+        .card {
+            width: 680px;
+            max-width: 100%;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
 
-    h2 {
-        margin: 0 0 5px;
-        font-size: 24px;
-    }
+        h2 {
+            margin: 0 0 5px;
+            font-size: 24px;
+        }
 
-    p.hint {
-        margin: 0 0 16px;
-        color: var(--secondary);
-        font-size: 14px
-    }
+        p.hint {
+            margin: 0 0 16px;
+            color: var(--secondary);
+            font-size: 14px
+        }
 
-    label {
-        display: block;
-        margin-bottom: 6px;
-        font-weight: 600;
-        font-size: 14px;
-        color: #333;
-    }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+        }
 
-    input[type="text"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #d0d7e2;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        background: #f9fbfe;
-        box-sizing: border-box;
-    }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d0d7e2;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #f9fbfe;
+            box-sizing: border-box;
+        }
 
-    .file-upload-wrapper {
-        border: 2px dashed #d0d7e2;
-        border-radius: 12px;
-        padding: 30px 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: background 0.3s, border-color 0.3s;
-        position: relative;
-        margin-bottom: 20px;
-    }
+        .file-upload-wrapper {
+            border: 2px dashed #d0d7e2;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s;
+            position: relative;
+            margin-bottom: 20px;
+        }
 
-    .file-upload-wrapper:hover {
-        background: #f0f4f9;
-        border-color: var(--primary);
-    }
+        .file-upload-wrapper:hover {
+            background: #f0f4f9;
+            border-color: var(--primary);
+        }
 
-    .file-upload-icon {
-        font-size: 40px;
-        color: var(--primary);
-        margin-bottom: 10px;
-    }
+        .file-upload-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
 
-    /* Ẩn input file gốc */
-    .file-upload-wrapper input[type="file"] {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        cursor: pointer;
-    }
+        /* Ẩn input file gốc */
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
 
-    .btn {
-        border: none;
-        padding: 10px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: background 0.3s;
-    }
+        .btn {
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
 
-    .btn-primary {
-        background: var(--primary);
-        color: #fff;
-    }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
 
-    .btn-primary:hover {
-        background: var(--primary-hover);
-    }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
 
-    .btn-secondary {
-        background: #e5e7eb;
-        color: #4b5563;
-        border: 1px solid #d1d5db;
-    }
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
 
-    .btn-secondary:hover {
-        background: #d1d5db;
-    }
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
 
-    .form-actions {
-        margin-top: 30px;
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-    }
+        .form-actions {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
 
-    .info-section {
-        margin-top: 40px;
-        padding-top: 20px;
-        border-top: 1px dashed #e5e7eb;
-    }
+        .info-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px dashed #e5e7eb;
+        }
 
-    .info-section h4 {
-        margin-bottom: 10px;
-        font-size: 15px;
-        color: #333;
-    }
+        .info-section h4 {
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #333;
+        }
 
-    .info-section ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        font-size: 13px;
-        color: #555;
-    }
+        .info-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 13px;
+            color: #555;
+        }
 
-    .info-section li {
-        margin-bottom: 8px;
-        display: flex;
-        align-items: flex-start;
-        gap: 5px;
-    }
+        .info-section li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+        }
 
-    .info-section li .fa-caret-right {
-        color: var(--primary);
-        margin-top: 3px;
-    }
+        .info-section li .fa-caret-right {
+            color: var(--primary);
+            margin-top: 3px;
+        }
     </style>
 </head>
 
@@ -229,20 +229,20 @@
     </div>
 
     <script>
-    function updateFileName(input) {
-        const display = document.getElementById('fileNameDisplay');
-        const nameSpan = document.getElementById('fName');
-        const wrapper = document.getElementById('file-wrapper'); // Lấy wrapper để thay đổi kiểu dáng
+        function updateFileName(input) {
+            const display = document.getElementById('fileNameDisplay');
+            const nameSpan = document.getElementById('fName');
+            const wrapper = document.getElementById('file-wrapper'); // Lấy wrapper để thay đổi kiểu dáng
 
-        if (input.files && input.files.length > 0) {
-            nameSpan.textContent = input.files[0].name;
-            display.style.display = 'block';
-            wrapper.style.borderColor = 'var(--primary)'; // Đổi màu border khi đã chọn file
-        } else {
-            display.style.none = 'none';
-            wrapper.style.borderColor = '#d0d7e2'; // Trả về màu border mặc định
+            if (input.files && input.files.length > 0) {
+                nameSpan.textContent = input.files[0].name;
+                display.style.display = 'block';
+                wrapper.style.borderColor = 'var(--primary)'; // Đổi màu border khi đã chọn file
+            } else {
+                display.style.none = 'none';
+                wrapper.style.borderColor = '#d0d7e2'; // Trả về màu border mặc định
+            }
         }
-    }
     </script>
 </body>
 

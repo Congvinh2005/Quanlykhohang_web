@@ -7,111 +7,111 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-    body {
-        font-family: Arial, sans-serif;
-    }
+        body {
+            font-family: Arial, sans-serif;
+        }
 
-    h1 {
-        margin-bottom: 10px;
-    }
+        h1 {
+            margin-bottom: 10px;
+        }
 
-    .status {
-        margin-bottom: 20px;
-    }
+        .status {
+            margin-bottom: 20px;
+        }
 
-    .status .paid {
-        color: green;
-        font-weight: bold;
-    }
+        .status .paid {
+            color: green;
+            font-weight: bold;
+        }
 
-    table.detail-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
+        table.detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-    table.detail-table th,
-    table.detail-table td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: center;
-    }
+        table.detail-table th,
+        table.detail-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
 
-    table.detail-table th {
-        background: #f5f5f5;
-    }
+        table.detail-table th {
+            background: #f5f5f5;
+        }
 
-    .total {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        text-align: right;
-    }
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: right;
+        }
 
-    /* ===== BUTTONS ===== */
-    .action-buttons {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 20px;
-    }
+        /* ===== BUTTONS ===== */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
 
-    .btn-back {
-        background: #afb2b5ff;
-        color: #fff;
-        padding: 10px 18px;
-        border-radius: 6px;
-        text-decoration: none;
-        font-weight: 500;
-    }
+        .btn-back {
+            background: #afb2b5ff;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+        }
 
-    .btn-back:hover {
-        background: #5a6268;
-    }
+        .btn-back:hover {
+            background: #5a6268;
+        }
 
-    .btn-print {
-        background: #28a745;
-        color: #211f1fff;
-        border: none;
-        padding: 10px 18px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-block;
-    }
+        .btn-print {
+            background: #28a745;
+            color: #211f1fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
 
-    .btn-print:hover {
-        background: #1cd444ff;
-    }
+        .btn-print:hover {
+            background: #1cd444ff;
+        }
 
-    .btn-print.disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
+        .btn-print.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
 <body>
 
     <?php
-// Handle order information
-if (isset($data['order']) && is_a($data['order'], 'mysqli_result')) {
-    $order = mysqli_fetch_array($data['order']);
-} elseif (isset($data['order']) && is_array($data['order']) && count($data['order']) > 0) {
-    $order = $data['order'][0];
-} else {
-    echo '<p>Không tìm thấy thông tin đơn hàng.</p>';
-    return;
-}
+    // Handle order information
+    if (isset($data['order']) && is_a($data['order'], 'mysqli_result')) {
+        $order = mysqli_fetch_array($data['order']);
+    } elseif (isset($data['order']) && is_array($data['order']) && count($data['order']) > 0) {
+        $order = $data['order'][0];
+    } else {
+        echo '<p>Không tìm thấy thông tin đơn hàng.</p>';
+        return;
+    }
 
-$status_text  = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'Đã thanh toán' : 'Chưa thanh toán';
-$status_class = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'paid' : '';
-$order_ma_ban = $order['ma_ban'];
-$order_tong_tien = $order['tong_tien'];
-$tien_khuyen_mai = $order['tien_khuyen_mai'] ?? 0;
-$so_tien_can_thanh_toan = $order_tong_tien - $tien_khuyen_mai;
-?>
+    $status_text  = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'Đã thanh toán' : 'Chưa thanh toán';
+    $status_class = $order['trang_thai_thanh_toan'] == 'da_thanh_toan' ? 'paid' : '';
+    $order_ma_ban = $order['ma_ban'];
+    $order_tong_tien = $order['tong_tien'];
+    $tien_khuyen_mai = $order['tien_khuyen_mai'] ?? 0;
+    $so_tien_can_thanh_toan = $order_tong_tien - $tien_khuyen_mai;
+    ?>
 
     <h1>Chi tiết đơn hàng bàn <b><?= htmlspecialchars($order_ma_ban) ?></b></h1>
 
@@ -121,9 +121,10 @@ $so_tien_can_thanh_toan = $order_tong_tien - $tien_khuyen_mai;
     </p>
 
     <?php if (!empty($order['ghi_chu'])): ?>
-    <div class="temp-order-note" style="background: #fff3cd; padding: 10px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #ffc107; color: #856404;">
-        <strong>Ghi chú đơn hàng:</strong> <?= htmlspecialchars($order['ghi_chu']); ?>
-    </div>
+        <div class="temp-order-note"
+            style="background: #fff3cd; padding: 10px; border-radius: 6px; margin-bottom: 15px; border-left: 4px solid #ffc107; color: #856404;">
+            <strong>Ghi chú đơn hàng:</strong> <?= htmlspecialchars($order['ghi_chu']); ?>
+        </div>
     <?php endif; ?>
 
     <table class="detail-table">
@@ -137,24 +138,24 @@ $so_tien_can_thanh_toan = $order_tong_tien - $tien_khuyen_mai;
         </thead>
         <tbody>
             <?php if (isset($data['order_details']) && is_array($data['order_details']) && count($data['order_details']) > 0): ?>
-            <?php foreach ($data['order_details'] as $detail): ?>
-            <tr>
-                <td style="text-align:left">
-                    <?php if (!empty($detail['img_thuc_don'])): ?>
-                    <img src="<?= !empty($detail['img_thuc_don']) ? '/qlsp/Public/Pictures/thucdon/' . htmlspecialchars($detail['img_thuc_don']) : '/qlsp/Public/Pictures/no-image.png'; ?>"
-                        style="width:30px;height:30px;object-fit:cover;border-radius:4px;margin-right:8px;vertical-align:middle;">
-                    <?php endif; ?>
-                    <?= htmlspecialchars($detail['ten_mon']) ?>
-                </td>
-                <td><?= $detail['so_luong'] ?></td>
-                <td><?= number_format($detail['gia_tai_thoi_diem_dat'], 0, '.', '') ?>đ</td>
-                <td><?= number_format($detail['gia_tai_thoi_diem_dat'] * $detail['so_luong'], 0, '.', '') ?>đ</td>
-            </tr>
-            <?php endforeach; ?>
+                <?php foreach ($data['order_details'] as $detail): ?>
+                    <tr>
+                        <td style="text-align:left">
+                            <?php if (!empty($detail['img_thuc_don'])): ?>
+                                <img src="<?= !empty($detail['img_thuc_don']) ? '/qlsp/Public/Pictures/thucdon/' . htmlspecialchars($detail['img_thuc_don']) : '/qlsp/Public/Pictures/no-image.png'; ?>"
+                                    style="width:30px;height:30px;object-fit:cover;border-radius:4px;margin-right:8px;vertical-align:middle;">
+                            <?php endif; ?>
+                            <?= htmlspecialchars($detail['ten_mon']) ?>
+                        </td>
+                        <td><?= $detail['so_luong'] ?></td>
+                        <td><?= number_format($detail['gia_tai_thoi_diem_dat'], 0, '.', '') ?>đ</td>
+                        <td><?= number_format($detail['gia_tai_thoi_diem_dat'] * $detail['so_luong'], 0, '.', '') ?>đ</td>
+                    </tr>
+                <?php endforeach; ?>
             <?php else: ?>
-            <tr>
-                <td colspan="4">Không có chi tiết món ăn.</td>
-            </tr>
+                <tr>
+                    <td colspan="4">Không có chi tiết món ăn.</td>
+                </tr>
             <?php endif; ?>
         </tbody>
     </table>
@@ -170,7 +171,7 @@ $so_tien_can_thanh_toan = $order_tong_tien - $tien_khuyen_mai;
             <i class="fa-solid fa-arrow-left"></i> Quay lại
         </a>
 
-       
+
     </div>
 
 </body>

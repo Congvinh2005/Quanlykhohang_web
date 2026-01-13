@@ -256,11 +256,11 @@
                 <select name="ddlNhacungcap" required>
                     <option value="">-- Chọn NCC --</option>
                     <?php
-                    if(isset($data['dsncc'])){
+                    if (isset($data['dsncc'])) {
                         mysqli_data_seek($data['dsncc'], 0); // Reset pointer
-                        while($row = mysqli_fetch_array($data['dsncc'])){
+                        while ($row = mysqli_fetch_array($data['dsncc'])) {
                             $selected = (isset($data['mancc']) && $data['mancc'] == $row['mancc']) ? 'selected' : '';
-                            echo "<option value='".htmlspecialchars($row['mancc'])."' $selected>".htmlspecialchars($row['tenncc'])."</option>";
+                            echo "<option value='" . htmlspecialchars($row['mancc']) . "' $selected>" . htmlspecialchars($row['tenncc']) . "</option>";
                         }
                     }
                     ?>

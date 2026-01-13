@@ -3,124 +3,124 @@
 
 <body>
     <style>
-    /* Custom styles for the actions */
-    .btn-back {
-        background: #6b7280;
-        padding: 8px 15px;
-        border-radius: 10px;
-        color: #fff;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
+        /* Custom styles for the actions */
+        .btn-back {
+            background: #6b7280;
+            padding: 8px 15px;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    /* Các style cơ bản khác giữ nguyên */
-    :root {
-        --bg: #f5f7fb;
-        --card: #ffffff;
-        --accent: #2463ff;
-        --muted: #6b7280;
-        --radius: 12px;
-        --gap: 16px;
-        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
+        /* Các style cơ bản khác giữ nguyên */
+        :root {
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --accent: #2463ff;
+            --muted: #6b7280;
+            --radius: 12px;
+            --gap: 16px;
+            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+        }
 
-    * {
-        box-sizing: border-box
-    }
+        * {
+            box-sizing: border-box
+        }
 
-    .card {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        background: var(--card);
-        border-radius: var(--radius);
-        box-shadow: 0 8px 30px rgba(24, 99, 255, 0.08);
-        padding: 28px;
-    }
+        .card {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: 0 8px 30px rgba(24, 99, 255, 0.08);
+            padding: 28px;
+        }
 
-    h2 {
-        margin: 0;
-        font-size: 20px
-    }
+        h2 {
+            margin: 0;
+            font-size: 20px
+        }
 
-    .form-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--gap);
-    }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+        }
 
-    .full {
-        grid-column: 1 / -1
-    }
+        .full {
+            grid-column: 1 / -1
+        }
 
-    label {
-        display: block;
-        font-size: 15px;
-        color: #253243;
-        margin-bottom: 6px;
-        font-weight: bold;
-    }
+        label {
+            display: block;
+            font-size: 15px;
+            color: #253243;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
 
-    input[type="text"],
-    input[type="tel"],
-    textarea {
-        width: 100%;
-        padding: 10px 12px;
-        border: 1px solid #e3e7ef;
-        border-radius: 10px;
-        background: #fbfdff;
-        font-size: 14px;
-        outline: none;
-    }
+        input[type="text"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e3e7ef;
+            border-radius: 10px;
+            background: #fbfdff;
+            font-size: 14px;
+            outline: none;
+        }
 
-    input:focus,
-    textarea:focus {
-        box-shadow: 0 0 0 4px rgba(36, 99, 255, 0.08);
-        border-color: var(--accent);
-    }
+        input:focus,
+        textarea:focus {
+            box-shadow: 0 0 0 4px rgba(36, 99, 255, 0.08);
+            border-color: var(--accent);
+        }
 
-    textarea {
-        min-height: 90px;
-        resize: vertical
-    }
+        textarea {
+            min-height: 90px;
+            resize: vertical
+        }
 
-    .actions {
-        display: flex;
-        gap: 12px;
-        justify-content: flex-end;
-        grid-column: 1 / -1;
-        margin-top: 6px
-    }
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            grid-column: 1 / -1;
+            margin-top: 6px
+        }
 
-    .actions-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
+        .actions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-    button {
-        padding: 10px 16px;
-        border-radius: 10px;
-        border: 0;
-        font-size: 14px;
-        cursor: pointer
-    }
+        button {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 0;
+            font-size: 14px;
+            cursor: pointer
+        }
 
-    .btn-primary {
-        background: var(--accent);
-        color: #fff;
-        transition: 0.2s;
-    }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            transition: 0.2s;
+        }
 
-    .btn-ghost {
-        background: transparent;
-        border: 1px solid #e6e9f2;
-        color: var(--muted)
-    }
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid #e6e9f2;
+            color: var(--muted)
+        }
     </style>
 
     <main class="card" role="main">

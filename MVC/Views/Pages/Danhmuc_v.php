@@ -98,12 +98,12 @@
             <div>
                 <label>Mã danh mục <span style="color:red">*</span></label>
                 <input type="text" name="txtMadanhmuc" required
-                    value="<?php echo isset($data['ma_danh_muc'])?htmlspecialchars($data['ma_danh_muc']):'' ?>" />
+                    value="<?php echo isset($data['ma_danh_muc']) ? htmlspecialchars($data['ma_danh_muc']) : '' ?>" />
             </div>
             <div>
                 <label>Tên danh mục <span style="color:red">*</span></label>
                 <input type="text" name="txtTendanhmuc" required
-                    value="<?php echo isset($data['ten_danh_muc'])?htmlspecialchars($data['ten_danh_muc']):'' ?>" />
+                    value="<?php echo isset($data['ten_danh_muc']) ? htmlspecialchars($data['ten_danh_muc']) : '' ?>" />
             </div>
             <div>
                 <label>Hình ảnh</label>
@@ -126,14 +126,14 @@
     </div>
 
     <script>
-        document.querySelector('input[type="file"]').addEventListener('change', function(e) {
-            const fileNameDisplay = document.getElementById('fileName');
-            if (e.target.files.length > 0) {
-                fileNameDisplay.textContent = 'Đã chọn: ' + e.target.files[0].name;
-            } else {
-                fileNameDisplay.textContent = 'Chưa chọn file';
-            }
-        });
+    document.querySelector('input[type="file"]').addEventListener('change', function(e) {
+        const fileNameDisplay = document.getElementById('fileName');
+        if (e.target.files.length > 0) {
+            fileNameDisplay.textContent = 'Đã chọn: ' + e.target.files[0].name;
+        } else {
+            fileNameDisplay.textContent = 'Chưa chọn file';
+        }
+    });
     </script>
 </body>
 

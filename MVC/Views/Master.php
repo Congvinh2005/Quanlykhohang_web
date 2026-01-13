@@ -1,6 +1,6 @@
 <?php
-include_once __DIR__.'/../../Public/Classes/TimezoneHelper.php';
-include_once __DIR__.'/../../Public/Classes/UrlHelper.php';
+include_once __DIR__ . '/../../Public/Classes/TimezoneHelper.php';
+include_once __DIR__ . '/../../Public/Classes/UrlHelper.php';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -104,49 +104,46 @@ include_once __DIR__.'/../../Public/Classes/UrlHelper.php';
             <header class="top-header">
                 <div class="page-title">
                     <?php
-                        if($current == 'home') echo 'Dashboard';
-                        elseif(strpos($current, 'Sanpham') !== false) echo 'Sản phẩm';
-                        elseif(strpos($current, 'Thucdon') !== false) echo 'Thực đơn';
-                        elseif(strpos($current, 'Khuyenmai') !== false) echo 'Khuyến mãi';
-                        elseif(strpos($current, 'Donhang') !== false) echo 'Đơn hàng';
-                        elseif(strpos($current, 'Thongke') !== false) echo 'Thống kê';
-                        elseif(strpos($current, 'Nhacungcap') !== false) echo 'Nhà cung cấp';
-                        elseif(strpos($current, 'Danhmuc') !== false) echo 'Danh mục';
-                        elseif(strpos($current, 'Banuong') !== false) echo 'Bàn uống';
-                        elseif(strpos($current, 'Users') !== false) echo 'Người dùng';
-                        elseif(strpos($current, 'Staff') !== false) echo 'Nhân viên';
-                        else echo 'Quản trị hệ thống';
+                    if ($current == 'home') echo 'Dashboard';
+                    elseif (strpos($current, 'Sanpham') !== false) echo 'Sản phẩm';
+                    elseif (strpos($current, 'Thucdon') !== false) echo 'Thực đơn';
+                    elseif (strpos($current, 'Khuyenmai') !== false) echo 'Khuyến mãi';
+                    elseif (strpos($current, 'Donhang') !== false) echo 'Đơn hàng';
+                    elseif (strpos($current, 'Thongke') !== false) echo 'Thống kê';
+                    elseif (strpos($current, 'Nhacungcap') !== false) echo 'Nhà cung cấp';
+                    elseif (strpos($current, 'Danhmuc') !== false) echo 'Danh mục';
+                    elseif (strpos($current, 'Banuong') !== false) echo 'Bàn uống';
+                    elseif (strpos($current, 'Users') !== false) echo 'Người dùng';
+                    elseif (strpos($current, 'Staff') !== false) echo 'Nhân viên';
+                    else echo 'Quản trị hệ thống';
                     ?>
                 </div>
                 <div class="user-info">
-                    <?php if(isset($_SESSION['user_name'])): ?>
-                    <span>
-                        <?php echo htmlspecialchars($_SESSION['user_name']); ?>
-                        <?php if(isset($_SESSION['user_role'])): ?>
-                        <span
-                            class="user-role">(<?php echo $_SESSION['user_role'] == 'admin' ? 'Quản trị viên' : 'Nhân viên'; ?>)</span>
-                        <?php endif; ?>
-                    </span>
-                    <div class="avatar">
-                        <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
-                            alt="Avatar">
-                    </div>
+                    <?php if (isset($_SESSION['user_name'])): ?>
+                        <span>
+                            Quản trị viên : <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+                            <!-- <?php if (isset($_SESSION['user_role'])): ?>
+                                <span
+                                    class="user-role">(<?php echo $_SESSION['user_role'] == 'admin' ? 'Quản trị viên' : 'Nhân viên'; ?>)</span>
+                            <?php endif; ?> -->
+
+                        </span>
+                        <div class="avatar">
+                            <img src="<?php echo $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/qlsp/Public/Pictures/anh.jpg'; ?>"
+                                alt="Avatar">
+                        </div>
 
                     <?php else: ?>
-                    <!-- <span>Đào Văn Vinh</span> -->
-                    <div class="avatar">
-                        <img src="<?php echo $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'].'/qlsp/Public/Pictures/anh.jpg'; ?>"
-                            alt="Avatar">
-                    </div>
+
                     <?php endif; ?>
                 </div>
             </header>
 
             <div class="content-area">
-                <?php 
-                    if(isset($data['page'])){
-                        include_once __DIR__.'/Pages/'.$data['page'].".php";
-                    }
+                <?php
+                if (isset($data['page'])) {
+                    include_once __DIR__ . '/Pages/' . $data['page'] . ".php";
+                }
                 ?>
             </div>
         </div>
