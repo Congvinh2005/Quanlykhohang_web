@@ -63,7 +63,7 @@
     .order-container {
         display: flex;
         gap: 20px;
-        height: calc(100vh - 300px);
+        height: calc(100vh - 210px);
         /* Adjust based on header height */
     }
 
@@ -246,13 +246,19 @@
         display: flex;
         gap: 12px;
         margin-top: 20px;
-        justify-content: flex-end;
         flex-shrink: 0;
+        width: 100%;
+    }
+
+    .order-actions .btn-reset,
+    .order-actions .btn-confirm {
+        flex: 1;
+        margin: 0;
     }
 
     .btn-confirm {
-        background: var(--accent);
-        color: white;
+        background: #65ed85;
+        color: black;
         border: none;
         padding: 12px 24px;
         border-radius: 10px;
@@ -260,24 +266,6 @@
         cursor: pointer;
     }
 
-    .btn-ghost {
-        padding: 12px 20px;
-        background: transparent;
-        border: 1px solid var(--border);
-        color: var(--gray);
-        border-radius: 10px;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: 0.2s;
-        text-decoration: none;
-    }
-
-    .btn-ghost:hover {
-        background: var(--light);
-        color: var(--dark);
-    }
 
     .btn-reset {
         background: #f3f4f6;
@@ -329,7 +317,7 @@
                             while($item = mysqli_fetch_array($data['menu_items'])){
                     ?>
                     <div class="menu-item" data-category="<?php echo $item['ma_danh_muc']; ?>"
-                         onclick="addItemToCart('<?php echo $item['ma_thuc_don']; ?>', '<?php echo addslashes(htmlspecialchars($item['ten_mon'])); ?>', <?php echo $item['gia']; ?>)">
+                        onclick="addItemToCart('<?php echo $item['ma_thuc_don']; ?>', '<?php echo addslashes(htmlspecialchars($item['ten_mon'])); ?>', <?php echo $item['gia']; ?>)">
                         <?php if($item['img_thuc_don']): ?>
                         <img src="<?php echo !empty($item['img_thuc_don']) ? '/qlsp/Public/Pictures/thucdon/' . htmlspecialchars($item['img_thuc_don']) : '/qlsp/Public/Pictures/no-image.png'; ?>"
                             alt="<?php echo htmlspecialchars($item['ten_mon']); ?>" />
@@ -369,14 +357,13 @@
                 </div>
 
                 <div style="margin-top: 15px;">
-                    <label for="orderNotes" style="display: block; margin-bottom: 5px; font-weight: 600;">Ghi chú đơn hàng:</label>
-                    <textarea id="orderNotes" placeholder="Ví dụ: ít đá, ít đường,..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e3e7ef; resize: vertical; min-height: 60px;"></textarea>
+                    <label for="orderNotes" style="display: block; margin-bottom: 5px; font-weight: 600;">Ghi chú đơn
+                        hàng:</label>
+                    <textarea id="orderNotes" placeholder="Ví dụ: ít đá, ít đường,..."
+                        style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e3e7ef; resize: vertical; min-height: 60px;"></textarea>
                 </div>
 
                 <div class="order-actions">
-                    <a href="http://localhost/QLSP/Staff/table" class="btn-ghost"><i class="fa-solid fa-arrow-left"></i>
-                        Quay
-                        lại</a>
                     <button class="btn-reset" onclick="clearCart()">Làm mới</button>
                     <button class="btn-confirm" onclick="confirmOrder()">Tạo đơn hàng</button>
                 </div>

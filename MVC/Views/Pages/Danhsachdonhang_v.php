@@ -615,7 +615,7 @@
         // init count
         resultCount.textContent = '<?php echo $count; ?> bản ghi';
 
-        // Modal functionality
+        // Chi tiết đơn hàng admin -> xuất hoá đon cho bartender
         function showOrderDetails(orderId) {
             // Show loading message initially
             document.getElementById('detailModal').style.display = 'block';
@@ -700,35 +700,11 @@
                                 </tbody>
                             </table>`;
 
-                        // Add print button for barista
+                        // Add print button for bartender
                         orderDetailHtml += `
                             <div style="margin-top: 20px; text-align: center;">
-                                <button class="btn-print-barista" onclick="printOrderForBarista('${orderId}')" style="
-                                    background: #28a745;
-                                    color: white;
-                                    border: none;
-                                    padding: 10px 20px;
-                                    border-radius: 6px;
-                                    cursor: pointer;
-                                    font-size: 14px;
-                                    font-weight: bold;
-                                    margin-right: 10px;">
-                                    <i class="fa-solid fa-print"></i> In đơn cho pha chế
-                                </button>
-                                <button onclick="window.print()" style="
-                                    background: #007bff;
-                                    color: white;
-                                    border: none;
-                                    padding: 10px 20px;
-                                    border-radius: 6px;
-                                    cursor: pointer;
-                                    font-size: 14px;
-                                    font-weight: bold;
-                                    margin-right: 10px;">
-                                    <i class="fa-solid fa-print"></i> In toàn bộ đơn
-                                </button>
                                 <a href="http://localhost/QLSP/Staff/generateInvoice_admin/${orderId}" class="btn-print" target="_blank" style="
-                                    background: #ffc107;
+                                    background: #71c942;
                                     color: #212529;
                                     border: none;
                                     padding: 10px 20px;
@@ -771,97 +747,6 @@
             if (event.key === "Escape") {
                 closeModal();
             }
-        }
-
-        function printOrderForBarista(orderId) {
-            // Fetch order details via AJAX
-            fetch(`http://localhost/QLSP/Donhang/get_order_details/${orderId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.order_details && data.order_details.length > 0) {
-                        // Create a new window for printing
-                        const printWindow = window.open('', '_blank');
-
-                        let printContent = `
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                            <title>Đơn hàng \${orderId} - Dành cho pha chế</title>
-                            <style>
-                                body { font-family: Arial, sans-serif; margin: 20px; }
-                                .header { text-align: center; margin-bottom: 20px; }
-                                .order-info { margin-bottom: 15px; }
-                                table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-                                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                                th { background-color: #f2f2f2; }
-                                .notes { background-color: #fff3cd; padding: 10px; border-radius: 4px; margin-top: 15px; }
-                                .footer { margin-top: 30px; text-align: center; font-style: italic; }
-                            </style>
-                        </head>
-                        <body>
-                            <div class="header">
-                                <h2>ĐƠN HÀNG CHO PHA CHẾ</h2>
-                                <div class="order-info">
-                                    <strong>Mã đơn hàng:</strong> \${orderId}<br>
-                                    <strong>Ngày tạo:</strong> \${new Date().toLocaleString('vi-VN')}
-                                </div>
-                            </div>
-
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Tên món</th>
-                                        <th>Số lượng</th>
-                                        <th>Ghi chú</th>
-                                    </tr>
-                                </thead>
-                                <tbody>`;
-
-                        data.order_details.forEach((item, index) => {
-                            printContent += `
-                                <tr>
-                                    <td>\${index + 1}</td>
-                                    <td>\${item.ten_mon}</td>
-                                    <td>\${item.so_luong}</td>
-                                    <td>\${item.ghi_chu || ''}</td>
-                                </tr>`;
-                        });
-
-                        printContent += `
-                                </tbody>
-                            </table>`;
-
-                        // Add overall order notes if available
-                        if (data.order_notes) {
-                            printContent += `
-                                <div class="notes">
-                                    <strong>Ghi chú đơn hàng:</strong> \${data.order_notes}
-                                </div>`;
-                        }
-
-                        printContent += `
-                            <div class="footer">
-                                Dành cho nhân viên pha chế - Quán ABC Coffee
-                            </div>
-                        </body>
-                        </html>`;
-
-                        printWindow.document.write(printContent);
-                        printWindow.document.close();
-                        printWindow.focus();
-                        setTimeout(() => {
-                            printWindow.print();
-                            printWindow.close();
-                        }, 500);
-                    } else {
-                        alert('Không có chi tiết đơn hàng để in');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Lỗi khi tải thông tin đơn hàng để in: ' + error.message);
-                });
         }
         </script>
         <?php } ?>

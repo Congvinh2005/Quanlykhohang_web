@@ -287,11 +287,10 @@ include_once __DIR__.'/../../Public/Classes/UrlHelper.php';
 
                 echo '<div class="alert">';
             $ten_user = isset($_SESSION['ten_user']) ? $_SESSION['ten_user'] : (isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'khách hàng');
-            echo 'Chào mừng khách hàng ' . $ten_user . '!';              
+            echo 'Chào mừng khách hàng ' . $ten_user . '!';
             echo '</div>';
-            } else if(strpos($current, 'tables') !== false) {
-                echo '<h1>🪑 Sơ đồ bàn hiện tại</h1>';
-            } else if(strpos($current, 'Direct_menu_v') !== false) {
+            } else
+            if(strpos($current, 'Direct_menu_v') !== false) {
                 echo '<div class="breadcrumb">';
                 echo '<a href="http://localhost/QLSP/Khachhang">Trang chủ</a> / Chọn món';
                 echo '</div>';

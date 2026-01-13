@@ -38,7 +38,7 @@
     .order-container {
         display: flex;
         gap: 20px;
-        height: calc(100vh - 250px);
+        height: calc(100vh - 240px);
         /* Adjust based on header height */
     }
 
@@ -226,8 +226,8 @@
     }
 
     .btn-confirm {
-        background: var(--accent);
-        color: white;
+        background: #65ed85;
+        color: black;
         border: none;
         padding: 12px 24px;
         border-radius: 10px;
@@ -323,7 +323,7 @@
 
                 <div class="cart-items" id="cartItems">
                     <!-- Cart items will be added here dynamically -->
-                    <div id="emptyCartMessage" style="text-align: center; color: #9ca3af; padding: 20px;">Giỏ hàng trống
+                    <div id="emptyCartMessage" style="text-align: center; color: #595e68; padding: 20px;">Giỏ hàng trống
                     </div>
                 </div>
 
@@ -333,8 +333,10 @@
                 </div>
 
                 <div style="margin-top: 15px;">
-                    <label for="orderNotes" style="display: block; margin-bottom: 5px; font-weight: 600;">Ghi chú đơn hàng:</label>
-                    <textarea id="orderNotes" placeholder="Ví dụ: ít đá, ít đường,..." style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e3e7ef; resize: vertical; min-height: 60px;"></textarea>
+                    <label for="orderNotes" style="display: block; margin-bottom: 5px; font-weight: 600;">Ghi chú đơn
+                        hàng:</label>
+                    <textarea id="orderNotes" placeholder="Ví dụ: ít đá, ít đường,..."
+                        style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e3e7ef; resize: vertical; min-height: 60px;"></textarea>
                 </div>
 
                 <div class="order-actions">
