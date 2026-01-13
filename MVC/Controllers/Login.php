@@ -118,8 +118,11 @@
                 $result = $this->user->createUser($username, $email, $password, 'khach_hang');
 
                 if($result) {
-                    $_SESSION['success'] = 'Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.';
-                    header('Location: ' . $this->url('Login'));
+                    // $_SESSION['success'] = 'Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.';
+                    // header('Location: ' . $this->url('Login'));
+                    // exit;
+                      // Hiển thị thông báo thành công bằng JavaScript alert
+                    echo '<script>alert("Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ."); window.location.href = "'.$this->url('Login').'";</script>';
                     exit;
                 } else {
                     // Lấy lỗi cụ thể từ database để debug
