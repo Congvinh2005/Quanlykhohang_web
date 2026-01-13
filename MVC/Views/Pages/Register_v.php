@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Đăng nhập - Cafe Manager</title>
+    <title>Đăng ký - Cafe Manager</title>
 
     <!-- FONT + ICON -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -35,7 +35,7 @@
         overflow: hidden;
     }
 
-    /* LEFT - LOGIN */
+    /* LEFT - REGISTER */
     .left {
         width: 50%;
         padding: 40px;
@@ -109,6 +109,15 @@
         text-align: center;
     }
 
+    .success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
     /* RIGHT - INFO */
     .right {
         width: 50%;
@@ -170,20 +179,33 @@
         <!-- LEFT -->
         <div class="left">
             <div class="logo">☕</div>
-            <h2>Đăng nhập hệ thống</h2>
+            <h2>Đăng ký tài khoản</h2>
             <p>Quản lý quán cà phê</p>
 
-
-
-            <form method="post" action="http://localhost/QLSP/Login/process">
+            <form method="post" action="http://localhost/QLSP/Login/process_register">
                 <div class="form-group">
                     <label>Tên đăng nhập</label>
                     <input type="text" name="username" placeholder="Nhập tên đăng nhập" required>
                 </div>
 
                 <div class="form-group">
+                    <label>Họ tên</label>
+                    <input type="text" name="fullname" placeholder="Nhập họ tên" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Nhập email">
+                </div>
+
+                <div class="form-group">
                     <label>Mật khẩu</label>
                     <input type="password" name="password" placeholder="Nhập mật khẩu" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nhập lại mật khẩu</label>
+                    <input type="password" name="confirm_password" placeholder="Nhập lại mật khẩu" required>
                 </div>
 
                 <?php if (isset($_SESSION['error'])): ?>
@@ -193,14 +215,19 @@
                 <?php unset($_SESSION['error']);
                 endif; ?>
 
-                <button class="btn">Đăng nhập</button>
+                <?php if (isset($_SESSION['success'])): ?>
+                <div class="success">
+                    <?= $_SESSION['success'] ?>
+                </div>
+                <?php unset($_SESSION['success']);
+                endif; ?>
+
+                <button class="btn">Đăng ký</button>
             </form>
 
             <div style="text-align: center; margin-top: 15px;">
-                <p>Bạn chưa có tài khoản?
-                    <a href="http://localhost/QLSP/Login/register"
-                        style="color: #6f4e37; text-decoration: none; font-weight: bold;">Đăng ký ngay</a>
-                </p>
+                <p>Đã có tài khoản? <a href="./Login"
+                        style="color: #6f4e37; text-decoration: none; font-weight: bold;">Đăng nhập ngay</a></p>
             </div>
         </div>
 

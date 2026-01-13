@@ -132,7 +132,7 @@
                     }
                 } else {
                     // Nếu không có file upload mới, sử dụng giá trị từ form (trường text)
-                    $img_thuc_don = $_POST['txtImage'];
+                    $img_thuc_don = isset($_POST['txtImage']) ? $_POST['txtImage'] : '';
                 }
 
                 // Kiểm tra dữ liệu rỗng
@@ -161,7 +161,7 @@
                             ]);
 
                     } else {
-                        $kq = $this->td->thucdon_ins($ma_thuc_don, $ten_mon, $gia, $so_luong, $ma_danh_muc, $img_thuc_don);
+                        $kq = $this->td->thucdon_ins($ma_thuc_don, $ten_mon, $img_thuc_don, $gia, $so_luong, $ma_danh_muc);
                         if($kq) {
                             echo "<script>alert('Thêm mới thành công!')</script>";
                             $this->danhsach();
@@ -207,7 +207,7 @@
             $sheet->setCellValue('D1', 'Giá');
             $sheet->setCellValue('E1', 'Số Lượng');
             $sheet->setCellValue('F1', 'Tên Danh Mục');
-           
+
 
             $rowCount = 2; // Starting from row 2 since row 1 is headers
             mysqli_data_seek($result, 0); // Reset result pointer to beginning
@@ -247,7 +247,7 @@
     }
 
 
-       
+
 
         function sua($ma_thuc_don){
             $result = $this->td->Thucdon_getById($ma_thuc_don);
@@ -377,10 +377,10 @@
 
             $ma_thuc_don = trim($sheetData[$i]['A']);
             $ten_mon     = trim($sheetData[$i]['B']);
-            $gia         = trim($sheetData[$i]['C']);
-            $so_luong    = trim($sheetData[$i]['D']);
-            $ma_danh_muc = trim($sheetData[$i]['E']);
-            $img_thuc_don = trim($sheetData[$i]['F']);
+            $img_thuc_don        = trim($sheetData[$i]['C']);
+            $gia    = trim($sheetData[$i]['D']);
+            $so_luong = trim($sheetData[$i]['E']);
+            $ma_danh_muc = trim($sheetData[$i]['F']);
             if($ma_thuc_don == '') continue;
 
             // ✅ CHECK TRÙNG MÃ
@@ -393,7 +393,7 @@
             }
 
             // Insert
-            if(!$this->td->Thucdon_ins($ma_thuc_don,$ten_mon,$gia,$so_luong,$ma_danh_muc,$img_thuc_don)){
+            if(!$this->td->Thucdon_ins($ma_thuc_don,$ten_mon,$img_thuc_don,$so_luong,$gia,$ma_danh_muc)){
                 die(mysqli_error($this->td->con));
             }
     }
@@ -404,9 +404,9 @@
         function xoa($ma_thuc_don){
             $kq = $this->td->Thucdon_delete($ma_thuc_don);
             if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>"; 
+                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>";
             else
-                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>"; 
+                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>";
         }
 
         // Method to add item to cart for customers
@@ -479,10 +479,10 @@
             exit;
         }
 
-        
 
-        
 
-       
+
+
+
     }
 ?>

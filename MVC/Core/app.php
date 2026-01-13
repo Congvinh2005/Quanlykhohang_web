@@ -33,7 +33,7 @@
 
         function checkAuth(){
             // Xác định các route công khai không yêu cầu xác thực
-            $public_routes = ['Users/login', 'Users/logout', 'Login', 'Login/process'];
+            $public_routes = ['Users/login', 'Users/logout', 'Login', 'Login/process', 'Login/register', 'Login/process_register'];
 
             // Lấy route hiện tại
             $current_route = '';

@@ -1,8 +1,7 @@
 <?php
     class Thucdon_m extends connectDB{
-        // Hàm thêm thực đơn
-        function thucdon_ins($ma_thuc_don, $ten_mon, $gia, $so_luong, $ma_danh_muc, $img_thuc_don){
-            $sql = "INSERT INTO thuc_don (ma_thuc_don, ten_mon, gia, so_luong, ma_danh_muc, img_thuc_don) VALUES ('$ma_thuc_don', '$ten_mon', '$gia', '$so_luong', '$ma_danh_muc', '$img_thuc_don')";
+        function thucdon_ins($ma_thuc_don, $ten_mon, $img_thuc_don, $gia, $so_luong, $ma_danh_muc){
+            $sql = "INSERT INTO thuc_don (ma_thuc_don, ten_mon, img_thuc_don, gia, so_luong, ma_danh_muc) VALUES ('$ma_thuc_don', '$ten_mon', '$img_thuc_don', '$gia', '$so_luong', '$ma_danh_muc')";
             return mysqli_query($this->con, $sql);
         }
 
