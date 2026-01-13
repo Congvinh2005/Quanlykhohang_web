@@ -189,11 +189,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Họ tên</label>
-                    <input type="text" name="fullname" placeholder="Nhập họ tên" required>
-                </div>
-
-                <div class="form-group">
                     <label>Email</label>
                     <input type="email" name="email" placeholder="Nhập email">
                 </div>

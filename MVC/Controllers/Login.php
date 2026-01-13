@@ -71,9 +71,8 @@
         }
 
         function process_register(){
-            if(isset($_POST['username']) && isset($_POST['password']) && isset($_POST['fullname'])){
+            if(isset($_POST['username']) && isset($_POST['password'])){
                 $username = $_POST['username'];
-                $fullname = $_POST['fullname']; // Need to get fullname as well
                 $password = $_POST['password'];
                 $confirm_password = $_POST['confirm_password'];
                 $email = $_POST['email'] ?? ''; // Get email from form, default to empty string if not provided
@@ -86,11 +85,11 @@
                 }
 
                 // Kiểm tra độ dài mật khẩu
-                // if(strlen($password) < 6) {
-                //     $_SESSION['error'] = 'Mật khẩu phải có ít nhất 6 ký tự!';
-                //     header('Location: ' . $this->url('Login/register'));
-                //     exit;
-                // }
+                if(strlen($password) < 6) {
+                    $_SESSION['error'] = 'Mật khẩu phải có ít nhất 6 ký tự!';
+                    header('Location: ' . $this->url('Login/register'));
+                    exit;
+                }
 
                 // Kiểm tra xem username đã tồn tại chưa
                 $existing_user = $this->user->getUserByUsername($username);
