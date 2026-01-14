@@ -354,8 +354,8 @@ class Banuong extends controller
         $cart = $data['cart'];
 
         // For customer orders, use a special session key
-        if ($ma_ban === 'KHACH_HANG') {
-            $this->setCartForTable('KHACH_HANG', $cart);
+        if ($ma_ban === 'Online') {
+            $this->setCartForTable('Online', $cart);
         } else {
             // Lưu giỏ hàng vào phiên cho đơn hàng bàn thường
             $this->setCartForTable($ma_ban, $cart);
@@ -395,7 +395,7 @@ class Banuong extends controller
         $cart = $data['cart'];
 
         // Check if this is a customer direct order (no table needed)
-        $is_customer_order = ($ma_ban === 'KHACH_HANG');
+        $is_customer_order = ($ma_ban === 'Online');
 
         if (!$is_customer_order) {
             // Validate table exists for staff orders
@@ -459,37 +459,6 @@ class Banuong extends controller
         echo json_encode(['success' => true, 'message' => 'Tạo đơn hàng thành công!', 'order_id' => $ma_don_hang]);
         exit;
     }
-
-    // Phương thức trợ giúp để lấy đơn hàng chưa thanh toán theo bàn
-    private function getUnpaidOrderByTable($ma_ban)
-    {
-        $sql = "SELECT * FROM don_hang WHERE ma_ban = '$ma_ban' AND trang_thai_thanh_toan = 'chua_thanh_toan' LIMIT 1";
-        $result = mysqli_query($this->dh->con, $sql);
-        return $result ? mysqli_fetch_assoc($result) : null;
-    }
-
-    // Phương thức trợ giúp để cập nhật tổng tiền đơn hàng
-    private function updateOrder($ma_don_hang, $tong_tien)
-    {
-        $sql = "UPDATE don_hang SET tong_tien = '$tong_tien', ngay_tao = NOW() WHERE ma_don_hang = '$ma_don_hang'";
-        return mysqli_query($this->dh->con, $sql);
-    }
-
-    // Phương thức trợ giúp để kiểm tra chi tiết đơn hàng đã tồn tại
-    private function checkExistingOrderDetail($ma_don_hang, $ma_thuc_don)
-    {
-        $sql = "SELECT * FROM chi_tiet_don_hang WHERE ma_don_hang = '$ma_don_hang' AND ma_thuc_don = '$ma_thuc_don' LIMIT 1";
-        $result = mysqli_query($this->ctdh->con, $sql);
-        return $result ? mysqli_fetch_assoc($result) : null;
-    }
-
-    // Phương thức trợ giúp để cập nhật số lượng chi tiết đơn hàng
-    private function updateOrderDetailQuantity($ma_ctdh, $so_luong, $gia)
-    {
-        $sql = "UPDATE chi_tiet_don_hang SET so_luong = '$so_luong', gia_tai_thoi_diem_dat = '$gia' WHERE ma_ctdh = '$ma_ctdh'";
-        return mysqli_query($this->ctdh->con, $sql);
-    }
-
     // Phương thức trợ giúp để thêm chi tiết đơn hàng
     private function addOrderDetail($ma_don_hang, $ma_thuc_don, $so_luong, $gia, $ghi_chu)
     {
@@ -509,7 +478,7 @@ class Banuong extends controller
     private function getOrCreateCustomerTable()
     {
         // Check if a default customer table exists
-        $sql = "SELECT ma_ban FROM ban_uong WHERE ma_ban = 'KHACH_HANG' LIMIT 1";
+        $sql = "SELECT ma_ban FROM ban_uong WHERE ma_ban = 'Online' LIMIT 1";
         $result = mysqli_query($this->bu->con, $sql);
 
         if ($result && mysqli_num_rows($result) > 0) {
@@ -519,15 +488,15 @@ class Banuong extends controller
         } else {
             // Create a default customer table
             $sql = "INSERT INTO ban_uong (ma_ban, ten_ban, so_cho_ngoi, trang_thai_ban, ngay_tao)
-                        VALUES ('KHACH_HANG', 'Khách hàng', 1, 'trong', NOW())";
+                        VALUES ('Online', 'online', 1, 'trong', NOW())";
             $result = mysqli_query($this->bu->con, $sql);
 
             if ($result) {
-                return 'KHACH_HANG';
+                return 'Online';
             } else {
                 // If creation fails, use a temporary ID
                 error_log("Failed to create default customer table: " . mysqli_error($this->bu->con));
-                return 'KHACH_HANG';
+                return 'Online';
             }
         }
     }
@@ -635,12 +604,12 @@ class Banuong extends controller
         // Lấy phiếu giảm giá
         $discount_vouchers = $this->dh->getDiscountVouchers();
 
-        // Kiểm tra nếu đơn hàng thuộc về khách hàng (ma_ban = 'KHACH_HANG')
+        // Kiểm tra nếu đơn hàng thuộc về khách hàng (ma_ban = 'Online')
         // Nếu đúng, sử dụng giao diện khách hàng thay vì giao diện nhân viên
         $order_row = mysqli_fetch_array($order_result);
         mysqli_data_seek($order_result, 0); // Đặt lại con trỏ một lần nữa cho view
 
-        if ($order_row['ma_ban'] === 'KHACH_HANG') {
+        if ($order_row['ma_ban'] === 'Online') {
             $this->view('KhachhangMaster', [
                 'page' => 'Khachhang/Chi_tiet_don_hang_v',
                 'order' => $order_result, // Truyền mysqli_result như view mong đợi

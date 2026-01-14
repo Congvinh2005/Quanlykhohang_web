@@ -25,7 +25,7 @@ class Khachhang extends controller
         $menu_items = $thucdon->Thucdon_getAvailable();
 
         // Lấy giỏ hàng hiện tại từ phiên cho đơn hàng khách hàng
-        $current_cart = $this->getCartForTable('KHACH_HANG');
+        $current_cart = $this->getCartForTable('Online');
 
         $this->view('KhachhangMaster', [
             'page' => 'Khachhang/Direct_menu_v',

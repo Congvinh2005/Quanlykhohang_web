@@ -91,7 +91,7 @@ class Staff extends controller
             // Chỉ hạn chế truy cập nếu người dùng hiện tại là khách hàng và đơn hàng không phải của họ
             if ($_SESSION['user_role'] === 'khach_hang') {
                 // Với vai trò khách hàng, kiểm tra nếu đơn hàng thuộc về họ
-                if ($order_row['ma_ban'] !== 'KHACH_HANG' && $order_row['ma_user'] !== $_SESSION['user_id']) {
+                if ($order_row['ma_ban'] !== 'Online' && $order_row['ma_user'] !== $_SESSION['user_id']) {
                     echo '<p>Bạn không có quyền truy cập đơn hàng này.</p>';
                     return;
                 }
@@ -180,7 +180,7 @@ class Staff extends controller
 
             // Kiểm tra nếu đơn hàng thuộc về khách hàng (ma_ban = 'KHACH_HANG')
             // Nếu không phải đơn hàng khách, chỉ cho phép quản trị viên/nhân viên cập nhật giảm giá
-            if ($order_row['ma_ban'] !== 'KHACH_HANG' && $_SESSION['user_role'] === 'khach_hang') {
+            if ($order_row['ma_ban'] !== 'Online' && $_SESSION['user_role'] === 'khach_hang') {
                 echo json_encode(['status' => 'error', 'message' => 'Bạn không có quyền truy cập đơn hàng này']);
                 exit;
             }
@@ -235,9 +235,9 @@ class Staff extends controller
 
             $order_row = mysqli_fetch_array($order_data);
 
-            // Kiểm tra nếu đơn hàng thuộc về khách hàng (ma_ban = 'KHACH_HANG')
+            // Kiểm tra nếu đơn hàng thuộc về khách hàng (ma_ban = 'Online')
             // Nếu không phải đơn hàng khách, chỉ cho phép quản trị viên/nhân viên cập nhật trạng thái thanh toán
-            if ($order_row['ma_ban'] !== 'KHACH_HANG' && $_SESSION['user_role'] === 'khach_hang') {
+            if ($order_row['ma_ban'] !== 'Online' && $_SESSION['user_role'] === 'khach_hang') {
                 echo json_encode(['status' => 'error', 'message' => 'Bạn không có quyền truy cập đơn hàng này']);
                 exit;
             }

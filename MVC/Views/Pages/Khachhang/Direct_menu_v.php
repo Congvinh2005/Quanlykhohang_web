@@ -505,7 +505,7 @@
     function saveCartToSession() {
         if (Object.keys(cart).length > 0) {
             const cartData = {
-                ma_ban: 'KHACH_HANG', // Special identifier for customer orders without table
+                ma_ban: 'Online', // Special identifier for customer orders without table
                 cart: cart
             };
 
@@ -537,7 +537,7 @@
 
         // Prepare order data - use a special table ID for customer orders
         const orderData = {
-            ma_ban: 'KHACH_HANG', // Special identifier for customer orders without table
+            ma_ban: 'Online', // Special identifier for customer orders without table
             cart: cart,
             ghi_chu: orderNotes // Include order notes
         };
