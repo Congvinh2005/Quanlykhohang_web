@@ -81,7 +81,7 @@ class Users_m extends connectDB
         return false;
     }
 
-
+    // lấy tên để check tên đăng nhập có tồn tại không
     function getUserByUsername($username)
     {
         $sql = "SELECT * FROM users WHERE ten_user = '$username'";
@@ -92,6 +92,7 @@ class Users_m extends connectDB
         return false;
     }
 
+    // Hàm tạo user mới với mã user tự động tăng U01, U02, ...U10 nhé
     function createUser($username, $email, $password, $role)
     {
         $sql_max = "SELECT ma_user FROM users WHERE ma_user LIKE 'U%' ORDER BY CAST(SUBSTRING(ma_user, 2) AS UNSIGNED) DESC LIMIT 1";

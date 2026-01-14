@@ -60,10 +60,10 @@ class Thucdon extends controller
                 $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
                 if (in_array($ext, $allowed)) {
-                    // Làm sạch tên tệp gốc
+                    // Làm sạch tên tệp gốc ( xoá kí tự đặc biệt)
                     $original_name = pathinfo($filename, PATHINFO_FILENAME);
-                    $original_name = preg_replace('/[^a-zA-Z0-9_-]/', '_', $original_name); // Chỉ giữ các ký tự an toàn
-                    $original_name = str_replace('-', '_', $original_name); // Thay thế dấu gạch nối bằng dấu gạch dưới
+                    $original_name = preg_replace('/[^a-zA-Z0-9_-]/', '_', $original_name);
+                    $original_name = str_replace('-', '_', $original_name);
                     $new_filename = $original_name . '.' . $ext;
 
                     // Kiểm tra nếu tên tệp đã tồn tại, thêm hậu tố cho đến khi không trùng
@@ -330,7 +330,6 @@ class Thucdon extends controller
         }
     }
 
-    // Hiển thị form nhập Excel
     function import_form()
     {
         $this->view('Master', [
@@ -388,76 +387,5 @@ class Thucdon extends controller
             echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>";
         else
             echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>";
-    }
-
-    // Phương thức để thêm mặt hàng vào giỏ hàng cho khách hàng
-    function addToCart()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Check if user is logged in as customer
-            if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'khach_hang') {
-                echo json_encode(['status' => 'error', 'message' => 'Bạn cần đăng nhập với vai trò khách hàng để thêm món.']);
-                exit;
-            }
-
-            $product_id = $_POST['product_id'] ?? '';
-            $table_id = $_POST['table_id'] ?? '';
-            $price = $_POST['price'] ?? 0;
-
-            if (empty($product_id)) {
-                echo json_encode(['status' => 'error', 'message' => 'Thiếu thông tin sản phẩm.']);
-                exit;
-            }
-
-            // Use a default table ID for customer if not provided
-            if (empty($table_id)) {
-                $table_id = 'KHACHHANG_' . $_SESSION['user_id'];
-            }
-
-            // Lấy chi tiết sản phẩm để đảm bảo nó tồn tại và có đủ số lượng
-            $product = $this->td->Thucdon_getById($product_id);
-            if (!$product || mysqli_num_rows($product) === 0) {
-                echo json_encode(['status' => 'error', 'message' => 'Sản phẩm không tồn tại.']);
-                exit;
-            }
-
-            $product_data = mysqli_fetch_array($product);
-            if ($product_data['so_luong'] <= 0) {
-                echo json_encode(['status' => 'error', 'message' => 'Sản phẩm đã hết hàng.']);
-                exit;
-            }
-
-            // Add to session cart
-            $session_key = 'cart_' . $table_id;
-            $cart = isset($_SESSION[$session_key]) ? $_SESSION[$session_key] : [];
-
-            // Check if product already exists in cart
-            $item_exists = false;
-            foreach ($cart as $key => $item) {
-                if ($item['id'] == $product_id) {
-                    $cart[$key]['quantity']++;
-                    $item_exists = true;
-                    break;
-                }
-            }
-
-            // If item doesn't exist in cart, add it
-            if (!$item_exists) {
-                $cart[] = [
-                    'id' => $product_id,
-                    'quantity' => 1,
-                    'price' => $price
-                ];
-            }
-
-            $_SESSION[$session_key] = $cart;
-
-            echo json_encode(['status' => 'success', 'message' => 'Đã thêm món vào giỏ hàng.']);
-            exit;
-        }
-
-        // If not POST request, redirect to menu
-        header('Location: ' . $this->url('Thucdon'));
-        exit;
     }
 }
