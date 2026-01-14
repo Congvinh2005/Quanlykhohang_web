@@ -3,211 +3,209 @@
 
 <body>
     <style>
-        /* Reuse styles similar to Danhsachsanpham */
-        .btn-create {
-            background: #10b981;
-            /* Màu xanh lá cây */
-            padding: 8px 15px;
-            border-radius: 10px;
-            color: #fff;
-            font-weight: 600;
-            text-decoration: none;
-        }
+    :root {
+        --bg: #f5f7fb;
+        --card: #ffffff;
+        --accent: #2463ff;
+        --muted: #6b7280;
+        --radius: 12px;
+        --gap: 16px;
+        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
 
-        .btn-edit {
-            background: #ffc107;
-            padding: 6px 10px;
-            border-radius: 6px;
-            margin-right: 5px;
-            color: #fff;
-            text-decoration: none;
-            display: inline-block;
-        }
+    * {
+        box-sizing: border-box
+    }
 
-        .btn-delete {
-            background: #dc3545;
-            padding: 6px 10px;
-            border-radius: 6px;
-            color: #fff;
-            text-decoration: none;
-            display: inline-block;
-        }
+    .btn-create {
+        background: #10b981;
+        padding: 8px 15px;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+    }
 
-        /* Các style cơ bản khác giữ nguyên */
-        :root {
-            --bg: #f5f7fb;
-            --card: #ffffff;
-            --accent: #2463ff;
-            --muted: #6b7280;
-            --radius: 12px;
-            --gap: 16px;
-            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-        }
+    .btn-edit {
+        background: #ffc107;
+        padding: 6px 10px;
+        border-radius: 6px;
+        margin-right: 5px;
+        color: #fff;
+        text-decoration: none;
+        display: inline-block;
+    }
 
-        * {
-            box-sizing: border-box
-        }
+    .btn-delete {
+        background: #dc3545;
+        padding: 6px 10px;
+        border-radius: 6px;
+        color: #fff;
+        text-decoration: none;
+        display: inline-block;
+    }
 
-        .card {
-            width: 100%;
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: 0 8px 30px rgba(24, 99, 255, 0.08);
-            padding: 28px;
-            margin-bottom: 20px;
-        }
 
-        h1 {
-            margin: 0 0 6px;
-            font-size: 20px
-        }
+    .card {
+        width: 100%;
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: 0 8px 30px rgba(24, 99, 255, 0.08);
+        padding: 28px;
+        margin-bottom: 20px;
+    }
 
-        p.lead {
-            margin: 0 0 20px;
-            color: var(--muted);
-            font-size: 14px
-        }
+    h1 {
+        margin: 0 0 6px;
+        font-size: 20px
+    }
 
-        .form-search {
-            display: flex;
-            gap: var(--gap);
-            align-items: flex-end;
-            flex-wrap: wrap;
-        }
+    p.lead {
+        margin: 0 0 20px;
+        color: var(--muted);
+        font-size: 14px
+    }
 
-        .search-fields {
-            display: flex;
-            gap: var(--gap);
-            flex: 1;
-        }
+    .form-search {
+        display: flex;
+        gap: var(--gap);
+        align-items: flex-end;
+        flex-wrap: wrap;
+    }
 
-        .search-fields>div {
-            flex: 1 1 200px;
-        }
+    .search-fields {
+        display: flex;
+        gap: var(--gap);
+        flex: 1;
+    }
 
-        .form-search>.actions {
-            flex: 0 0 auto;
-            display: flex;
-            gap: 12px;
-        }
+    .search-fields>div {
+        flex: 1 1 200px;
+    }
 
-        label {
-            display: block;
-            font-size: 15px;
-            color: #253243;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
+    .form-search>.actions {
+        flex: 0 0 auto;
+        display: flex;
+        gap: 12px;
+    }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #e3e7ef;
-            border-radius: 10px;
-            background: #fbfdff;
-            font-size: 14px;
-            outline: none;
-        }
+    label {
+        display: block;
+        font-size: 15px;
+        color: #253243;
+        margin-bottom: 6px;
+        font-weight: bold;
+    }
 
-        input:focus {
-            box-shadow: 0 0 0 4px rgba(36, 99, 255, 0.08);
-            border-color: var(--accent);
-        }
+    input[type="text"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #e3e7ef;
+        border-radius: 10px;
+        background: #fbfdff;
+        font-size: 14px;
+        outline: none;
+    }
 
-        .actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-        }
+    input:focus {
+        box-shadow: 0 0 0 4px rgba(36, 99, 255, 0.08);
+        border-color: var(--accent);
+    }
 
-        .actions-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+    .actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+    }
 
-        button {
-            padding: 10px 16px;
-            border-radius: 10px;
-            border: 0;
-            font-size: 14px;
-            cursor: pointer
-        }
+    .actions-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
 
-        .btn-primary {
-            background: var(--accent);
-            color: #fff;
-            transition: 0.2s;
-        }
+    button {
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: 0;
+        font-size: 14px;
+        cursor: pointer
+    }
 
-        .btn-ghost {
-            background: transparent;
-            border: 1px solid #e6e9f2;
-            color: var(--muted);
-            padding: 10px 16px;
-            border-radius: 10px;
-            text-decoration: none;
-            display: inline-block;
-            line-height: 1;
-        }
+    .btn-primary {
+        background: var(--accent);
+        color: #fff;
+        transition: 0.2s;
+    }
 
-        .btn-excel {
-            background: #e34ae5ff;
-            padding: 10px 16px;
-            border-radius: 10px;
-            color: #fff;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .btn-ghost {
+        background: transparent;
+        border: 1px solid #e6e9f2;
+        color: var(--muted);
+        padding: 10px 16px;
+        border-radius: 10px;
+        text-decoration: none;
+        display: inline-block;
+        line-height: 1;
+    }
 
-        .btn-excel:hover {
-            background: #e50f9aff;
-        }
+    .btn-excel {
+        background: #e34ae5ff;
+        padding: 10px 16px;
+        border-radius: 10px;
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
 
-        .table-container {
-            max-height: 500px;
-            overflow-y: auto;
-            margin-top: 20px;
-            border: 1px solid #e3e7ef;
-            border-radius: var(--radius);
-        }
+    .btn-excel:hover {
+        background: #e50f9aff;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            border-spacing: 0;
-        }
+    .table-container {
+        max-height: 500px;
+        overflow-y: auto;
+        margin-top: 20px;
+        border: 1px solid #e3e7ef;
+        border-radius: var(--radius);
+    }
 
-        thead th {
-            position: sticky;
-            top: 0;
-            background: #f8fafc;
-            z-index: 10;
-            border-bottom: 2px solid #e3e7ef;
-            font-weight: 600;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
 
-        th,
-        td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e3e7ef;
-        }
+    thead th {
+        position: sticky;
+        top: 0;
+        background: #f8fafc;
+        z-index: 10;
+        border-bottom: 2px solid #e3e7ef;
+        font-weight: 600;
+    }
 
-        tbody tr:hover {
-            background-color: #f8fafc;
-        }
+    th,
+    td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e3e7ef;
+    }
 
-        .hint {
-            font-size: 12px;
-            color: var(--muted);
-            margin-top: 6px
-        }
+    tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px
+    }
     </style>
 
     <div class="card">
@@ -222,8 +220,6 @@
                 <a href="http://localhost/QLSP/Users/import_form" class="btn-ghost"><i
                         class="fa-solid fa-file-excel"></i> Nhập
                     Excel</a>
-                <!-- <a href="http://localhost/QLSP/Users/export" class="btn-excel"><i class="fa-solid fa-download"></i> Xuất
-                    Excel</a> -->
             </div>
         </div>
 
@@ -270,68 +266,69 @@
                 $count = 0;
             }
         ?>
-            <div style="margin:10px 0">
-                <strong>Kết quả: <span id="resultCount" class="hint"></span></strong>
-            </div>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Mã User</th>
-                            <th>Tên người dùng</th>
-                            <th>Password</th>
-                            <th>Email</th>
-                            <th>Quyền</th>
-                            <th>Ngày tạo</th>
-                            <th style="text-align:right">Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userBody">
-                        <?php
+        <div style="margin:10px 0">
+            <strong>Kết quả: <span id="resultCount" class="hint"></span></strong>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã User</th>
+                        <th>Tên người dùng</th>
+                        <th>Password</th>
+                        <th>Email</th>
+                        <th>Quyền</th>
+                        <th>Ngày tạo</th>
+                        <th style="text-align:right">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="userBody">
+                    <?php
                         // Render dữ liệu tĩnh ban đầu
                         if ($count > 0) {
                             $serial = 1; // Khởi tạo bộ đếm số thứ tự
                             while ($row = mysqli_fetch_array($data['dulieu'])) {
                         ?>
-                                <tr>
-                                    <td><span style="font-weight:600;color:var(--accent)"><?php echo $serial++; ?></span>
-                                    </td>
-                                    <td><span
-                                            style="font-weight:600;color:var(--accent)"><?php echo htmlspecialchars($row['ma_user']) ?></span>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($row['ten_user']) ?></td>
-                                    <td><?php echo htmlspecialchars($row['password']) ?></td>
-                                    <td><?php echo htmlspecialchars($row['email']) ?></td>
-                                    <td><?php echo htmlspecialchars($row['phan_quyen']) ?></td>
-                                    <td><?php echo isset($row['ngay_tao']) ? htmlspecialchars(TimezoneHelper::formatForDisplay($row['ngay_tao'], 'H:i:s d/m/Y')) : '' ?></td>
-                                    <td style="text-align:right">
-                                        <a href="http://localhost/QLSP/Users/sua/<?php echo urlencode($row['ma_user']) ?>"><button
-                                                class="btn-edit">✏️
-                                                Sửa</button></a>
-                                        <a href="http://localhost/QLSP/Users/xoa/<?php echo urlencode($row['ma_user']) ?>"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xoá không?')"><button
-                                                class="btn-delete">🗑️
-                                                Xóa</button></a>
-                                    </td>
-                                </tr>
-                        <?php }
+                    <tr>
+                        <td><span style="font-weight:600;color:var(--accent)"><?php echo $serial++; ?></span>
+                        </td>
+                        <td><span
+                                style="font-weight:600;color:var(--accent)"><?php echo htmlspecialchars($row['ma_user']) ?></span>
+                        </td>
+                        <td><?php echo htmlspecialchars($row['ten_user']) ?></td>
+                        <td><?php echo htmlspecialchars($row['password']) ?></td>
+                        <td><?php echo htmlspecialchars($row['email']) ?></td>
+                        <td><?php echo htmlspecialchars($row['phan_quyen']) ?></td>
+                        <td><?php echo isset($row['ngay_tao']) ? htmlspecialchars(TimezoneHelper::formatForDisplay($row['ngay_tao'], 'H:i:s d/m/Y')) : '' ?>
+                        </td>
+                        <td style="text-align:right">
+                            <a href="http://localhost/QLSP/Users/sua/<?php echo urlencode($row['ma_user']) ?>"><button
+                                    class="btn-edit">✏️
+                                    Sửa</button></a>
+                            <a href="http://localhost/QLSP/Users/xoa/<?php echo urlencode($row['ma_user']) ?>"
+                                onclick="return confirm('Bạn có chắc chắn muốn xoá không?')"><button
+                                    class="btn-delete">🗑️
+                                    Xóa</button></a>
+                        </td>
+                    </tr>
+                    <?php }
                         } ?>
-                    </tbody>
-                </table>
-            </div>
-            <script>
-                // Manual search only (no AJAX)
-                const idInput = document.getElementById('searchId');
-                const nameInput = document.getElementById('searchName');
-                const resultCount = document.getElementById('resultCount');
+                </tbody>
+            </table>
+        </div>
+        <script>
+        // Manual search only (no AJAX)
+        const idInput = document.getElementById('searchId');
+        const nameInput = document.getElementById('searchName');
+        const resultCount = document.getElementById('resultCount');
 
-                // khởi tạo đếm
-                resultCount.textContent = '<?php echo $count; ?> bản ghi';
-            </script>
+        // khởi tạo đếm
+        resultCount.textContent = '<?php echo $count; ?> bản ghi';
+        </script>
         <?php } ?>
         <?php if (isset($data['dulieu']) && mysqli_num_rows($data['dulieu']) === 0) { ?>
-            <div class="hint">Không có kết quả phù hợp.</div>
+        <div class="hint">Không có kết quả phù hợp.</div>
         <?php } ?>
     </div>
 

@@ -7,14 +7,6 @@ class Nhacungcap extends controller
     {
         $this->ncc = $this->model("Nhacungcap_m");
     }
-
-    // Hàm mặc định, hiển thị trang danh sách (chứa tìm kiếm, xuất/nhập)
-    function index()
-    {
-        $this->danhsach();
-    }
-
-    // Thêm phương thức Get_data để xử lý URL ?url=Nhacungcap/Get_data
     function Get_data()
     {
         $this->danhsach();
@@ -22,11 +14,10 @@ class Nhacungcap extends controller
 
     function danhsach()
     {
-        // Lấy toàn bộ dữ liệu nhà cung cấp
         $result = $this->ncc->Nhacungcap_find('', '');
 
         $this->view('Master', [
-            'page' => 'Danhsachnhacungcap_v', // View danh sách mới
+            'page' => 'Danhsachnhacungcap_v',
             'mancc' => '',
             'tenncc' => '',
             'diachi' => '',
@@ -37,7 +28,7 @@ class Nhacungcap extends controller
     function themmoi()
     {
         $this->view('Master', [
-            'page' => 'Nhacungcap_v', // View thêm mới
+            'page' => 'Nhacungcap_v',
             'mancc' => '',
             'tenncc' => '',
             'diachi' => '',
@@ -65,7 +56,6 @@ class Nhacungcap extends controller
                     return;
                 }
 
-                // Kiểm tra trùng mã nhà cung cấp
                 $kq1 = $this->ncc->checktrungMaNCC($mancc);
                 if ($kq1) {
                     echo "<script>alert('Mã nhà cung cấp đã tồn tại! Vui lòng nhập mã khác.')</script>";
@@ -103,7 +93,6 @@ class Nhacungcap extends controller
         $mancc = $_POST['txtMancc'] ?? '';
         $tenncc = $_POST['txtTenncc'] ?? '';
 
-        // 👉 LẤY DỮ LIỆU THEO MÃ NHÀ CUNG CẤP + TÊN NHÀ CUNG CẤP
         $result = $this->ncc->Nhacungcap_find($mancc, $tenncc);
         // ====== XUẤT EXCEL ======
         if (isset($_POST['btnXuatexcel'])) {

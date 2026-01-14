@@ -12,26 +12,7 @@ class Thucdon extends controller
 
     function Get_data()
     {
-        // Hàm mặc định - hiển thị danh sách thực đơn
         $this->danhsach();
-    }
-
-    function index($ma_ban = null)
-    {
-        // Kiểm tra xem người dùng đã đăng nhập chưa
-        if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'nhan_vien' && $_SESSION['user_role'] !== 'khach_hang')) {
-            header('Location: ' . $this->url('Users/login'));
-            exit;
-        }
-
-        $result = $this->td->Thucdon_getAll();
-
-        // Pass the table ID to the view if provided
-        $this->view('Master', [
-            'page' => 'Danhsachthucdon_v',
-            'dulieu' => $result,
-            'ma_ban' => $ma_ban
-        ]);
     }
     function danhsach()
     {
@@ -45,13 +26,11 @@ class Thucdon extends controller
 
     function themmoi()
     {
-        // Lấy danh sách danh mục cho dropdown
         $dsdm = $this->dm->Danhmuc_find('', '');
-        // Lấy toàn bộ thực đơn
         $result = $this->td->Thucdon_find('', '');
 
         $this->view('Master', [
-            'page' => 'Thucdon_v', // View thêm mới
+            'page' => 'Thucdon_v',
             'ma_thuc_don' => '',
             'ten_mon' => '',
             'gia' => '',
@@ -141,7 +120,6 @@ class Thucdon extends controller
                 $img_thuc_don = isset($_POST['txtImage']) ? $_POST['txtImage'] : '';
             }
 
-            // Kiểm tra dữ liệu rỗng
             if ($ma_thuc_don == '') {
                 echo "<script>alert('Mã thực đơn không được rỗng!')</script>";
                 $this->themmoi();
@@ -191,21 +169,16 @@ class Thucdon extends controller
 
     function Timkiem()
     {
-        // Lấy các tham số tìm kiếm từ biểu mẫu
         $ma_thuc_don = $_POST['txtMathucdon'] ?? '';
         $ten_mon = $_POST['txtTenmon'] ?? '';
-
-        // 👉 LẤY DỮ LIỆU THEO MÃ TD + TÊN MÓN
         $result = $this->td->Thucdon_find($ma_thuc_don, $ten_mon);
 
-        // ====== XUẤT EXCEL ======
         if (isset($_POST['btnXuatexcel'])) {
 
             $objExcel = new PHPExcel();
             $objExcel->setActiveSheetIndex(0);
             $sheet = $objExcel->getActiveSheet()->setTitle('DanhSachThucDon');
 
-            // Header tương ứng với ảnh CSDL
             $sheet->setCellValue('A1', 'Mã TD');
             $sheet->setCellValue('B1', 'Tên Món');
             $sheet->setCellValue('C1', 'Hình Ảnh');
@@ -217,7 +190,6 @@ class Thucdon extends controller
             $rowCount = 2; // Starting from row 2 since row 1 is headers
             mysqli_data_seek($result, 0); // Reset result pointer to beginning
             while ($row = mysqli_fetch_assoc($result)) {
-                // Mapping field according to database table
                 $sheet->setCellValue('A' . $rowCount, $row['ma_thuc_don']);
                 $sheet->setCellValue('B' . $rowCount, $row['ten_mon']);
                 $sheet->setCellValue('C' . $rowCount, $row['img_thuc_don']);
@@ -242,11 +214,10 @@ class Thucdon extends controller
             exit;
         }
 
-        // ====== DISPLAY VIEW ======
         $this->view('Master', [
             'page' => 'Danhsachthucdon_v',
-            'ma_thuc_don' => $ma_thuc_don, // Consistent with view variable name
-            'ten_mon' => $ten_mon, // Consistent with view variable name
+            'ma_thuc_don' => $ma_thuc_don,
+            'ten_mon' => $ten_mon,
             'dulieu' => $result
         ]);
     }

@@ -1,18 +1,12 @@
 <?php
 class Khachhang extends controller
 {
-    private $bu; // ban_uong
-    private $dh; // don_hang
-    private $ctdh; // chi_tiet_don_hang
+    private $bu;
+    private $dh;
+    private $ctdh;
 
     function __construct()
     {
-        // Kiểm tra xem người dùng đã đăng nhập và có vai trò nhân viên không
-        if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'khach_hang' && $_SESSION['user_role'] !== 'nhan_vien')) {
-            header('Location: ' . $this->url('Users/login'));
-            exit;
-        }
-
         $this->bu = $this->model("Banuong_m");
         $this->dh = $this->model("Donhang_m");
         $this->ctdh = $this->model("Chitietdonhang_m");
@@ -20,43 +14,13 @@ class Khachhang extends controller
 
     function Get_data()
     {
-        // Đây là phương thức mặc định được gọi bởi hệ thống định tuyến
-        $this->index();
-    }
-
-    function index()
-    {
         $this->direct_menu();
     }
-
-    function dashboard()
-    {
-        // Lấy thống kê cơ bản cho bảng điều khiển nhân viên
-        $active_tables_result = $this->bu->getActiveTables();
-        $active_tables = [
-            'total_tables' => mysqli_num_rows($active_tables_result)
-        ];
-
-        $todays_orders = $this->dh->getTodaysOrders();
-        $todays_revenue = $this->dh->getTodaysRevenue();
-
-        $this->view('KhachhangMaster', [
-            'page' => 'Khachhang/dashboard_v',
-            'active_tables' => $active_tables,
-            'todays_orders' => $todays_orders,
-            'todays_revenue' => $todays_revenue
-        ]);
-    }
-
-
-
-    // Direct menu selection for customers without table selection
     function direct_menu()
     {
         $danhmuc = $this->model("Danhmuc_m");
         $categories = $danhmuc->Danhmuc_getAll();
 
-        // Lấy chỉ các mục menu có sẵn (không hết hàng)
         $thucdon = $this->model("Thucdon_m");
         $menu_items = $thucdon->Thucdon_getAvailable();
 
@@ -70,49 +34,6 @@ class Khachhang extends controller
             'current_cart' => $current_cart
         ]);
     }
-
-    // // Create new order for payment (redirects to payment page)
-    // function tao_don_hang_de_thanh_toan(){
-    //     // Generate a temporary order to show on payment page
-    //     $danhmuc = $this->model("Danhmuc_m");
-    //     $categories = $danhmuc->Danhmuc_getAll();
-
-    //     // Get only available menu items (not out of stock)
-    //     $thucdon = $this->model("Thucdon_m");
-    //     $menu_items = $thucdon->Thucdon_getAvailable();
-
-    //     // Get current cart from session for customer orders
-    //     $current_cart = $this->getCartForTable('KHACH_HANG');
-
-    //     // Calculate total for the temporary order
-    //     $tong_tien = 0;
-    //     if (!empty($current_cart)) {
-    //         foreach($current_cart as $item) {
-    //             $tong_tien += ($item['price'] * $item['quantity']);
-    //         }
-    //     }
-
-    //     // Create a temporary order object for the view
-    //     $order = [
-    //         'ma_don_hang' => 'TEMP_' . time(), // Temporary ID
-    //         'ma_ban' => 'KHACH_HANG',
-    //         'tong_tien' => $tong_tien,
-    //         'trang_thai_thanh_toan' => 'chua_thanh_toan',
-    //         'tien_khuyen_mai' => 0,
-    //         'ngay_tao' => date('Y-m-d H:i:s')
-    //     ];
-
-    //     // Get discount vouchers
-    //     $discount_vouchers = $this->dh->getDiscountVouchers();
-
-    //     $this->view('KhachhangMaster', [
-    //         'page' => 'Khachhang/Chi_tiet_don_hang_v',
-    //         'order' => [$order], // Pass as array to match expected format
-    //         'order_details' => $current_cart,
-    //         'discount_vouchers' => $discount_vouchers
-    //     ]);
-    // }
-
     // Quản lý đơn hàng cho khách hàng
     function orders($page = 1)
     {
@@ -140,48 +61,24 @@ class Khachhang extends controller
     {
         // Lấy thông tin đơn hàng
         $order = $this->dh->Donhang_getByIdWithDiscount($ma_don_hang);
-
-        // Initialize variables
         $order_details = [];
-
-        // Check if order exists in database
         if ($order && mysqli_num_rows($order) > 0) {
-            // Order exists in database - get the order row for processing
             $order_row = mysqli_fetch_array($order);
-
-            // Reset the result pointer so the view can fetch it again
             mysqli_data_seek($order, 0);
-
-            // Lấy chi tiết đơn hàng từ cơ sở dữ liệu
             $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
-
-            // Debug: Log the order status and details count
             error_log("Order $ma_don_hang status: " . $order_row['trang_thai_thanh_toan'] . ", details count: " . count($order_details));
-
-            // For paid orders, we should always have order details in the database
-            // The fallback to session cart should only be for temporary orders that haven't been saved yet
-            // If order is paid and no details found in database, it indicates a data inconsistency
             if ($order_row['trang_thai_thanh_toan'] === 'da_thanh_toan') {
-                // For paid orders, always use database details and ignore session cart
-                // This ensures that after payment, only the saved order details are shown
-                // If no details found in database for a paid order, it's an error state
                 if (empty($order_details)) {
-                    // Log this as an error state - paid order should have details in DB
                     error_log("ERROR: Paid order $ma_don_hang has no details in database");
-                    // Still show the order but with empty details
                 }
             } else if (empty($order_details)) {
-                // Only try to get from session cart for unpaid orders that might not have been saved to DB yet
                 $ma_ban = $order_row['ma_ban'];
 
-                // Get cart from session for this table
                 $session_cart = $this->getCartForTable($ma_ban);
 
-                // Convert session cart to the same format as database order details
                 if (!empty($session_cart)) {
                     $order_details = [];
                     foreach ($session_cart as $item) {
-                        // Get item details from database to get name and image
                         $thucdon = $this->model("Thucdon_m");
                         $item_details = $thucdon->Thucdon_getById($item['id']);
 
@@ -199,7 +96,6 @@ class Khachhang extends controller
                 }
             }
         } else {
-            // Order doesn't exist in database
             echo '<p>Không tìm thấy đơn hàng.</p>';
             return;
         }
@@ -209,7 +105,7 @@ class Khachhang extends controller
 
         $this->view('KhachhangMaster', [
             'page' => 'Khachhang/order_detail_v',
-            'order' => $order, // Pass the mysqli_result object as expected by the view
+            'order' => $order,
             'order_details' => $order_details,
             'discount_vouchers' => $discount_vouchers
         ]);

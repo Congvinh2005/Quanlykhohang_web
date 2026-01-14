@@ -280,28 +280,4 @@ class Users extends controller
         echo "<script>alert('Upload người dùng thành công!')</script>";
         $this->view('Master', ['page' => 'Users_up_v']);
     }
-
-
-
-    // Phương thức đăng nhập - Chuyển hướng đến controller Login để xác thực tập trung
-    function login()
-    {
-        // Tất cả chức năng đăng nhập được tập trung trong Login.php
-        // Điều này đảm bảo tất cả logic xác thực nằm ở một nơi
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Nếu là yêu cầu POST (gửi form), chuyển hướng đến phương thức xử lý của Login
-            header('Location: ' . $this->url('Login/process'));
-        } else {
-            // Nếu là yêu cầu GET (xem trang đăng nhập), chuyển hướng đến phương thức index của Login
-            header('Location: ' . $this->url('Login'));
-        }
-        exit;
-    }
-
-    function logout()
-    {
-        session_destroy();
-        header('Location: ' . $this->url('Login'));
-        exit;
-    }
 }

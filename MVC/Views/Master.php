@@ -92,7 +92,7 @@ include_once __DIR__ . '/../../Public/Classes/UrlHelper.php';
                         </a>
                     </li>
                     <li>
-                        <a href="http://localhost/QLSP/Users/logout" class="logout-btn1" title="Đăng xuất">
+                        <a href="http://localhost/QLSP/Login/logout" class="logout-btn1" title="Đăng xuất">
                             <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
                         </a>
                     </li>

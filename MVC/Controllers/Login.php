@@ -10,10 +10,10 @@ class Login extends controller
 
     function Get_data()
     {
-        $this->index();
+        $this->phan_quyen();
     }
 
-    function index()
+    function phan_quyen()
     {
         if (isset($_SESSION['user_id'])) {
             if ($_SESSION['user_role'] === 'admin') {
@@ -60,6 +60,7 @@ class Login extends controller
             exit;
         }
     }
+
     function register()
     {
         include_once __DIR__ . '/../Views/Pages/Register_v.php';
@@ -121,5 +122,11 @@ class Login extends controller
             header('Location: ' . $this->url('Login/register'));
             exit;
         }
+    }
+    function logout()
+    {
+        session_destroy();
+        header('Location: ' . $this->url('Login'));
+        exit;
     }
 }

@@ -170,8 +170,7 @@ Hệ thống sử dụng AJAX cho các tính năng:
 
 ### Người dùng
 - `/Users/danhsach` - Danh sách người dùng
-- `/Users/login` - Đăng nhập
-- `/Users/logout` - Đăng xuất
+
 
 ## 🔄 Luồng hoạt động hệ thống
 

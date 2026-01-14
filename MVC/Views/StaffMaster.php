@@ -260,7 +260,7 @@ include_once __DIR__ . '/../../Public/Classes/UrlHelper.php';
                     </a>
                 </li>
                 <li>
-                    <a href="http://localhost/QLSP/Users/logout">
+                    <a href="http://localhost/QLSP/Login/logout">
                         <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
                     </a>
                 </li>

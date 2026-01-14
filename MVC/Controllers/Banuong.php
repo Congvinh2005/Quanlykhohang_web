@@ -1,28 +1,16 @@
 <?php
 class Banuong extends controller
 {
-    private $bu; // ban_uong
-    private $dh; // don_hang
-    private $ctdh; // chi_tiet_don_hang
+    private $bu;
+    private $dh;
+    private $ctdh;
 
     function __construct()
     {
-        // Kiểm tra xem người dùng đã đăng nhập và có vai trò phù hợp không
-        if (!isset($_SESSION['user_id']) || ($_SESSION['user_role'] !== 'admin' && $_SESSION['user_role'] !== 'khach_hang' && $_SESSION['user_role'] !== 'nhan_vien')) {
-            header('Location: ' . $this->url('Users/login'));
-            exit;
-        }
-
         $this->bu = $this->model("Banuong_m");
         $this->dh = $this->model("Donhang_m");
         $this->ctdh = $this->model("Chitietdonhang_m");
     }
-
-    function index()
-    {
-        $this->danhsach();
-    }
-
     function Get_data()
     {
         $this->danhsach();
@@ -92,7 +80,6 @@ class Banuong extends controller
         $ten_ban = $_POST['txtTenban'] ?? '';
         $so_cho_ngoi = $_POST['txtSochongoi'] ?? '';
 
-        // 👉 LẤY DỮ LIỆU THEO MÃ BÀN + TÊN BÀN + SỐ CHỖ NGỒI
         $result = $this->bu->Banuong_find($ma_ban, $ten_ban, $so_cho_ngoi);
         // ====== XUẤT EXCEL ======
         if (isset($_POST['btnXuatexcel'])) {
@@ -101,7 +88,6 @@ class Banuong extends controller
             $objExcel->setActiveSheetIndex(0);
             $sheet = $objExcel->getActiveSheet()->setTitle('DanhSachBanUong');
 
-            // Header tương ứng với ảnh CSDL
             $sheet->setCellValue('A1', 'Mã Bàn');
             $sheet->setCellValue('B1', 'Tên Bàn');
             $sheet->setCellValue('C1', 'Số Chỗ Ngồi');
@@ -135,7 +121,6 @@ class Banuong extends controller
             exit;
         }
 
-        // ====== HIỂN THỊ GIAO DIỆN ======
         $this->view('Master', [
             'page' => 'Danhsachbanuong_v',
             'ma_ban' => $ma_ban, // Nhất quán với tên biến trong view
@@ -671,5 +656,4 @@ class Banuong extends controller
             ]);
         }
     }
-
 }
