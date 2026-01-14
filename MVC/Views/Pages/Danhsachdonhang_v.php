@@ -523,7 +523,7 @@
     <div class="card">
         <h2><i class="fa-solid fa-list-ul"></i> Danh sách hiện tại</h2>
         <?php
-        // Reset con trỏ dữ liệu
+        // Đặt lại con trỏ dữ liệu
         if (isset($data['dulieu']) && is_a($data['dulieu'], 'mysqli_result')) {
             mysqli_data_seek($data['dulieu'], 0);
         }
@@ -531,7 +531,7 @@
         // Đảm bảo dữ liệu tồn tại
         if (isset($data['dulieu'])) {
             // Giả định $data['dulieu'] là mysqli_result
-            // Reset con trỏ về đầu để có thể đếm và dùng lại bên dưới
+            // Đặt lại con trỏ về đầu để có thể đếm và dùng lại bên dưới
             if (is_object($data['dulieu'])) {
                 $count = mysqli_num_rows($data['dulieu']);
                 mysqli_data_seek($data['dulieu'], 0);
@@ -563,7 +563,7 @@
                         <?php
                         // Render dữ liệu tĩnh ban đầu
                         if ($count > 0) {
-                            $serial = 1; // Initialize serial number counter
+                            $serial = 1; // Khởi tạo bộ đếm số thứ tự
                             while ($row = mysqli_fetch_array($data['dulieu'])) {
                         ?>
                                 <tr>
@@ -613,22 +613,22 @@
                 const nameInput = document.getElementById('searchName');
                 const resultCount = document.getElementById('resultCount');
 
-                // init count
+                // khởi tạo đếm
                 resultCount.textContent = '<?php echo $count; ?> bản ghi';
 
                 // Chi tiết đơn hàng admin -> xuất hoá đon cho bartender
                 function showOrderDetails(orderId) {
-                    // Show loading message initially
+                    // Hiển thị thông báo đang tải ban đầu
                     document.getElementById('detailModal').style.display = 'block';
 
                     const modalBody = document.getElementById('modalBody');
                     modalBody.innerHTML =
                         '<div style="text-align: center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải chi tiết...</div>';
 
-                    // Update modal title with the order ID
+                    // Cập nhật tiêu đề modal với ID đơn hàng
                     document.getElementById('modalTitle').innerHTML = `Chi tiết đơn hàng: <strong>${orderId}</strong>`;
 
-                    // Fetch order details via AJAX
+                    // Lấy chi tiết đơn hàng qua AJAX
                     fetch(`http://localhost/QLSP/Donhang/get_order_details/${orderId}`)
                         .then(response => response.json())
                         .then(data => {
@@ -648,7 +648,7 @@
                                         <span class="order-summary-label">Tổng tiền</span>
                                         <span class="order-summary-value">`;
 
-                                // Calculate total amount
+                                // Tính tổng số tiền
                                 let total = 0;
                                 data.order_details.forEach(item => {
                                     total += parseFloat(item.so_luong) * parseFloat(item.gia_tai_thoi_diem_dat);
@@ -669,7 +669,7 @@
                                 </thead>
                                 <tbody>`;
 
-                                // Display order notes in all rows
+                                // Hiển thị ghi chú đơn hàng trong tất cả các hàng
                                 const orderNotes = data.order_notes ? '<span title="' + data.order_notes + '">' + (data
                                         .order_notes.length > 20 ? data.order_notes.substring(0, 20) + '...' : data
                                         .order_notes) + '</span>' :
@@ -687,7 +687,7 @@
                                 </tr>`;
                                 });
 
-                                // Add overall order notes section if available
+                                // Thêm phần ghi chú đơn hàng tổng thể nếu có
                                 if (data.order_notes) {
                                     orderDetailHtml += `
                                 <tr>
@@ -701,7 +701,7 @@
                                 </tbody>
                             </table>`;
 
-                                // Add print button for bartender
+                                // Thêm nút in cho bartender
                                 orderDetailHtml += `
                             <div style="margin-top: 20px; text-align: center;">
                                 <a href="http://localhost/QLSP/Staff/generateInvoice_admin/${orderId}" class="btn-print" target="_blank" style="
@@ -735,7 +735,7 @@
                     document.getElementById('detailModal').style.display = 'none';
                 }
 
-                // Close modal when clicking outside of it
+                // Đóng modal khi nhấn vào bên ngoài modal
                 window.onclick = function(event) {
                     const modal = document.getElementById('detailModal');
                     if (event.target == modal) {
@@ -743,7 +743,7 @@
                     }
                 }
 
-                // Close modal with Escape key
+                // Đóng modal bằng phím Escape
                 document.onkeydown = function(event) {
                     if (event.key === "Escape") {
                         closeModal();

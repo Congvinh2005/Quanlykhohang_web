@@ -257,7 +257,7 @@
                     <option value="">-- Chọn NCC --</option>
                     <?php
                     if (isset($data['dsncc'])) {
-                        mysqli_data_seek($data['dsncc'], 0); // Reset pointer
+                        mysqli_data_seek($data['dsncc'], 0); // Đặt lại con trỏ
                         while ($row = mysqli_fetch_array($data['dsncc'])) {
                             $selected = (isset($data['mancc']) && $data['mancc'] == $row['mancc']) ? 'selected' : '';
                             echo "<option value='" . htmlspecialchars($row['mancc']) . "' $selected>" . htmlspecialchars($row['tenncc']) . "</option>";

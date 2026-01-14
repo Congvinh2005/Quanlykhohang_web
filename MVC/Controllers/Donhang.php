@@ -101,7 +101,7 @@
             exit;
         }
 
-        // ====== DISPLAY VIEW ======
+        // ====== HIỂN THỊ GIAO DIỆN ======
         $this->view('Master', [
             'page' => 'Danhsachdonhang_v',
             'ma_don_hang' => $ma_don_hang, // Consistent with view variable name

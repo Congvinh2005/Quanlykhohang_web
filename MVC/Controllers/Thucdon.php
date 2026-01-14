@@ -191,7 +191,7 @@ class Thucdon extends controller
 
     function Timkiem()
     {
-        // Get the search parameters from the form
+        // Lấy các tham số tìm kiếm từ biểu mẫu
         $ma_thuc_don = $_POST['txtMathucdon'] ?? '';
         $ten_mon = $_POST['txtTenmon'] ?? '';
 
@@ -419,7 +419,7 @@ class Thucdon extends controller
             echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>";
     }
 
-    // Method to add item to cart for customers
+    // Phương thức để thêm mặt hàng vào giỏ hàng cho khách hàng
     function addToCart()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -443,7 +443,7 @@ class Thucdon extends controller
                 $table_id = 'KHACHHANG_' . $_SESSION['user_id'];
             }
 
-            // Get product details to ensure it exists and has sufficient quantity
+            // Lấy chi tiết sản phẩm để đảm bảo nó tồn tại và có đủ số lượng
             $product = $this->td->Thucdon_getById($product_id);
             if (!$product || mysqli_num_rows($product) === 0) {
                 echo json_encode(['status' => 'error', 'message' => 'Sản phẩm không tồn tại.']);

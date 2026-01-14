@@ -131,7 +131,7 @@ class PHPExcel_Shared_File
     public static function sys_get_temp_dir()
     {
         if (self::$useUploadTempDirectory) {
-            //  use upload-directory when defined to allow running on environments having very restricted
+            //  sử dụng thư mục upload khi được xác định để cho phép chạy trên môi trường có giới hạn nghiêm ngặt
             //      open_basedir configs
             if (ini_get('upload_tmp_dir') !== false) {
                 if ($temp = ini_get('upload_tmp_dir')) {
@@ -142,7 +142,7 @@ class PHPExcel_Shared_File
             }
         }
 
-        // sys_get_temp_dir is only available since PHP 5.2.1
+        // sys_get_temp_dir chỉ khả dụng từ PHP 5.2.1 trở lên
         // http://php.net/manual/en/function.sys-get-temp-dir.php#94119
         if (!function_exists('sys_get_temp_dir')) {
             if ($temp = getenv('TMP')) {

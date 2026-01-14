@@ -3,10 +3,8 @@
 
 <body>
     <style>
-        /* Reuse styles similar to Sanpham */
         .btn-create {
             background: #10b981;
-            /* Màu xanh lá cây */
             padding: 8px 15px;
             border-radius: 10px;
             color: #fff;
@@ -33,7 +31,6 @@
             display: inline-block;
         }
 
-        /* Các style cơ bản khác giữ nguyên */
         :root {
             --bg: #f5f7fb;
             --card: #ffffff;

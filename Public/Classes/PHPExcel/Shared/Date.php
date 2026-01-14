@@ -239,7 +239,7 @@ class PHPExcel_Shared_Date
             --$year;
         }
 
-        //    Calculate the Julian Date, then subtract the Excel base date (JD 2415020 = 31-Dec-1899 Giving Excel Date of 0)
+        //    Tính toán Ngày Julius, sau đó trừ đi ngày cơ sở Excel (JD 2415020 = 31-Th12-1899 Cho ngày Excel là 0)
         $century = substr($year, 0, 2);
         $decade = substr($year, 2, 2);
         $excelDate = floor((146097 * $century) / 4) + floor((1461 * $decade) / 4) + floor((153 * $month + 2) / 5) + $day + 1721119 - $myexcelBaseDate + $excel1900isLeapYear;
@@ -289,17 +289,17 @@ class PHPExcel_Shared_Date
     public static function isDateTimeFormatCode($pFormatCode = '')
     {
         if (strtolower($pFormatCode) === strtolower(PHPExcel_Style_NumberFormat::FORMAT_GENERAL)) {
-            //    "General" contains an epoch letter 'e', so we trap for it explicitly here (case-insensitive check)
+            //    "General" chứa chữ cái thời đại 'e', nên chúng ta bắt nó rõ ràng ở đây (kiểm tra không phân biệt chữ hoa/thường)
             return false;
         }
         if (preg_match('/[0#]E[+-]0/i', $pFormatCode)) {
-            //    Scientific format
+            //    Định dạng khoa học
             return false;
         }
 
-        // Switch on formatcode
+        // Chuyển đổi theo mã định dạng
         switch ($pFormatCode) {
-            //    Explicitly defined date formats
+            //    Các định dạng ngày được xác định rõ ràng
             case PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD:
             case PHPExcel_Style_NumberFormat::FORMAT_DATE_YYYYMMDD2:
             case PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY:
@@ -325,18 +325,18 @@ class PHPExcel_Shared_Date
                 return true;
         }
 
-        //    Typically number, currency or accounting (or occasionally fraction) formats
+        //    Thường là các định dạng số, tiền tệ hoặc kế toán (hoặc thỉnh thoảng là phân số)
         if ((substr($pFormatCode, 0, 1) == '_') || (substr($pFormatCode, 0, 2) == '0 ')) {
             return false;
         }
-        // Try checking for any of the date formatting characters that don't appear within square braces
+        // Thử kiểm tra bất kỳ ký tự định dạng ngày nào không xuất hiện trong dấu ngoặc vuông
         if (preg_match('/(^|\])[^\[]*['.self::$possibleDateFormatCharacters.']/i', $pFormatCode)) {
-            //    We might also have a format mask containing quoted strings...
-            //        we don't want to test for any of our characters within the quoted blocks
+            //    Chúng ta cũng có thể có mặt nạ định dạng chứa chuỗi được trích dẫn...
+            //        chúng ta không muốn kiểm tra bất kỳ ký tự nào của chúng ta trong các khối được trích dẫn
             if (strpos($pFormatCode, '"') !== false) {
                 $segMatcher = false;
                 foreach (explode('"', $pFormatCode) as $subVal) {
-                    //    Only test in alternate array entries (the non-quoted blocks)
+                    //    Chỉ kiểm tra trong các mục mảng xen kẽ (các khối không được trích dẫn)
                     if (($segMatcher = !$segMatcher) &&
                         (preg_match('/(^|\])[^\[]*['.self::$possibleDateFormatCharacters.']/i', $subVal))) {
                         return true;

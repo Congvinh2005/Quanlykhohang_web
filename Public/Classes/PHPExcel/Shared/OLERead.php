@@ -47,7 +47,7 @@ class PHPExcel_Shared_OLERead
     // Minimum size of a standard stream = 4096 bytes, streams smaller than this are stored as short streams
     const SMALL_BLOCK_THRESHOLD             = 0x1000;
 
-    // header offsets
+    // vị trí tiêu đề
     const NUM_BIG_BLOCK_DEPOT_BLOCKS_POS    = 0x2c;
     const ROOT_START_BLOCK_POS              = 0x30;
     const SMALL_BLOCK_DEPOT_BLOCK_POS       = 0x3c;
@@ -55,7 +55,7 @@ class PHPExcel_Shared_OLERead
     const NUM_EXTENSION_BLOCK_POS           = 0x48;
     const BIG_BLOCK_DEPOT_BLOCKS_POS        = 0x4c;
 
-    // property storage offsets (directory offsets)
+    // vị trí lưu trữ thuộc tính (vị trí thư mục)
     const SIZE_OF_NAME_POS                  = 0x40;
     const TYPE_POS                          = 0x42;
     const START_BLOCK_POS                   = 0x74;

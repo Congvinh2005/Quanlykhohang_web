@@ -233,14 +233,14 @@
             const tuNgay = document.getElementById('tu_ngay').value;
             const denNgay = document.getElementById('den_ngay').value;
 
-            // Reload the page with new date parameters
+            // Tải lại trang với các tham số ngày mới
             window.location.href = `http://localhost/QLSP/Thongke/thongke?tu_ngay=${tuNgay}&den_ngay=${denNgay}`;
         }
 
         let revenueChart, categoryChart;
 
 
-        // Fetch chart data and initialize charts
+        // Lấy dữ liệu biểu đồ và khởi tạo các biểu đồ
         async function loadChartData() {
             const tuNgay = '<?php echo $data['tu_ngay']; ?>';
             const denNgay = '<?php echo $data['den_ngay']; ?>';
@@ -250,7 +250,7 @@
                     `http://localhost/QLSP/Thongke/getChartData?tu_ngay=${tuNgay}&den_ngay=${denNgay}`);
                 const data = await response.json();
 
-                // Initialize revenue chart (line chart)
+                // Khởi tạo biểu đồ doanh thu (biểu đồ đường)
                 const revenueCtx = document.getElementById('revenueChart').getContext('2d');
                 revenueChart = new Chart(revenueCtx, {
                     type: 'line',
@@ -287,7 +287,7 @@
                     }
                 });
 
-                // Initialize category chart (pie chart)
+                // Khởi tạo biểu đồ danh mục (biểu đồ tròn)
                 const categoryCtx = document.getElementById('categoryChart').getContext('2d');
                 categoryChart = new Chart(categoryCtx, {
                     type: 'pie',
@@ -319,7 +319,7 @@
             }
         }
 
-        // Initialize when page loads
+        // Khởi tạo khi trang tải
         document.addEventListener('DOMContentLoaded', function() {
             loadChartData();
         });

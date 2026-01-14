@@ -241,7 +241,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                 // ADVANCED MODE:
                 if ($pAdvanced && isset($pStyles['borders'])) {
                     // 'allborders' is a shorthand property for 'outline' and 'inside' and
-                    //        it applies to components that have not been set explicitly
+                    //        nó áp dụng cho các thành phần chưa được thiết lập rõ ràng
                     if (isset($pStyles['borders']['allborders'])) {
                         foreach (array('outline', 'inside') as $component) {
                             if (!isset($pStyles['borders'][$component])) {
@@ -251,7 +251,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                         unset($pStyles['borders']['allborders']); // not needed any more
                     }
                     // 'outline' is a shorthand property for 'top', 'right', 'bottom', 'left'
-                    //        it applies to components that have not been set explicitly
+                    //        nó áp dụng cho các thành phần chưa được thiết lập rõ ràng
                     if (isset($pStyles['borders']['outline'])) {
                         foreach (array('top', 'right', 'bottom', 'left') as $component) {
                             if (!isset($pStyles['borders'][$component])) {
@@ -261,7 +261,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                         unset($pStyles['borders']['outline']); // not needed any more
                     }
                     // 'inside' is a shorthand property for 'vertical' and 'horizontal'
-                    //        it applies to components that have not been set explicitly
+                    //        nó áp dụng cho các thành phần chưa được thiết lập rõ ràng
                     if (isset($pStyles['borders']['inside'])) {
                         foreach (array('vertical', 'horizontal') as $component) {
                             if (!isset($pStyles['borders'][$component])) {
@@ -323,12 +323,12 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                             // what are the inner edges of the region when looking at the selection
                             $innerEdges = array_diff(array('top', 'right', 'bottom', 'left'), $edges);
 
-                            // inner edges that are not touching the region should take the 'inside' border properties if they have been set
+                            // các cạnh bên trong không chạm vào vùng nên lấy các thuộc tính viền 'bên trong' nếu chúng đã được thiết lập
                             foreach ($innerEdges as $innerEdge) {
                                 switch ($innerEdge) {
                                     case 'top':
                                     case 'bottom':
-                                        // should pick up 'horizontal' border property if set
+                                        // nên nhận thuộc tính viền 'ngang' nếu được thiết lập
                                         if (isset($pStyles['borders']['horizontal'])) {
                                             $regionStyles['borders'][$innerEdge] = $pStyles['borders']['horizontal'];
                                         } else {
@@ -337,7 +337,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                                         break;
                                     case 'left':
                                     case 'right':
-                                        // should pick up 'vertical' border property if set
+                                        // nên nhận thuộc tính viền 'dọc' nếu được thiết lập
                                         if (isset($pStyles['borders']['vertical'])) {
                                             $regionStyles['borders'][$innerEdge] = $pStyles['borders']['vertical'];
                                         } else {
@@ -409,7 +409,7 @@ class PHPExcel_Style extends PHPExcel_Style_Supervisor implements PHPExcel_IComp
                     }
                 }
 
-                // Loop through columns, rows, or cells again and update the XF index
+                // Lặp lại qua các cột, hàng hoặc ô và cập nhật chỉ mục XF
                 switch ($selectionType) {
                     case 'COLUMN':
                         for ($col = $rangeStart[0]; $col <= $rangeEnd[0]; ++$col) {

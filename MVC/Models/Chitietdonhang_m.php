@@ -35,21 +35,19 @@ class Chitietdonhang_m extends connectDB
         $sql = "SELECT ma_ctdh FROM chi_tiet_don_hang ORDER BY CAST(SUBSTRING(ma_ctdh, 3) AS UNSIGNED) DESC LIMIT 1";
         $result = mysqli_query($this->con, $sql);
 
-        $new_id = 'CT1'; // Default starting ID
+        $new_id = 'CT1';
 
         if ($result && mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
             $last_id = $row['ma_ctdh'];
 
-            // Extract the numeric part from the last ID
             preg_match('/^CT(\d+)$/', $last_id, $matches);
 
             if (isset($matches[1])) {
                 $number = intval($matches[1]);
-                $number++; // Increment the number
-                $new_id = 'CT' . $number; // Format the ID correctly
+                $number++;
+                $new_id = 'CT' . $number;
             } else {
-                // If the last ID doesn't match the expected format, start from CT1
                 $new_id = 'CT1';
             }
         }

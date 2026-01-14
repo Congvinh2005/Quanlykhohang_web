@@ -95,7 +95,7 @@
 <body>
 
     <?php
-// Handle order information
+// Xử lý thông tin đơn hàng
 if (isset($data['order']) && is_a($data['order'], 'mysqli_result')) {
     $order = mysqli_fetch_array($data['order']);
 } elseif (isset($data['order']) && is_array($data['order']) && count($data['order']) > 0) {

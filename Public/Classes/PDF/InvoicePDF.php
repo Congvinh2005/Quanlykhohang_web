@@ -17,25 +17,25 @@ class InvoicePDF extends TCPDF
         $this->order_total = $order_total;
         $this->discount_amount = $discount_amount;
 
-        // Set document information
+        // Thiết lập thông tin tài liệu
         $this->SetCreator(PDF_CREATOR);
         $this->SetAuthor('QLSP System');
         $this->SetTitle('Hóa đơn #' . $order_data['ma_don_hang']);
         $this->SetSubject('Hóa đơn bán hàng');
 
-        // Remove default header/footer
+        // Loại bỏ header/footer mặc định
         $this->setPrintHeader(false);
         $this->setPrintFooter(false);
 
-        // Set margins
+        // Thiết lập lề
         $this->SetMargins(15, 15, 15);
         $this->SetAutoPageBreak(TRUE, 15);
 
-        // Set font - using default TCPDF font that supports UTF-8
+        // Thiết lập phông chữ - sử dụng phông chữ TCPDF mặc định hỗ trợ UTF-8
         $this->SetFont('dejavusans', '', 12);
     }
 
-    // Page header
+    // Header trang
     // public function Header()
     // {
     //     // Logo
@@ -89,10 +89,10 @@ class InvoicePDF extends TCPDF
     $this->Ln(5);
 }
 
-    // Page footer
+    // Footer trang
     public function Footer()
     {
-        // Position at 15 mm from bottom
+        // Đặt vị trí cách đáy 15 mm
         $this->SetY(-15);
         $this->SetFont('dejavusans', '', 8);
         $this->Cell(0, 10, 'Trang '.$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
@@ -105,7 +105,7 @@ class InvoicePDF extends TCPDF
         // Header
         $this->Header();
 
-        // Order information
+        // Thông tin đơn hàng
         $this->SetFont('dejavusans', '', 12);
         $this->Cell(0, 6, 'Mã đơn hàng: ' . ($this->order_data['ma_don_hang'] ?? 'N/A'), 0, 1);
         $this->Cell(0, 6, 'Ngày đặt: ' . (isset($this->order_data['ngay_tao']) ? TimezoneHelper::formatForDisplay($this->order_data['ngay_tao'], 'H:i:s d/m/Y') : 'N/A'), 0, 1);
@@ -117,7 +117,7 @@ class InvoicePDF extends TCPDF
 
         $this->Ln(8);
 
-        // Table header
+        // Tiêu đề bảng
         $this->SetFont('dejavusans', 'B', 12);
         $header = array('Món ăn', 'Số lượng', 'Đơn giá', 'Thành tiền');
         $w = array(90, 20, 30, 30);
@@ -126,7 +126,7 @@ class InvoicePDF extends TCPDF
             $this->Cell($w[$i], 7, $header[$i], 1, 0, 'C', 0);
         $this->Ln();
 
-        // Data
+        // Dữ liệu
         $this->SetFont('dejavusans', '', 12);
         foreach($this->order_details as $detail) {
             $this->Cell($w[0], 6, $detail['ten_mon'], 'LRB', 0, 'L');
@@ -136,13 +136,13 @@ class InvoicePDF extends TCPDF
             $this->Ln();
         }
 
-        // Total
+        // Tổng cộng
         $this->SetFont('dejavusans', 'B', 12);
         $this->Cell(array_sum($w) - 30, 6, 'Tổng cộng:', 'T', 0, 'R');
         $this->Cell(30, 6, number_format($this->order_total, 0, '.', '') . 'đ', 'TB', 0, 'R');
         $this->Ln(6);
 
-        // Discount
+        // Giảm giá
         if ($this->discount_amount > 0) {
             $this->SetFont('dejavusans', '', 12);
             $this->Cell(array_sum($w) - 30, 6, 'Giảm giá:', 0, 0, 'R');
@@ -150,19 +150,19 @@ class InvoicePDF extends TCPDF
             $this->Ln(6);
         }
 
-        // Amount to pay
+        // Số tiền cần thanh toán
         $amount_to_pay = $this->order_total - $this->discount_amount;
         $this->SetFont('dejavusans', 'B', 12);
         $this->Cell(array_sum($w) - 30, 6, 'Số tiền cần thanh toán:', 0, 0, 'R');
         $this->Cell(30, 6, number_format($amount_to_pay, 0, '.', '') . 'đ', 0, 0, 'R');
         $this->Ln(12);
 
-        // Footer text
+        // Văn bản chân trang
         $this->SetFont('dejavusans', '', 12);
         $this->Cell(0, 6, 'Cảm ơn quý khách đã sử dụng dịch vụ!', 0, 1, 'C');
         $this->Ln(5);
 
-        // Signature
+        // Chữ ký
         $this->SetFont('dejavusans', '', 12);
         $this->Cell(90, 10, 'Khách hàng', 0, 0, 'C');
         $this->Cell(90, 10, 'Nhân viên bán hàng', 0, 1, 'C');

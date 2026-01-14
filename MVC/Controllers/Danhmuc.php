@@ -133,7 +133,7 @@
 
 function Timkiem()
     {
-        // Get the search parameters from the form
+        // Lấy các tham số tìm kiếm từ biểu mẫu
         $ma_danh_muc = $_POST['txtMadanhmuc'] ?? '';
         $ten_danh_muc = $_POST['txtTendanhmuc'] ?? '';
 
@@ -154,7 +154,7 @@ function Timkiem()
 
 
             $rowCount = 2; // Starting from row 2 since row 1 is headers
-            mysqli_data_seek($result, 0); // Reset result pointer to beginning
+            mysqli_data_seek($result, 0); // Đặt lại con trỏ kết quả về đầu
             while ($row = mysqli_fetch_assoc($result)) {
                 // Mapping field according to database table
                 $sheet->setCellValue('A'.$rowCount, $row['ma_danh_muc']);
@@ -178,7 +178,7 @@ function Timkiem()
             exit;
         }
 
-        // ====== DISPLAY VIEW ======
+        // ====== HIỂN THỊ GIAO DIỆN ======
         $this->view('Master', [
             'page' => 'Danhsachdanhmuc_v',
             'ma_danh_muc' => $ma_danh_muc, // Consistent with view variable name

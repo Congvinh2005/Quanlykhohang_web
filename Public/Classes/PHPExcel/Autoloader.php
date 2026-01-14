@@ -1,10 +1,10 @@
 <?php
 
 PHPExcel_Autoloader::register();
-//    As we always try to run the autoloader before anything else, we can use it to do a few
-//        simple checks and initialisations
+//    Vì chúng ta luôn cố gắng chạy trình tự động tải trước bất cứ thứ gì khác, chúng ta có thể sử dụng nó để làm một vài
+//        kiểm tra và khởi tạo đơn giản
 //PHPExcel_Shared_ZipStreamWrapper::register();
-// check mbstring.func_overload
+// kiểm tra mbstring.func_overload
 if (ini_get('mbstring.func_overload') & 2) {
     throw new PHPExcel_Exception('Multibyte function overloading in PHP must be disabled for string functions (2).');
 }
@@ -44,7 +44,7 @@ class PHPExcel_Autoloader
     public static function register()
     {
         if (function_exists('__autoload')) {
-            // Register any existing autoloader function with SPL, so we don't get any clashes
+            // Đăng ký bất kỳ hàm tự động tải nào hiện có với SPL, để chúng ta không gặp xung đột
             spl_autoload_register('__autoload');
         }
         // Register ourselves with SPL
@@ -63,7 +63,7 @@ class PHPExcel_Autoloader
     public static function load($pClassName)
     {
         if ((class_exists($pClassName, false)) || (strpos($pClassName, 'PHPExcel') !== 0)) {
-            // Either already loaded, or not a PHPExcel class request
+            // Hoặc đã được tải rồi, hoặc không phải là yêu cầu lớp PHPExcel
             return false;
         }
 
@@ -72,7 +72,7 @@ class PHPExcel_Autoloader
             '.php';
 
         if ((file_exists($pClassFilePath) === false) || (is_readable($pClassFilePath) === false)) {
-            // Can't load
+            // Không thể tải
             return false;
         }
 

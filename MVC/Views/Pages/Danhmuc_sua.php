@@ -3,7 +3,6 @@
 
 <body>
     <style>
-        /* Simple form styles following existing pattern */
         .card {
             width: 100%;
             background: #fff;
@@ -140,7 +139,6 @@
                 <a href="http://localhost/QLSP/Danhmuc/danhsach" class="btn-back"><i class="fa-solid fa-arrow-left"></i>
                     Quay lại</a>
                 <div style="display:flex;gap:12px">
-                    <!-- <button type="reset" class="btn-ghost">Reset</button> -->
                     <button type="submit" name="btnCapnhat" class="btn-primary">Cập nhật</button>
                 </div>
             </div>

@@ -332,31 +332,31 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      */
     public function __construct(PHPExcel $pParent = null, $pTitle = 'Worksheet')
     {
-        // Set parent and title
+        // Thiết lập cha và tiêu đề
         $this->parent = $pParent;
         $this->setTitle($pTitle, false);
-        // setTitle can change $pTitle
+        // setTitle có thể thay đổi $pTitle
         $this->setCodeName($this->getTitle());
         $this->setSheetState(PHPExcel_Worksheet::SHEETSTATE_VISIBLE);
 
         $this->cellCollection         = PHPExcel_CachedObjectStorageFactory::getInstance($this);
-        // Set page setup
+        // Thiết lập bố cục trang
         $this->pageSetup              = new PHPExcel_Worksheet_PageSetup();
-        // Set page margins
+        // Thiết lập lề trang
         $this->pageMargins            = new PHPExcel_Worksheet_PageMargins();
-        // Set page header/footer
+        // Thiết lập header/footer trang
         $this->headerFooter           = new PHPExcel_Worksheet_HeaderFooter();
-        // Set sheet view
+        // Thiết lập chế độ xem bảng tính
         $this->sheetView              = new PHPExcel_Worksheet_SheetView();
-        // Drawing collection
+        // Bộ sưu tập hình vẽ
         $this->drawingCollection      = new ArrayObject();
-        // Chart collection
+        // Bộ sưu tập biểu đồ
         $this->chartCollection        = new ArrayObject();
-        // Protection
+        // Bảo vệ
         $this->protection             = new PHPExcel_Worksheet_Protection();
-        // Default row dimension
+        // Kích thước hàng mặc định
         $this->defaultRowDimension    = new PHPExcel_Worksheet_RowDimension(null);
-        // Default column dimension
+        // Kích thước cột mặc định
         $this->defaultColumnDimension = new PHPExcel_Worksheet_ColumnDimension(null);
         $this->autoFilter             = new PHPExcel_Worksheet_AutoFilter(null, $this);
     }
@@ -707,7 +707,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      */
     public function calculateColumnWidths($calculateMergeCells = false)
     {
-        // initialize $autoSizes array
+        // khởi tạo mảng $autoSizes
         $autoSizes = array();
         foreach ($this->getColumnDimensions() as $colDimension) {
             if ($colDimension->getAutoSize()) {
@@ -857,7 +857,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
             }
         }
 
-        // Set title
+        // Thiết lập tiêu đề
         $this->title = $pValue;
         $this->dirty = true;
 
@@ -1112,7 +1112,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      */
     public function setCellValueExplicit($pCoordinate = 'A1', $pValue = null, $pDataType = PHPExcel_Cell_DataType::TYPE_STRING, $returnCell = false)
     {
-        // Set value
+        // Thiết lập giá trị
         $cell = $this->getCell(strtoupper($pCoordinate))->setValueExplicit($pValue, $pDataType);
         return ($returnCell) ? $cell : $this;
     }
@@ -1309,7 +1309,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
         // Found
         $found = null;
 
-        // Get row dimension
+        // Lấy kích thước hàng
         if (!isset($this->rowDimensions[$pRow])) {
             if (!$create) {
                 return null;
@@ -1407,10 +1407,10 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
      */
     public function getStyle($pCellCoordinate = 'A1')
     {
-        // set this sheet as active
+        // đặt bảng tính này là hoạt động
         $this->parent->setActiveSheetIndex($this->parent->getIndex($this));
 
-        // set cell coordinate as active
+        // đặt tọa độ ô là hoạt động
         $this->setSelectedCells(strtoupper($pCellCoordinate));
 
         return $this->parent->getCellXfSupervisor();
@@ -1688,7 +1688,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 
             // make sure cells are created
 
-            // get the cells in the range
+            // lấy các ô trong phạm vi
             $aReferences = PHPExcel_Cell::extractAllCellReferencesInRange($pRange);
 
             // create upper left cell if it does not already exist
@@ -2429,12 +2429,12 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
                 foreach ($rowData as $cellValue) {
                     if ($strictNullComparison) {
                         if ($cellValue !== $nullValue) {
-                            // Set cell value
+                            // Thiết lập giá trị ô
                             $this->getCell($currentColumn . $startRow)->setValue($cellValue);
                         }
                     } else {
                         if ($cellValue != $nullValue) {
-                            // Set cell value
+                            // Thiết lập giá trị ô
                             $this->getCell($currentColumn . $startRow)->setValue($cellValue);
                         }
                     }

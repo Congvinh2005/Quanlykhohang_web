@@ -2795,7 +2795,7 @@ class PHPExcel_Calculation
             }
         }
 
-        //    Parse the formula onto the token stack and calculate the value
+        //    Phân tích cú pháp công thức vào ngăn xếp token và tính toán giá trị
         $this->cyclicReferenceStack->push($wsCellReference);
         $cellValue = $this->processTokenStack($this->_parseFormula($formula, $pCell), $cellID, $pCell);
         $this->cyclicReferenceStack->pop();
@@ -2805,7 +2805,7 @@ class PHPExcel_Calculation
             $this->saveValueToCache($wsCellReference, $cellValue);
         }
 
-        //    Return the calculated value
+        //    Trả về giá trị đã tính toán
         return $cellValue;
     }
 
@@ -3504,7 +3504,7 @@ class PHPExcel_Calculation
         return $operand;
     }
 
-    // evaluate postfix notation
+    // đánh giá ký hiệu hậu tố
     private function processTokenStack($tokens, $cellID = null, PHPExcel_Cell $pCell = null)
     {
         if ($tokens == false) {
@@ -3544,7 +3544,7 @@ class PHPExcel_Calculation
                     $this->_debugLog->writeDebugLog('Evaluating ', $this->showValue($operand1), ' ', $token, ' ', $this->showValue($operand2));
                 }
 
-                //    Process the operation in the appropriate manner
+                //    Xử lý phép toán theo cách phù hợp
                 switch ($token) {
                     //    Comparison (Boolean) Operators
                     case '>':            //    Greater than
@@ -3839,7 +3839,7 @@ class PHPExcel_Calculation
                             $this->_debugLog->writeDebugLog('Evaluating ', self::localeFunc($functionName), '( ', implode(self::$localeArgumentSeparator.' ', PHPExcel_Calculation_Functions::flattenArray($argArrayVals)), ' )');
                         }
                     }
-                    //    Process each argument in turn, building the return value as an array
+                    //    Xử lý từng đối số theo thứ tự, xây dựng giá trị trả về dưới dạng mảng
 //                    if (($argCount == 1) && (is_array($args[1])) && ($functionName != 'MKMATRIX')) {
 //                        $operand1 = $args[1];
 //                        $this->_debugLog->writeDebugLog('Argument is a matrix: ', $this->showValue($operand1));
@@ -3862,7 +3862,7 @@ class PHPExcel_Calculation
 //                            }
 //                        }
 //                    } else {
-                    //    Process the argument with the appropriate function call
+                    //    Xử lý đối số với lệnh gọi hàm phù hợp
                     if ($passCellReference) {
                         $args[] = $pCell;
                     }
@@ -3994,7 +3994,7 @@ class PHPExcel_Calculation
             return true;
         }
 
-        //    Simple validate the two operands if they are string values
+        //    Đơn giản xác thực hai toán hạng nếu chúng là giá trị chuỗi
         if (is_string($operand1) && $operand1 > '' && $operand1[0] == '"') {
             $operand1 = self::unwrapResult($operand1);
         }
@@ -4093,7 +4093,7 @@ class PHPExcel_Calculation
 
     private function executeNumericBinaryOperation($cellID, $operand1, $operand2, $operation, $matrixFunction, &$stack)
     {
-        //    Validate the two operands
+        //    Xác thực hai toán hạng
         if (!$this->validateBinaryOperand($cellID, $operand1, $stack)) {
             return false;
         }

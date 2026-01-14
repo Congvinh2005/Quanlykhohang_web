@@ -48,7 +48,7 @@ class PHPExcel_CachedObjectStorage_Memory extends PHPExcel_CachedObjectStorage_C
     {
         $this->cellCache[$pCoord] = $cell;
 
-        //    Set current entry to the new/updated entry
+        //    Đặt mục hiện tại thành mục mới/cập nhật
         $this->currentObjectID = $pCoord;
 
         return $cell;
@@ -71,10 +71,10 @@ class PHPExcel_CachedObjectStorage_Memory extends PHPExcel_CachedObjectStorage_C
             return null;
         }
 
-        //    Set current entry to the requested entry
+        //    Đặt mục hiện tại thành mục được yêu cầu
         $this->currentObjectID = $pCoord;
 
-        //    Return requested entry
+        //    Trả về mục được yêu cầu
         return $this->cellCache[$pCoord];
     }
 

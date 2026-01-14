@@ -270,11 +270,11 @@
 
             <h2><i class="fa-solid fa-list-ul"></i> Danh sách hiện tại</h2>
             <?php if (isset($data['dulieu'])) {
-                // Reset con trỏ dữ liệu
+                // Đặt lại con trỏ dữ liệu
                 if (is_a($data['dulieu'], 'mysqli_result')) {
                     mysqli_data_seek($data['dulieu'], 0);
                 }
-                $count = mysqli_num_rows($data['dulieu']); // Get total number of records
+                $count = mysqli_num_rows($data['dulieu']); // Lấy tổng số bản ghi
             ?>
                 <div style="margin:10px 0">
                     <strong>Kết quả: <span id="resultCount" class="hint"></span></strong>
@@ -293,7 +293,7 @@
                         </thead>
                         <tbody id="nccBody">
                             <?php
-                            $serial = 1; // Initialize serial number counter
+                            $serial = 1; // Khởi tạo bộ đếm số thứ tự
                             while ($row = mysqli_fetch_array($data['dulieu'])) {
                             ?>
                                 <tr>
@@ -324,7 +324,7 @@
                     const nameInput = document.getElementById('searchName');
                     const resultCount = document.getElementById('resultCount');
 
-                    // init count
+                    // khởi tạo đếm
                     resultCount.textContent = '<?php echo $count; ?> bản ghi';
                 </script>
             <?php } ?>

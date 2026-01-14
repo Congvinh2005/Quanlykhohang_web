@@ -27,7 +27,7 @@ if (!defined('PHPEXCEL_ROOT')) {
  *
  * @category   PHPExcel
  * @package    PHPExcel
- * @copyright  Copyright (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Bản quyền (c) 2006 - 2015 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
@@ -368,25 +368,25 @@ class PHPExcel
         $this->uniqueID = uniqid();
         $this->calculationEngine = new PHPExcel_Calculation($this);
 
-        // Initialise worksheet collection and add one worksheet
+        // Khởi tạo bộ sưu tập bảng tính và thêm một bảng tính
         $this->workSheetCollection = array();
         $this->workSheetCollection[] = new PHPExcel_Worksheet($this);
         $this->activeSheetIndex = 0;
 
-        // Create document properties
+        // Tạo thuộc tính tài liệu
         $this->properties = new PHPExcel_DocumentProperties();
 
-        // Create document security
+        // Tạo bảo mật tài liệu
         $this->security = new PHPExcel_DocumentSecurity();
 
-        // Set named ranges
+        // Thiết lập phạm vi có tên
         $this->namedRanges = array();
 
-        // Create the cellXf supervisor
+        // Tạo người giám sát cellXf
         $this->cellXfSupervisor = new PHPExcel_Style(true);
         $this->cellXfSupervisor->bindParent($this);
 
-        // Create the default style
+        // Tạo kiểu mặc định
         $this->addCellXf(new PHPExcel_Style);
         $this->addCellStyleXf(new PHPExcel_Style);
     }
@@ -526,7 +526,7 @@ class PHPExcel
             }
             $this->workSheetCollection[] = $pSheet;
         } else {
-            // Insert the sheet at the requested index
+            // Chèn bảng tính tại vị trí được yêu cầu
             array_splice(
                 $this->workSheetCollection,
                 $iSheetIndex,
@@ -534,7 +534,7 @@ class PHPExcel
                 array($pSheet)
             );
 
-            // Adjust active sheet index if necessary
+            // Điều chỉnh chỉ mục bảng tính hoạt động nếu cần thiết
             if ($this->activeSheetIndex >= $iSheetIndex) {
                 ++$this->activeSheetIndex;
             }
@@ -564,7 +564,7 @@ class PHPExcel
         } else {
             array_splice($this->workSheetCollection, $pIndex, 1);
         }
-        // Adjust active sheet index if necessary
+        // Điều chỉnh chỉ mục bảng tính hoạt động nếu cần thiết
         if (($this->activeSheetIndex >= $pIndex) &&
             ($pIndex > count($this->workSheetCollection) - 1)
         ) {
@@ -750,18 +750,18 @@ class PHPExcel
             throw new PHPExcel_Exception("Workbook already contains a worksheet named '{$pSheet->getTitle()}'. Rename the external sheet first.");
         }
 
-        // count how many cellXfs there are in this workbook currently, we will need this below
+        // đếm số lượng cellXf hiện có trong sổ làm việc này, chúng ta sẽ cần điều này bên dưới
         $countCellXfs = count($this->cellXfCollection);
 
-        // copy all the shared cellXfs from the external workbook and append them to the current
+        // sao chép tất cả các cellXf được chia sẻ từ sổ làm việc bên ngoài và thêm vào sổ hiện tại
         foreach ($pSheet->getParent()->getCellXfCollection() as $cellXf) {
             $this->addCellXf(clone $cellXf);
         }
 
-        // move sheet to this workbook
+        // di chuyển bảng tính sang sổ làm việc này
         $pSheet->rebindParent($this);
 
-        // update the cellXfs
+        // cập nhật các cellXf
         foreach ($pSheet->getCellCollection(false) as $cellID) {
             $cell = $pSheet->getCell($cellID);
             $cell->setXfIndex($cell->getXfIndex() + $countCellXfs);
@@ -789,10 +789,10 @@ class PHPExcel
     public function addNamedRange(PHPExcel_NamedRange $namedRange)
     {
         if ($namedRange->getScope() == null) {
-            // global scope
+            // phạm vi toàn cục
             $this->namedRanges[$namedRange->getName()] = $namedRange;
         } else {
-            // local scope
+            // phạm vi cục bộ
             $this->namedRanges[$namedRange->getScope()->getTitle() . '!' . $namedRange->getName()] = $namedRange;
         }
         return true;
@@ -810,12 +810,12 @@ class PHPExcel
         $returnValue = null;
 
         if ($namedRange != '' && ($namedRange !== null)) {
-            // first look for global defined name
+            // trước tiên tìm tên được định nghĩa toàn cục
             if (isset($this->namedRanges[$namedRange])) {
                 $returnValue = $this->namedRanges[$namedRange];
             }
 
-            // then look for local defined name (has priority over global defined name if both names exist)
+            // sau đó tìm tên được định nghĩa cục bộ (có ưu tiên hơn tên được định nghĩa toàn cục nếu cả hai tên đều tồn tại)
             if (($pSheet !== null) && isset($this->namedRanges[$pSheet->getTitle() . '!' . $namedRange])) {
                 $returnValue = $this->namedRanges[$pSheet->getTitle() . '!' . $namedRange];
             }
@@ -969,19 +969,19 @@ class PHPExcel
         if ($pIndex > count($this->cellXfCollection) - 1) {
             throw new PHPExcel_Exception("CellXf index is out of bounds.");
         } else {
-            // first remove the cellXf
+            // trước tiên xóa cellXf
             array_splice($this->cellXfCollection, $pIndex, 1);
 
-            // then update cellXf indexes for cells
+            // sau đó cập nhật chỉ mục cellXf cho các ô
             foreach ($this->workSheetCollection as $worksheet) {
                 foreach ($worksheet->getCellCollection(false) as $cellID) {
                     $cell = $worksheet->getCell($cellID);
                     $xfIndex = $cell->getXfIndex();
                     if ($xfIndex > $pIndex) {
-                        // decrease xf index by 1
+                        // giảm chỉ mục xf đi 1
                         $cell->setXfIndex($xfIndex - 1);
                     } elseif ($xfIndex == $pIndex) {
-                        // set to default xf index 0
+                        // đặt về chỉ mục xf mặc định 0
                         $cell->setXfIndex(0);
                     }
                 }
@@ -1068,38 +1068,38 @@ class PHPExcel
      */
     public function garbageCollect()
     {
-        // how many references are there to each cellXf ?
+        // có bao nhiêu tham chiếu đến mỗi cellXf ?
         $countReferencesCellXf = array();
         foreach ($this->cellXfCollection as $index => $cellXf) {
             $countReferencesCellXf[$index] = 0;
         }
 
         foreach ($this->getWorksheetIterator() as $sheet) {
-            // from cells
+            // từ các ô
             foreach ($sheet->getCellCollection(false) as $cellID) {
                 $cell = $sheet->getCell($cellID);
                 ++$countReferencesCellXf[$cell->getXfIndex()];
             }
 
-            // from row dimensions
+            // từ kích thước hàng
             foreach ($sheet->getRowDimensions() as $rowDimension) {
                 if ($rowDimension->getXfIndex() !== null) {
                     ++$countReferencesCellXf[$rowDimension->getXfIndex()];
                 }
             }
 
-            // from column dimensions
+            // từ kích thước cột
             foreach ($sheet->getColumnDimensions() as $columnDimension) {
                 ++$countReferencesCellXf[$columnDimension->getXfIndex()];
             }
         }
 
-        // remove cellXfs without references and create mapping so we can update xfIndex
-        // for all cells and columns
+        // xóa các cellXf không có tham chiếu và tạo ánh xạ để chúng ta có thể cập nhật xfIndex
+        // cho tất cả các ô và cột
         $countNeededCellXfs = 0;
         $map = array();
         foreach ($this->cellXfCollection as $index => $cellXf) {
-            if ($countReferencesCellXf[$index] > 0 || $index == 0) { // we must never remove the first cellXf
+            if ($countReferencesCellXf[$index] > 0 || $index == 0) { // chúng ta không bao giờ được xóa cellXf đầu tiên
                 ++$countNeededCellXfs;
             } else {
                 unset($this->cellXfCollection[$index]);
@@ -1108,37 +1108,37 @@ class PHPExcel
         }
         $this->cellXfCollection = array_values($this->cellXfCollection);
 
-        // update the index for all cellXfs
+        // cập nhật chỉ mục cho tất cả các cellXf
         foreach ($this->cellXfCollection as $i => $cellXf) {
             $cellXf->setIndex($i);
         }
 
-        // make sure there is always at least one cellXf (there should be)
+        // đảm bảo luôn có ít nhất một cellXf (nên có)
         if (empty($this->cellXfCollection)) {
             $this->cellXfCollection[] = new PHPExcel_Style();
         }
 
-        // update the xfIndex for all cells, row dimensions, column dimensions
+        // cập nhật xfIndex cho tất cả các ô, kích thước hàng, kích thước cột
         foreach ($this->getWorksheetIterator() as $sheet) {
-            // for all cells
+            // cho tất cả các ô
             foreach ($sheet->getCellCollection(false) as $cellID) {
                 $cell = $sheet->getCell($cellID);
                 $cell->setXfIndex($map[$cell->getXfIndex()]);
             }
 
-            // for all row dimensions
+            // cho tất cả các kích thước hàng
             foreach ($sheet->getRowDimensions() as $rowDimension) {
                 if ($rowDimension->getXfIndex() !== null) {
                     $rowDimension->setXfIndex($map[$rowDimension->getXfIndex()]);
                 }
             }
 
-            // for all column dimensions
+            // cho tất cả các kích thước cột
             foreach ($sheet->getColumnDimensions() as $columnDimension) {
                 $columnDimension->setXfIndex($map[$columnDimension->getXfIndex()]);
             }
 
-            // also do garbage collection for all the sheets
+            // cũng thực hiện dọn dẹp rác cho tất cả các bảng tính
             $sheet->garbageCollect();
         }
     }

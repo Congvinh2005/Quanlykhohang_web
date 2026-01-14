@@ -374,15 +374,15 @@
     <script>
     let cart = {};
 
-    // Load cart from server if available
+    // Tải giỏ hàng từ máy chủ nếu có sẵn
     <?php if(isset($data['current_cart']) && !empty($data['current_cart'])): ?>
     cart = <?php echo json_encode($data['current_cart']); ?>;
     <?php endif; ?>
 
-    // Initialize cart on page load
+    // Khởi tạo giỏ hàng khi tải trang
     document.addEventListener('DOMContentLoaded', function() {
         updateCart();
-        // Update cart in session periodically
+        // Cập nhật giỏ hàng trong phiên định kỳ
         setInterval(saveCartToSession, 5000); // Save every 5 seconds
     });
 
@@ -392,17 +392,17 @@
         const price = parseFloat(inputElement.dataset.price);
         const quantity = parseInt(inputElement.value);
 
-        // Get the image URL from the menu item
+        // Lấy URL hình ảnh từ mục menu
         const menuItem = inputElement.closest('.menu-item');
         const imgElement = menuItem.querySelector('img');
         const imgSrc = imgElement ? imgElement.src : '';
 
-        // Get available quantity from menu item
+        // Lấy số lượng hiện có từ mục menu
         const availableQuantityElement = menuItem.querySelector('.menu-item-quantity');
         const availableText = availableQuantityElement ? availableQuantityElement.textContent : '0';
         const availableQuantity = parseInt(availableText.match(/\d+/)[0]) || 0;
 
-        // Check if requested quantity exceeds available quantity
+        // Kiểm tra nếu số lượng yêu cầu vượt quá số lượng hiện có
         if (quantity > availableQuantity) {
             alert(`Số lượng yêu cầu vượt quá số lượng hiện có (${availableQuantity} món).`);
             inputElement.value = availableQuantity;
@@ -410,7 +410,7 @@
         }
 
         if (quantity > 0) {
-            // Add or update item in cart
+            // Thêm hoặc cập nhật mặt hàng trong giỏ
             cart[id] = {
                 id: id,
                 name: name,
@@ -419,7 +419,7 @@
                 img: imgSrc
             };
         } else {
-            // Remove item if quantity is 0
+            // Xóa mặt hàng nếu số lượng là 0
             delete cart[id];
         }
 
@@ -428,7 +428,7 @@
     }
 
     function addItemToCart(id, name, price) {
-        // Find the menu item to get its image and available quantity
+        // Tìm mục menu để lấy hình ảnh và số lượng hiện có
         const menuItem = document.querySelector(`.menu-item[onclick*="'${id}'"]`);
         let imgSrc = '';
         let availableQuantity = 0;
@@ -439,22 +439,22 @@
                 imgSrc = imgElement.src;
             }
 
-            // Get available quantity from menu item
+            // Lấy số lượng hiện có từ mục menu
             const availableQuantityElement = menuItem.querySelector('.menu-item-quantity');
             const availableText = availableQuantityElement ? availableQuantityElement.textContent : '0';
             availableQuantity = parseInt(availableText.match(/\d+/)[0]) || 0;
         }
 
-        // Check if cart already has this item
+        // Kiểm tra nếu giỏ hàng đã có mặt hàng này
         if (cart[id]) {
-            // Check if adding one more would exceed available quantity
+            // Kiểm tra nếu thêm một nữa sẽ vượt quá số lượng hiện có
             if (cart[id].quantity >= availableQuantity) {
                 alert(`Số lượng hiện có chỉ còn ${availableQuantity} món.`);
                 return;
             }
             cart[id].quantity++;
         } else {
-            // Check if adding one item is within available quantity
+            // Kiểm tra nếu thêm một mặt hàng có trong số lượng hiện có
             if (availableQuantity < 1) {
                 alert(`Món này đã hết hàng.`);
                 return;
@@ -473,7 +473,7 @@
 
     function updateQuantity(id, change) {
         if (cart[id]) {
-            // Get the menu item to check available quantity
+            // Lấy mục menu để kiểm tra số lượng hiện có
             const menuItem = document.querySelector(`.menu-item[onclick*="'${id}'"]`);
             let availableQuantity = 0;
 
@@ -485,7 +485,7 @@
 
             const newQuantity = cart[id].quantity + change;
 
-            // Check if the new quantity exceeds available quantity
+            // Kiểm tra nếu số lượng mới vượt quá số lượng hiện có
             if (newQuantity > availableQuantity) {
                 alert(`Số lượng hiện có chỉ còn ${availableQuantity} món.`);
                 return;
@@ -496,7 +496,7 @@
             if (cart[id].quantity <= 0) {
                 delete cart[id];
             } else {
-                // Update the input field in the menu grid
+                // Cập nhật ô nhập trong lưới menu
                 const inputField = document.querySelector(`input[data-id="${id}"]`);
                 if (inputField) {
                     inputField.value = cart[id].quantity;
@@ -509,7 +509,7 @@
 
     function removeItem(id) {
         delete cart[id];
-        // Reset the input field in the menu grid to 0
+        // Đặt lại ô nhập trong lưới menu về 0
         const inputField = document.querySelector(`input[data-id="${id}"]`);
         if (inputField) {
             inputField.value = 0;
@@ -518,10 +518,10 @@
         saveCartToSession();
     }
 
-    // Function to update quantity from cart controls
+    // Hàm để cập nhật số lượng từ các điều khiển giỏ hàng
     function updateQuantityFromCart(id, change) {
         if (cart[id]) {
-            // Get the menu item to check available quantity
+            // Lấy mục menu để kiểm tra số lượng hiện có
             const menuItem = document.querySelector(`.menu-item[onclick*="'${id}'"]`);
             let availableQuantity = 0;
 
@@ -533,15 +533,15 @@
 
             const newQuantity = cart[id].quantity + change;
 
-            // Check if the new quantity exceeds available quantity
+            // Kiểm tra nếu số lượng mới vượt quá số lượng hiện có
             if (newQuantity > availableQuantity) {
                 alert(`Số lượng hiện có chỉ còn ${availableQuantity} món.`);
                 return;
             }
 
-            // Check if the new quantity is not negative
+            // Kiểm tra nếu số lượng mới không âm
             if (newQuantity < 0) {
-                return; // Don't allow negative quantities
+                return; // Không cho phép số lượng âm
             }
 
             cart[id].quantity = newQuantity;
@@ -560,24 +560,24 @@
         }
     }
 
-    // Function to update quantity from menu grid input
+    // Hàm để cập nhật số lượng từ ô nhập lưới menu
     function addToCartFromInput(inputElement) {
         const id = inputElement.dataset.id;
         const name = inputElement.dataset.name;
         const price = parseFloat(inputElement.dataset.price);
         const quantity = parseInt(inputElement.value);
 
-        // Get the image URL from the menu item
+        // Lấy URL hình ảnh từ mục menu
         const menuItem = inputElement.closest('.menu-item');
         const imgElement = menuItem.querySelector('img');
         const imgSrc = imgElement ? imgElement.src : '';
 
-        // Get available quantity from menu item
+        // Lấy số lượng hiện có từ mục menu
         const availableQuantityElement = menuItem.querySelector('.menu-item-quantity');
         const availableText = availableQuantityElement ? availableQuantityElement.textContent : '0';
         const availableQuantity = parseInt(availableText.match(/\d+/)[0]) || 0;
 
-        // Check if requested quantity exceeds available quantity
+        // Kiểm tra nếu số lượng yêu cầu vượt quá số lượng hiện có
         if (quantity > availableQuantity) {
             alert(`Số lượng yêu cầu vượt quá số lượng hiện có (${availableQuantity} món).`);
             inputElement.value = availableQuantity;
@@ -585,7 +585,7 @@
         }
 
         if (quantity > 0) {
-            // Add or update item in cart
+            // Thêm hoặc cập nhật mặt hàng trong giỏ
             cart[id] = {
                 id: id,
                 name: name,
@@ -594,7 +594,7 @@
                 img: imgSrc
             };
         } else {
-            // Remove item if quantity is 0
+            // Xóa mặt hàng nếu số lượng là 0
             delete cart[id];
         }
         updateCart();
@@ -612,7 +612,7 @@
             const itemTotal = item.price * item.quantity;
             total += itemTotal;
 
-            // Get available quantity from menu item to show in cart
+            // Lấy số lượng hiện có từ mục menu để hiển thị trong giỏ hàng
             const menuItem = document.querySelector(`.menu-item[onclick*="'${item.id}'"]`);
             let availableQuantity = 0;
 
@@ -648,7 +648,7 @@
                 `;
         }
 
-        // Update cart display
+        // Cập nhật hiển thị giỏ hàng
         const emptyCartMsg = document.getElementById('emptyCartMessage');
         if (cartHtml) {
             if (emptyCartMsg) emptyCartMsg.style.display = 'none';
@@ -665,7 +665,7 @@
     }
 
     function filterByCategory(categoryId) {
-        // Update active button
+        // Cập nhật nút hoạt động
         document.querySelectorAll('.category-btn').forEach(btn => {
             btn.classList.remove('active');
         });
@@ -684,10 +684,10 @@
 
     function clearCart() {
         cart = {};
-        // Reset all input fields in the menu grid to 0
+        // Đặt lại tất cả các ô nhập trong lưới menu về 0
         const inputFields = document.querySelectorAll('.quantity-input');
         inputFields.forEach(input => {
-            if (input.dataset.id) { // Only reset the menu item inputs, not the cart quantity inputs
+            if (input.dataset.id) { // Chỉ đặt lại các ô nhập mục menu, không đặt lại các ô nhập số lượng giỏ hàng
                 input.value = 0;
             }
         });
@@ -711,7 +711,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    // console.log('Cart saved to session:', data.message);
+                    // console.log('Giỏ hàng đã lưu vào phiên:', data.message);
                 })
                 .catch(error => {
                     console.error('Error saving cart:', error);
@@ -725,7 +725,7 @@
             return;
         }
 
-        // Get order notes from textarea
+        // Lấy ghi chú đơn hàng từ ô văn bản
         const orderNotes = document.getElementById('orderNotes').value.trim();
 
         // Prepare order data
@@ -735,7 +735,7 @@
             ghi_chu: orderNotes // Include order notes
         };
 
-        // Send to server to create order
+        // Gửi đến máy chủ để tạo đơn hàng
         fetch('http://localhost/QLSP/Banuong/create_order', {
                 method: 'POST',
                 headers: {

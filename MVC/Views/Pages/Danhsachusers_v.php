@@ -254,7 +254,7 @@
 
         <h2><i class="fa-solid fa-list-ul"></i> Danh sách hiện tại</h2>
         <?php
-        // Reset con trỏ dữ liệu
+        // Đặt lại con trỏ dữ liệu
         if (isset($data['dulieu']) && is_a($data['dulieu'], 'mysqli_result')) {
             mysqli_data_seek($data['dulieu'], 0);
         }
@@ -262,7 +262,7 @@
         // Đảm bảo dữ liệu tồn tại
         if (isset($data['dulieu'])) {
             // Giả định $data['dulieu'] là mysqli_result
-            // Reset con trỏ về đầu để có thể đếm và dùng lại bên dưới
+            // Đặt lại con trỏ về đầu để có thể đếm và dùng lại bên dưới
             if (is_object($data['dulieu'])) {
                 $count = mysqli_num_rows($data['dulieu']);
                 mysqli_data_seek($data['dulieu'], 0);
@@ -291,7 +291,7 @@
                         <?php
                         // Render dữ liệu tĩnh ban đầu
                         if ($count > 0) {
-                            $serial = 1; // Initialize serial number counter
+                            $serial = 1; // Khởi tạo bộ đếm số thứ tự
                             while ($row = mysqli_fetch_array($data['dulieu'])) {
                         ?>
                                 <tr>
@@ -326,7 +326,7 @@
                 const nameInput = document.getElementById('searchName');
                 const resultCount = document.getElementById('resultCount');
 
-                // init count
+                // khởi tạo đếm
                 resultCount.textContent = '<?php echo $count; ?> bản ghi';
             </script>
         <?php } ?>

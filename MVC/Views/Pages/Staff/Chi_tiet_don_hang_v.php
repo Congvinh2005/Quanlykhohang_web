@@ -491,7 +491,7 @@
             <?php endif; ?>
 
             <?php
-            // Check if we're displaying session cart items (temporary order)
+            // Kiểm tra nếu chúng ta đang hiển thị các mặt hàng trong giỏ phiên (đơn hàng tạm thời)
             $is_temp_order = false;
             if (isset($data['order_details']) && !empty($data['order_details'])) {
                 // Check if the first item doesn't have a ma_ctdh (meaning it's from session, not database)
@@ -698,13 +698,13 @@
         const confirmCardPayment = document.getElementById('confirmCardPayment');
         const confirmQRPayment = document.getElementById('confirmQRPayment');
 
-        // Handle payment button click - open modal instead of direct payment
+        // Xử lý khi nhấn nút thanh toán - mở modal thay vì thanh toán trực tiếp
         if (paymentButton) {
             paymentButton.addEventListener('click', function() {
                 // Open the payment modal
                 paymentModal.style.display = 'block';
 
-                // Reset to default payment method (cash)
+                // Đặt lại phương thức thanh toán mặc định (tiền mặt)
                 document.querySelectorAll('.payment-content').forEach(content => {
                     content.classList.remove('active');
                     content.style.display = 'none';
@@ -712,7 +712,7 @@
                 document.getElementById('cashPayment').classList.add('active');
                 document.getElementById('cashPayment').style.display = 'block';
 
-                // Reset payment method selection
+                // Đặt lại lựa chọn phương thức thanh toán
                 paymentMethods.forEach(method => {
                     method.classList.remove('selected');
                 });
@@ -734,16 +734,16 @@
             }
         });
 
-        // Handle payment method selection
+        // Xử lý lựa chọn phương thức thanh toán
         paymentMethods.forEach(method => {
             method.addEventListener('click', function() {
                 const selectedMethod = this.getAttribute('data-method');
 
-                // Update selected method
+                // Cập nhật phương thức đã chọn
                 paymentMethods.forEach(m => m.classList.remove('selected'));
                 this.classList.add('selected');
 
-                // Show the corresponding payment content
+                // Hiển thị nội dung thanh toán tương ứng
                 document.querySelectorAll('.payment-content').forEach(content => {
                     content.classList.remove('active');
                     content.style.display = 'none';
@@ -757,20 +757,20 @@
             });
         });
 
-        // Handle cash payment confirmation
+        // Xử lý xác nhận thanh toán tiền mặt
         if (confirmCashPayment) {
             confirmCashPayment.addEventListener('click', function() {
                 const orderId = paymentButton.getAttribute('data-order-id');
 
                 if (confirm(
                         'Bạn có chắc chắn muốn xác nhận thanh toán bằng tiền mặt cho đơn hàng này?')) {
-                    // Show loading state
+                    // Hiển thị trạng thái đang tải
                     const originalText = confirmCashPayment.innerHTML;
                     confirmCashPayment.innerHTML =
                         '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
                     confirmCashPayment.disabled = true;
 
-                    // Make AJAX request to update payment status
+                    // Gửi yêu cầu AJAX để cập nhật trạng thái thanh toán
                     fetch(`http://localhost/QLSP/Staff/update_payment_status/${orderId}`, {
                             method: 'POST',
                             headers: {
@@ -780,12 +780,12 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.status === 'success') {
-                                // Update the status display
+                                // Cập nhật hiển thị trạng thái
                                 const statusElement = document.querySelector('.status span');
                                 statusElement.textContent = 'Đã thanh toán';
                                 statusElement.className = 'status-paid';
 
-                                // Update the button to show success
+                                // Cập nhật nút để hiển thị thành công
                                 paymentButton.innerHTML =
                                     '<i class="fa-solid fa-check"></i> Đã thanh toán';
                                 paymentButton.className = 'btn btn-success';
@@ -793,7 +793,7 @@
 
                                 alert('Thanh toán thành công!');
 
-                                // Close modal and redirect to orders list after a short delay
+                                // Đóng modal và chuyển hướng đến danh sách đơn hàng sau một khoảng thời gian ngắn
                                 paymentModal.style.display = 'none';
                                 setTimeout(() => {
                                     window.location.href =
@@ -801,7 +801,7 @@
                                 }, 1500);
                             } else {
                                 alert('Lỗi: ' + data.message);
-                                // Restore original button state
+                                // Khôi phục trạng thái nút gốc
                                 confirmCashPayment.innerHTML = originalText;
                                 confirmCashPayment.disabled = false;
                             }
@@ -817,7 +817,7 @@
             });
         }
 
-        // Handle card payment confirmation
+        // Xử lý xác nhận thanh toán thẻ
         if (confirmCardPayment) {
             confirmCardPayment.addEventListener('click', function() {
                 const orderId = paymentButton.getAttribute('data-order-id');
@@ -834,13 +834,13 @@
                 }
 
                 if (confirm('Bạn có chắc chắn muốn xác nhận thanh toán bằng thẻ cho đơn hàng này?')) {
-                    // Show loading state
+                    // Hiển thị trạng thái đang tải
                     const originalText = confirmCardPayment.innerHTML;
                     confirmCardPayment.innerHTML =
                         '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
                     confirmCardPayment.disabled = true;
 
-                    // Make AJAX request to update payment status
+                    // Gửi yêu cầu AJAX để cập nhật trạng thái thanh toán
                     fetch(`http://localhost/QLSP/Staff/update_payment_status/${orderId}`, {
                             method: 'POST',
                             headers: {
@@ -850,12 +850,12 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.status === 'success') {
-                                // Update the status display
+                                // Cập nhật hiển thị trạng thái
                                 const statusElement = document.querySelector('.status span');
                                 statusElement.textContent = 'Đã thanh toán';
                                 statusElement.className = 'status-paid';
 
-                                // Update the button to show success
+                                // Cập nhật nút để hiển thị thành công
                                 paymentButton.innerHTML =
                                     '<i class="fa-solid fa-check"></i> Đã thanh toán';
                                 paymentButton.className = 'btn btn-success';
@@ -863,7 +863,7 @@
 
                                 alert('Thanh toán thành công!');
 
-                                // Close modal and redirect to orders list after a short delay
+                                // Đóng modal và chuyển hướng đến danh sách đơn hàng sau một khoảng thời gian ngắn
                                 paymentModal.style.display = 'none';
                                 setTimeout(() => {
                                     window.location.href =
@@ -871,7 +871,7 @@
                                 }, 1500);
                             } else {
                                 alert('Lỗi: ' + data.message);
-                                // Restore original button state
+                                // Khôi phục trạng thái nút gốc
                                 confirmCardPayment.innerHTML = originalText;
                                 confirmCardPayment.disabled = false;
                             }
@@ -887,19 +887,19 @@
             });
         }
 
-        // Handle QR payment confirmation
+        // Xử lý xác nhận thanh toán QR
         if (confirmQRPayment) {
             confirmQRPayment.addEventListener('click', function() {
                 const orderId = paymentButton.getAttribute('data-order-id');
 
                 if (confirm('Bạn có chắc chắn muốn xác nhận thanh toán bằng QR cho đơn hàng này?')) {
-                    // Show loading state
+                    // Hiển thị trạng thái đang tải
                     const originalText = confirmQRPayment.innerHTML;
                     confirmQRPayment.innerHTML =
                         '<i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...';
                     confirmQRPayment.disabled = true;
 
-                    // Make AJAX request to update payment status
+                    // Gửi yêu cầu AJAX để cập nhật trạng thái thanh toán
                     fetch(`http://localhost/QLSP/Staff/update_payment_status/${orderId}`, {
                             method: 'POST',
                             headers: {
@@ -909,12 +909,12 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.status === 'success') {
-                                // Update the status display
+                                // Cập nhật hiển thị trạng thái
                                 const statusElement = document.querySelector('.status span');
                                 statusElement.textContent = 'Đã thanh toán';
                                 statusElement.className = 'status-paid';
 
-                                // Update the button to show success
+                                // Cập nhật nút để hiển thị thành công
                                 paymentButton.innerHTML =
                                     '<i class="fa-solid fa-check"></i> Đã thanh toán';
                                 paymentButton.className = 'btn btn-success';
@@ -922,7 +922,7 @@
 
                                 alert('Thanh toán thành công!');
 
-                                // Close modal and redirect to orders list after a short delay
+                                // Đóng modal và chuyển hướng đến danh sách đơn hàng sau một khoảng thời gian ngắn
                                 paymentModal.style.display = 'none';
                                 setTimeout(() => {
                                     window.location.href =
@@ -930,7 +930,7 @@
                                 }, 1500);
                             } else {
                                 alert('Lỗi: ' + data.message);
-                                // Restore original button state
+                                // Khôi phục trạng thái nút gốc
                                 confirmQRPayment.innerHTML = originalText;
                                 confirmQRPayment.disabled = false;
                             }
@@ -946,7 +946,7 @@
             });
         }
 
-        // Handle discount selection
+        // Xử lý lựa chọn giảm giá
         if (applyDiscountBtn && discountSelect) {
             applyDiscountBtn.addEventListener('click', function() {
                 const selectedOption = discountSelect.options[discountSelect.selectedIndex];
@@ -955,7 +955,7 @@
                     const maKhuyenMai = selectedOption.value;
                     const discountAmount = parseFloat(selectedOption.getAttribute('data-amount'));
 
-                    // Make AJAX request to update order with discount
+                    // Gửi yêu cầu AJAX để cập nhật đơn hàng với giảm giá
                     fetch(`http://localhost/QLSP/Staff/update_order_discount/${orderId}`, {
                             method: 'POST',
                             headers: {
@@ -968,28 +968,28 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.status === 'success') {
-                                // Update the discount element
+                                // Cập nhật phần tử giảm giá
                                 const discountElement = document.querySelector('.total-discount');
 
-                                // Update the final payment amount (always the last total element)
+                                // Cập nhật số tiền thanh toán cuối cùng (luôn là phần tử tổng cuối cùng)
                                 const allTotalElements = document.querySelectorAll('.total');
                                 const finalPaymentElement = allTotalElements[allTotalElements
                                     .length - 1];
 
-                                // Get the original total from the first element (Tổng tiền)
+                                // Lấy tổng gốc từ phần tử đầu tiên (Tổng tiền)
                                 const firstTotalElement = allTotalElements[0];
                                 const firstTotalText = firstTotalElement.textContent;
                                 const originalTotal = parseInt(firstTotalText.match(/\d+/g).join(
                                     '')) || 0;
 
                                 if (data.tien_khuyen_mai > 0) {
-                                    // Update discount element content and show it
+                                    // Cập nhật nội dung phần tử giảm giá và hiển thị nó
                                     const discountAmount = parseInt(data.tien_khuyen_mai) || 0;
                                     discountElement.innerHTML =
                                         `Giảm giá: ${discountAmount.toLocaleString('vi-VN')}đ`;
                                     discountElement.style.display = 'block';
                                 } else {
-                                    // Hide discount element if no discount
+                                    // Ẩn phần tử giảm giá nếu không có giảm giá
                                     discountElement.style.display = 'none';
                                 }
 
@@ -997,11 +997,11 @@
                                 const discountAmount = parseInt(data.tien_khuyen_mai) || 0;
                                 const finalAmount = originalTotal - discountAmount;
 
-                                // Update the final payment amount
+                                // Cập nhật số tiền thanh toán cuối cùng
                                 finalPaymentElement.innerHTML =
                                     `Tiền cần thanh toán là: ${finalAmount.toLocaleString('vi-VN')}đ`;
 
-                                // Update payment modal amounts
+                                // Cập nhật số tiền trong modal thanh toán
                                 updatePaymentAmounts(finalAmount);
 
                                 alert(data.message);
@@ -1019,9 +1019,9 @@
             });
         }
 
-        // Function to update payment amounts in modal
+        // Hàm để cập nhật số tiền thanh toán trong modal
         function updatePaymentAmounts(amount) {
-            // Update all payment method displays
+            // Cập nhật hiển thị tất cả các phương thức thanh toán
             const cashPaymentAmount = document.querySelector('#cashPayment p strong');
             const cardPaymentAmount = document.querySelector('#cardPayment p strong');
             const qrPaymentAmount = document.querySelector('#qrPayment p strong');

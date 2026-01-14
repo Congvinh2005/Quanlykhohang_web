@@ -11,16 +11,16 @@ class UrlHelper
         $host = $_SERVER['HTTP_HOST'];
         $baseUrl = $protocol . $host;
 
-        // Get the script name and determine the base path
+        // Lấy tên script và xác định đường dẫn cơ sở
         $scriptName = $_SERVER['SCRIPT_NAME'];
         $basePath = dirname($scriptName);
 
-        // Handle the case where the application is in a subdirectory
+        // Xử lý trường hợp ứng dụng nằm trong thư mục con
         if ($basePath !== '/') {
             $baseUrl .= $basePath;
         }
 
-        // Ensure the base URL ends with a slash
+        // Đảm bảo URL cơ sở kết thúc bằng dấu gạch chéo
         if (substr($baseUrl, -1) !== '/') {
             $baseUrl .= '/';
         }
@@ -37,12 +37,12 @@ class UrlHelper
     {
         $baseUrl = self::baseUrl();
 
-        // Remove leading slash from path if present
+        // Loại bỏ dấu gạch chéo đầu tiên khỏi đường dẫn nếu có
         if (strlen($path) > 0 && $path[0] === '/') {
             $path = substr($path, 1);
         }
 
-        // If path is empty, return base URL
+        // Nếu đường dẫn trống, trả về URL cơ sở
         if (empty($path)) {
             return $baseUrl;
         }
@@ -59,13 +59,13 @@ class UrlHelper
         $requestUri = $_SERVER['REQUEST_URI'];
         $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
 
-        // Remove the script directory from the request URI
+        // Loại bỏ thư mục script khỏi URI yêu cầu
         $relativePath = str_replace($scriptDir, '', $requestUri);
 
-        // Remove query parameters
+        // Loại bỏ các tham số truy vấn
         $relativePath = explode('?', $relativePath)[0];
 
-        // Remove leading slash
+        // Loại bỏ dấu gạch chéo đầu tiên
         if (strlen($relativePath) > 0 && $relativePath[0] === '/') {
             $relativePath = substr($relativePath, 1);
         }

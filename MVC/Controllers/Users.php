@@ -1,44 +1,49 @@
 <?php
-    class Users extends controller{
-        private $user;
+class Users extends controller
+{
+    private $user;
 
-        function __construct()
-        {
-            $this->user = $this->model("Users_m");
-        }
+    function __construct()
+    {
+        $this->user = $this->model("Users_m");
+    }
 
-        function index(){
-            $this->danhsach();
-        }
+    function index()
+    {
+        $this->danhsach();
+    }
 
-        function Get_data(){
-            $data = ['page' => 'Danhsachusers_v'];
-            $this->danhsach();
-        }
+    function Get_data()
+    {
+        $data = ['page' => 'Danhsachusers_v'];
+        $this->danhsach();
+    }
 
-        function danhsach(){
-            $result = $this->user->Users_getAll();
-            $this->view('Master',[
-                'page' => 'Danhsachusers_v',
-                'ma_user' => '',
-                'ten_user' => '',
-                'dulieu' => $result
-            ]);
-        }
+    function danhsach()
+    {
+        $result = $this->user->Users_getAll();
+        $this->view('Master', [
+            'page' => 'Danhsachusers_v',
+            'ma_user' => '',
+            'ten_user' => '',
+            'dulieu' => $result
+        ]);
+    }
 
 
-        function themmoi(){
-            $this->view('Master',[
-                'page' => 'Users_v',
-                'ma_user' => '',
-                'ten_user' => '',
-                'password' => '',
-                'email' => '',
-                'phan_quyen' => 'nhan_vien'
-            ]);
-        }
+    function themmoi()
+    {
+        $this->view('Master', [
+            'page' => 'Users_v',
+            'ma_user' => '',
+            'ten_user' => '',
+            'password' => '',
+            'email' => '',
+            'phan_quyen' => 'nhan_vien'
+        ]);
+    }
 
-        function ins()
+    function ins()
     {
         if (isset($_POST['btnLuu'])) {
             $ma_user = $_POST['txtMauser'];
@@ -122,16 +127,16 @@
             mysqli_data_seek($result, 0); // Đặt lại con trỏ kết quả về đầu
             while ($row = mysqli_fetch_assoc($result)) {
                 // Ánh xạ trường theo bảng cơ sở dữ liệu
-                $sheet->setCellValue('A'.$rowCount, $row['ma_user']);
-                $sheet->setCellValue('B'.$rowCount, $row['ten_user']);
-                $sheet->setCellValue('C'.$rowCount, $row['password']);
-                $sheet->setCellValue('D'.$rowCount, $row['email']);
-                $sheet->setCellValue('E'.$rowCount, $row['phan_quyen']);
-                $sheet->setCellValue('F'.$rowCount, $row['ngay_tao']);
+                $sheet->setCellValue('A' . $rowCount, $row['ma_user']);
+                $sheet->setCellValue('B' . $rowCount, $row['ten_user']);
+                $sheet->setCellValue('C' . $rowCount, $row['password']);
+                $sheet->setCellValue('D' . $rowCount, $row['email']);
+                $sheet->setCellValue('E' . $rowCount, $row['phan_quyen']);
+                $sheet->setCellValue('F' . $rowCount, $row['ngay_tao']);
                 $rowCount++;
             }
 
-            foreach (range('A','F') as $col) {
+            foreach (range('A', 'F') as $col) {
                 $sheet->getColumnDimension($col)->setAutoSize(true);
             }
 
@@ -154,22 +159,23 @@
         ]);
     }
 
-       
 
-        function sua($ma_user){
-            $result = $this->user->Users_getById($ma_user);
-            $row = mysqli_fetch_array($result);
-            $this->view('Master',[
-                'page' => 'Users_sua',
-                'ma_user' => $row['ma_user'],
-                'ten_user' => $row['ten_user'],
-                'password' => $row['password'],
-                'email' => $row['email'],
-                'phan_quyen' => $row['phan_quyen']
-            ]);
-        }
 
-       function update()
+    function sua($ma_user)
+    {
+        $result = $this->user->Users_getById($ma_user);
+        $row = mysqli_fetch_array($result);
+        $this->view('Master', [
+            'page' => 'Users_sua',
+            'ma_user' => $row['ma_user'],
+            'ten_user' => $row['ten_user'],
+            'password' => $row['password'],
+            'email' => $row['email'],
+            'phan_quyen' => $row['phan_quyen']
+        ]);
+    }
+
+    function update()
     {
         if (isset($_POST['btnCapnhat'])) {
             $ma_user = $_POST['txtMauser'];
@@ -192,106 +198,110 @@
         }
     }
 
-        function xoa($ma_user){
-            $kq = $this->user->Users_delete($ma_user);
-            if($kq)
-                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Users/danhsach') . "';</script>";
-            else
-                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Users/danhsach') . "';</script>";
-        }
-
-      
-
-        // Hiển thị form nhập Excel
-        function import_form(){
-            $this->view('Master',[
-                'page' => 'Users_up_v'
-            ]);
-        }
-
-      
-function up_l(){
-    if(!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0){
-        echo "<script>alert('Upload file lỗi')</script>";
-        return;
+    function xoa($ma_user)
+    {
+        $kq = $this->user->Users_delete($ma_user);
+        if ($kq)
+            echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Users/danhsach') . "';</script>";
+        else
+            echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Users/danhsach') . "';</script>";
     }
 
-    $file = $_FILES['txtfile']['tmp_name'];
 
-    $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-    $objExcel  = $objReader->load($file);
 
-    $sheet     = $objExcel->getSheet(0);
-    $sheetData = $sheet->toArray(null,true,true,true);
+    // Hiển thị form nhập Excel
+    function import_form()
+    {
+        $this->view('Master', [
+            'page' => 'Users_up_v'
+        ]);
+    }
 
-    for($i = 2; $i <= count($sheetData); $i++){
 
-        $ma_user    = trim($sheetData[$i]['A']);
-        $ten_user   = trim($sheetData[$i]['B']);
-        $password   = trim($sheetData[$i]['C']);
-        $email      = trim($sheetData[$i]['D']);
-        $phan_quyen = trim($sheetData[$i]['E']);
+    function up_l()
+    {
+        if (!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0) {
+            echo "<script>alert('Upload file lỗi')</script>";
+            return;
+        }
 
-        if($ma_user == '') continue;
+        $file = $_FILES['txtfile']['tmp_name'];
 
-        // ✅ CHECK GIÁ TRỊ PHÂN QUYỀN
-        if($phan_quyen != 'admin' && $phan_quyen != 'nhan_vien' && $phan_quyen != 'khach_hang'){
-            echo "<script>
+        $objReader = PHPExcel_IOFactory::createReaderForFile($file);
+        $objExcel  = $objReader->load($file);
+
+        $sheet     = $objExcel->getSheet(0);
+        $sheetData = $sheet->toArray(null, true, true, true);
+
+        for ($i = 2; $i <= count($sheetData); $i++) {
+
+            $ma_user    = trim($sheetData[$i]['A']);
+            $ten_user   = trim($sheetData[$i]['B']);
+            $password   = trim($sheetData[$i]['C']);
+            $email      = trim($sheetData[$i]['D']);
+            $phan_quyen = trim($sheetData[$i]['E']);
+
+            if ($ma_user == '') continue;
+
+            // ✅ CHECK GIÁ TRỊ PHÂN QUYỀN
+            if ($phan_quyen != 'admin' && $phan_quyen != 'nhan_vien' && $phan_quyen != 'khach_hang') {
+                echo "<script>
                 alert('Phân quyền không hợp lệ cho user $ma_user! Chỉ cho phép admin, nhan_vien hoặc khach_hang.');
                 window.location.href='" . $this->url('Users/import_form') . "';
             </script>";
-            return;
-        }
+                return;
+            }
 
-        // ✅ CHECK TRÙNG MÃ USER
-        if($this->user->checktrungMaUser($ma_user)){
-            echo "<script>
+            // ✅ CHECK TRÙNG MÃ USER
+            if ($this->user->checktrungMaUser($ma_user)) {
+                echo "<script>
                 alert('Mã user $ma_user đã tồn tại! Vui lòng kiểm tra lại file.');
                 window.location.href='" . $this->url('Users/import_form') . "';
             </script>";
-            return;
-        }
+                return;
+            }
 
-        // ✅ CHECK TRÙNG EMAIL
-        $checkEmail = $this->user->checktrungEmail($email, null);
-        if(mysqli_num_rows($checkEmail) > 0){
-            echo "<script>
+            // ✅ CHECK TRÙNG EMAIL
+            $checkEmail = $this->user->checktrungEmail($email, null);
+            if (mysqli_num_rows($checkEmail) > 0) {
+                echo "<script>
                 alert('Email $email đã được sử dụng! Vui lòng kiểm tra lại file.');
                 window.location.href='" . $this->url('Users/import_form') . "';
             </script>";
-            return;
-        }
-
-        // Insert
-        if(!$this->user->users_ins($ma_user,$ten_user,$password,$email,$phan_quyen)){
-            die(mysqli_error($this->user->con));
-        }
-    }
-
-    echo "<script>alert('Upload người dùng thành công!')</script>";
-    $this->view('Master',['page'=>'Users_up_v']);
-}
-
-
-
-        // Phương thức đăng nhập - Chuyển hướng đến controller Login để xác thực tập trung
-        function login(){
-            // Tất cả chức năng đăng nhập được tập trung trong Login.php
-            // Điều này đảm bảo tất cả logic xác thực nằm ở một nơi
-            if($_SERVER['REQUEST_METHOD'] === 'POST'){
-                // Nếu là yêu cầu POST (gửi form), chuyển hướng đến phương thức xử lý của Login
-                header('Location: ' . $this->url('Login/process'));
-            } else {
-                // Nếu là yêu cầu GET (xem trang đăng nhập), chuyển hướng đến phương thức index của Login
-                header('Location: ' . $this->url('Login'));
+                return;
             }
-            exit;
+
+            // Insert
+            if (!$this->user->users_ins($ma_user, $ten_user, $password, $email, $phan_quyen)) {
+                die(mysqli_error($this->user->con));
+            }
         }
 
-        function logout(){
-            session_destroy();
-            header('Location: ' . $this->url('Login'));
-            exit;
-        }
+        echo "<script>alert('Upload người dùng thành công!')</script>";
+        $this->view('Master', ['page' => 'Users_up_v']);
     }
-?>
+
+
+
+    // Phương thức đăng nhập - Chuyển hướng đến controller Login để xác thực tập trung
+    function login()
+    {
+        // Tất cả chức năng đăng nhập được tập trung trong Login.php
+        // Điều này đảm bảo tất cả logic xác thực nằm ở một nơi
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Nếu là yêu cầu POST (gửi form), chuyển hướng đến phương thức xử lý của Login
+            header('Location: ' . $this->url('Login/process'));
+        } else {
+            // Nếu là yêu cầu GET (xem trang đăng nhập), chuyển hướng đến phương thức index của Login
+            header('Location: ' . $this->url('Login'));
+        }
+        exit;
+    }
+
+    function logout()
+    {
+        session_destroy();
+        header('Location: ' . $this->url('Login'));
+        exit;
+    }
+}

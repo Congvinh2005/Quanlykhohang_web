@@ -27,10 +27,10 @@ class TimezoneHelper
             $target_timezone = self::$timezone;
         }
 
-        // Create DateTime object from database time (assuming it's in UTC or local server time)
+        // Tạo đối tượng DateTime từ thời gian cơ sở dữ liệu (giả định là ở UTC hoặc múi giờ máy chủ cục bộ)
         $date = new DateTime($db_datetime);
 
-        // Set the target timezone
+        // Đặt múi giờ đích
         $date->setTimezone(new DateTimeZone($target_timezone));
 
         return $date->format('Y-m-d H:i:s');
@@ -52,10 +52,10 @@ class TimezoneHelper
             $source_timezone = self::$timezone;
         }
 
-        // Create DateTime object with user's timezone
+        // Tạo đối tượng DateTime với múi giờ của người dùng
         $date = new DateTime($user_datetime, new DateTimeZone($source_timezone));
 
-        // Convert to UTC or whatever the database expects
+        // Chuyển đổi sang UTC hoặc bất kỳ gì cơ sở dữ liệu mong đợi
         return $date->format('Y-m-d H:i:s');
     }
 

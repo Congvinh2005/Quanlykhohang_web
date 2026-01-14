@@ -59,7 +59,6 @@
     .table-capacity {
         font-size: 16px;
         color: #253243;
-        /* Màu đen (#253243 là màu văn bản chính) */
         margin-top: 10px;
     }
 
@@ -151,28 +150,28 @@
 
         <div class="tables-grid" id="tablesGrid">
             <?php
-                if(isset($data['tables']) && is_a($data['tables'], 'mysqli_result')):
-                    while($table = mysqli_fetch_array($data['tables'])):
-                        $status_class = '';
-                        $status_text = '';
-                        $status_style = '';
+            if (isset($data['tables']) && is_a($data['tables'], 'mysqli_result')):
+                while ($table = mysqli_fetch_array($data['tables'])):
+                    $status_class = '';
+                    $status_text = '';
+                    $status_style = '';
 
-                        switch($table['trang_thai_ban']) {
-                            case 'trong':
-                                $status_class = 'available';
-                                $status_text = 'Trống';
-                                $status_style = 'status-available';
-                                break;
-                            case 'dang_su_dung':
-                                $status_class = 'occupied';
-                                $status_text = 'Đang sử dụng';
-                                $status_style = 'status-occupied';
-                                break;
-                            default:
-                                $status_class = 'reserved';
-                                $status_text = 'Đã đặt trước';
-                                $status_style = 'status-reserved';
-                        }
+                    switch ($table['trang_thai_ban']) {
+                        case 'trong':
+                            $status_class = 'available';
+                            $status_text = 'Trống';
+                            $status_style = 'status-available';
+                            break;
+                        case 'dang_su_dung':
+                            $status_class = 'occupied';
+                            $status_text = 'Đang sử dụng';
+                            $status_style = 'status-occupied';
+                            break;
+                        default:
+                            $status_class = 'reserved';
+                            $status_text = 'Đã đặt trước';
+                            $status_style = 'status-reserved';
+                    }
             ?>
             <div class="table-card <?php echo $status_class; ?>" data-status="<?php echo $table['trang_thai_ban']; ?>"
                 onclick="selectTable('<?php echo $table['ma_ban']; ?>', '<?php echo urlencode($table['ten_ban']); ?>')">
@@ -182,9 +181,9 @@
                 <div class="table-capacity"><?php echo $table['so_cho_ngoi']; ?> chỗ</div>
             </div>
             <?php
-                    endwhile;
-                else:
-            ?>
+                endwhile;
+            else:
+                ?>
             <div class="hint">Không có dữ liệu bàn.</div>
             <?php endif; ?>
         </div>
@@ -196,7 +195,7 @@
 
     <script>
     function selectTable(tableId, tableName) {
-        // Show notification
+        // Hiển thị thông báo
         const notification = document.getElementById('notification');
         notification.style.display = 'block';
 
@@ -205,7 +204,7 @@
     }
 
     function filterTables(status, btnElement) {
-        // Update active button - pass the button element as a parameter
+        // Cập nhật nút hoạt động - truyền phần tử nút như là tham số
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.classList.remove('active');
         });
@@ -213,7 +212,7 @@
         // Activate the clicked button
         btnElement.classList.add('active');
 
-        // Map the display status to database status
+        // Ánh xạ trạng thái hiển thị sang trạng thái cơ sở dữ liệu
         let dbStatus = status;
         if (status === 'available') dbStatus = 'trong';
         if (status === 'occupied') dbStatus = 'dang_su_dung';
@@ -231,7 +230,7 @@
         });
     }
 
-    // Initialize with all tables
+    // Khởi tạo với tất cả các bàn
     document.querySelectorAll('.table-card').forEach(table => {
         table.style.display = 'block';
     });
