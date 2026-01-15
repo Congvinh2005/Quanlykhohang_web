@@ -21,7 +21,7 @@
                         // Calculate amount to pay (total amount minus discount)
                         $tong_tien = $order['tong_tien'];
                         $tien_khuyen_mai = $order['tien_khuyen_mai'] ?? 0;
-                        $so_tien_can_thanh_toan = $tong_tien - $tien_khuyen_mai;
+                        $so_tien_can_thanh_toan = $order['thanh_toan'];
                 ?>
                         <tr>
                             <td><?php echo htmlspecialchars($order['ma_don_hang']); ?></td>

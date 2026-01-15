@@ -197,7 +197,7 @@ class Staff extends controller
                 $tien_khuyen_mai = $discount['tien_khuyen_mai'];
 
                 // Cập nhật đơn hàng với giảm giá
-                $result = $this->dh->updateOrderWithDiscount($ma_don_hang, $tien_khuyen_mai);
+                $result = $this->dh->updateOrderWithDiscount($ma_don_hang, $ma_khuyen_mai, $tien_khuyen_mai);
 
                 if ($result) {
                     // Lấy dữ liệu đơn hàng đã cập nhật để bao gồm tổng số tiền

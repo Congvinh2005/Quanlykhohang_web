@@ -262,12 +262,16 @@ class Banuong extends controller
         // Lấy giỏ hàng hiện tại từ phiên cho bàn này nếu tồn tại
         $current_cart = $this->getCartForTable($ma_ban);
 
+        // Lấy danh sách phiếu giảm giá
+        $discount_vouchers = $this->dh->getDiscountVouchers();
+
         $this->view('StaffMaster', [
             'page' => 'Staff/Table_order_v',
             'table_info' => $table_info,
             'categories' => $categories,
             'menu_items' => $menu_items,
-            'current_cart' => $current_cart
+            'current_cart' => $current_cart,
+            'discount_vouchers' => $discount_vouchers
         ]);
     }
     function orderkhachhang($ma_ban)
@@ -300,12 +304,16 @@ class Banuong extends controller
         // Lấy giỏ hàng hiện tại từ phiên cho bàn này nếu tồn tại
         $current_cart = $this->getCartForTable($ma_ban);
 
+        // Lấy danh sách phiếu giảm giá
+        $discount_vouchers = $this->dh->getDiscountVouchers();
+
         $this->view('KhachhangMaster', [
             'page' => 'Khachhang/Table_order_v',
             'table_info' => $table_info,
             'categories' => $categories,
             'menu_items' => $menu_items,
-            'current_cart' => $current_cart
+            'current_cart' => $current_cart,
+            'discount_vouchers' => $discount_vouchers
         ]);
     }
 
@@ -415,9 +423,24 @@ class Banuong extends controller
 
         $tong_tien = 0;
 
-        // Calculate total amount
+        // Calculate total amount from database to ensure accuracy
         foreach ($cart as $item) {
-            $tong_tien += ($item['price'] * $item['quantity']);
+            $ma_thuc_don = $item['id'];
+            $quantity = $item['quantity'];
+
+            // Get the actual price from the database to prevent client-side tampering
+            $product_sql = "SELECT gia FROM thuc_don WHERE ma_thuc_don = '$ma_thuc_don'";
+            $product_result = mysqli_query($this->dh->con, $product_sql);
+
+            if ($product_result && mysqli_num_rows($product_result) > 0) {
+                $product = mysqli_fetch_assoc($product_result);
+                $unit_price = $product['gia'];
+                $tong_tien += ($unit_price * $quantity);
+            } else {
+                // If product not found, return error
+                echo json_encode(['success' => false, 'message' => 'Sản phẩm không tồn tại: ' . $ma_thuc_don]);
+                exit;
+            }
         }
 
         // Check if the order is being placed by a customer (no specific table) or by staff
@@ -433,8 +456,32 @@ class Banuong extends controller
         // Get order notes from the request
         $ghi_chu = $data['ghi_chu'] ?? null;
 
+        // Get promotion info from the request if available
+        $ma_khuyen_mai = $data['ma_khuyen_mai'] ?? null; // Promotion ID from request
+        $tien_khuyen_mai = 0; // Initialize discount amount to 0
+
+        // If promotion code is provided, validate it from database and get the discount amount
+        if ($ma_khuyen_mai) {
+            $promotion_sql = "SELECT tien_khuyen_mai FROM khuyen_mai WHERE ma_khuyen_mai = '$ma_khuyen_mai'";
+            $promotion_result = mysqli_query($this->dh->con, $promotion_sql);
+
+            if ($promotion_result && mysqli_num_rows($promotion_result) > 0) {
+                $promotion = mysqli_fetch_assoc($promotion_result);
+                $tien_khuyen_mai = $promotion['tien_khuyen_mai'];
+            } else {
+                // If promotion code is invalid, don't apply discount
+                $ma_khuyen_mai = null;
+            }
+        }
+
+        // Calculate payment amount as total - discount
+        $thanh_toan = $tong_tien - $tien_khuyen_mai;
+        if ($thanh_toan < 0) {
+            $thanh_toan = 0; // Ensure payment amount is not negative
+        }
+
         // Create new order using the Donhang model's insert method
-        $result = $this->dh->donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, 'chua_thanh_toan', date('Y-m-d H:i:s'), $ghi_chu);
+        $result = $this->dh->Donhang_ins($ma_don_hang, $ma_ban, $ma_user, $ma_khuyen_mai, $tien_khuyen_mai, $tong_tien, $thanh_toan, 'chua_thanh_toan', date('Y-m-d H:i:s'), $ghi_chu);
         if (!$result) {
             echo json_encode(['success' => false, 'message' => 'Không thể tạo đơn hàng']);
             exit;

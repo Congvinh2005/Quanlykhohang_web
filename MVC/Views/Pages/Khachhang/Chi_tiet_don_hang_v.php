@@ -581,7 +581,7 @@
                         style="<?php echo ($order['tien_khuyen_mai'] > 0) ? 'display: block;' : 'display: none;'; ?>">Giảm
                         giá: <?php echo number_format($order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></div>
                     <div class="total">Tiền cần thanh toán là:
-                        <?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?>
+                        <?php echo number_format($order['thanh_toan'], 0, '.', '.') . 'đ'; ?>
                     </div>
                 </div>
 
@@ -621,7 +621,7 @@
                                 <div id="cashPayment" class="payment-content">
                                     <h3>Thanh toán bằng tiền mặt</h3>
                                     <p>Tổng tiền cần thanh toán:
-                                        <strong><?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></strong>
+                                        <strong><?php echo number_format($order['thanh_toan'], 0, '.', '.') . 'đ'; ?></strong>
                                     </p>
                                     <button class="btn btn-success" id="confirmCashPayment">Xác nhận thanh toán</button>
                                 </div>
@@ -630,7 +630,7 @@
                                 <div id="cardPayment" class="payment-content" style="display: none;">
                                     <h3>Thanh toán bằng thẻ ngân hàng</h3>
                                     <p>Tổng tiền cần thanh toán:
-                                        <strong><?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></strong>
+                                        <strong><?php echo number_format($order['thanh_toan'], 0, '.', '.') . 'đ'; ?></strong>
                                     </p>
                                     <div class="card-form">
                                         <div class="form-group">
@@ -655,12 +655,12 @@
                                 <div id="qrPayment" class="payment-content" style="display: none;">
                                     <h3>Quét mã QR để thanh toán</h3>
                                     <p>Tổng tiền cần thanh toán :
-                                        <strong><?php echo number_format($order['tong_tien'] - $order['tien_khuyen_mai'], 0, '.', '.') . 'đ'; ?></strong>
+                                        <strong><?php echo number_format($order['thanh_toan'], 0, '.', '.') . 'đ'; ?></strong>
                                     </p>
                                     <div class="qr-container">
                                         <div class="qr-placeholder">
                                             <img id="qrCodeImage"
-                                                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=<?php echo urlencode('Thanh toan don hang ' . $order['ma_don_hang'] . ' - So tien: ' . ($order['tong_tien'] - $order['tien_khuyen_mai'])); ?>"
+                                                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=<?php echo urlencode('Thanh toan don hang ' . $order['ma_don_hang'] . ' - So tien: ' . $order['thanh_toan']); ?>"
                                                 alt="QR Code thanh toán" style="width: 200px; height: 200px;">
                                         </div>
                                         <div>Cà phê 123 QR</div>
@@ -693,9 +693,6 @@
             // Check if order is paid by looking at the status element
             const statusElement = document.querySelector('.status span');
             const isOrderPaid = statusElement && statusElement.classList.contains('status-paid');
-
-
-
 
 
             // Payment modal elements

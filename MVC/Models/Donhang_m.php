@@ -2,9 +2,25 @@
 class Donhang_m extends connectDB
 {
     // Hàm thêm đơn hàng
-    function Donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, $trang_thai_thanh_toan, $ngay_tao, $ghi_chu = null)
+    function Donhang_ins($ma_don_hang, $ma_ban, $ma_user, $ma_khuyen_mai, $tien_khuyen_mai, $tong_tien, $thanh_toan, $trang_thai_thanh_toan, $ngay_tao, $ghi_chu = null)
     {
-        $sql = "INSERT INTO don_hang (ma_don_hang, ma_ban, ma_user, tong_tien, trang_thai_thanh_toan, ngay_tao, ma_khuyen_mai, tien_khuyen_mai, ghi_chu) VALUES ('$ma_don_hang', '$ma_ban', '$ma_user', '$tong_tien', '$trang_thai_thanh_toan', '$ngay_tao', NULL, 0.00, '$ghi_chu')";
+        // Escape input values to prevent SQL injection
+        $ma_don_hang = mysqli_real_escape_string($this->con, $ma_don_hang);
+        $ma_ban = mysqli_real_escape_string($this->con, $ma_ban);
+        $ma_user = mysqli_real_escape_string($this->con, $ma_user);
+        $ma_khuyen_mai = $ma_khuyen_mai !== null ? mysqli_real_escape_string($this->con, $ma_khuyen_mai) : null;
+        $tien_khuyen_mai = floatval($tien_khuyen_mai);
+        $tong_tien = floatval($tong_tien);
+        $thanh_toan = floatval($thanh_toan);
+        $trang_thai_thanh_toan = mysqli_real_escape_string($this->con, $trang_thai_thanh_toan);
+        $ngay_tao = mysqli_real_escape_string($this->con, $ngay_tao);
+        $ghi_chu = $ghi_chu !== null ? mysqli_real_escape_string($this->con, $ghi_chu) : null;
+
+        // Handle nullable fields properly
+        $ma_khuyen_mai_sql = $ma_khuyen_mai !== null ? "'$ma_khuyen_mai'" : "NULL";
+        $ghi_chu_sql = $ghi_chu !== null ? "'$ghi_chu'" : "NULL";
+
+        $sql = "INSERT INTO don_hang (ma_don_hang, ma_ban, ma_user, ma_khuyen_mai, tien_khuyen_mai, tong_tien, thanh_toan, trang_thai_thanh_toan, ngay_tao, ghi_chu) VALUES ('$ma_don_hang', '$ma_ban', '$ma_user', $ma_khuyen_mai_sql, $tien_khuyen_mai, $tong_tien, $thanh_toan, '$trang_thai_thanh_toan', '$ngay_tao', $ghi_chu_sql)";
         return mysqli_query($this->con, $sql);
     }
 
@@ -19,12 +35,13 @@ class Donhang_m extends connectDB
             return false; // Không trùng mã đơn hàng
     }
 
-    // Hàm tìm kiếm đơn hàng (kèm thông tin bàn và user)
+    // Hàm tìm kiếm đơn hàng (kèm thông tin bàn, user và khuyến mãi)
     function Donhang_find($ma_don_hang, $ma_ban, $ten_user = '')
     {
-        $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
+        $sql = "SELECT d.*, bu.ten_ban, u.ten_user, km.tien_khuyen_mai as khuyen_mai_amount FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
+                    LEFT JOIN khuyen_mai km ON d.ma_khuyen_mai = km.ma_khuyen_mai
                     WHERE d.ma_don_hang LIKE '%$ma_don_hang%' AND d.ma_ban LIKE '%$ma_ban%' AND u.ten_user LIKE '%$ten_user%'
                     ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC";
         return mysqli_query($this->con, $sql);
@@ -37,12 +54,13 @@ class Donhang_m extends connectDB
         return mysqli_query($this->con, $sql);
     }
 
-    // Hàm lấy tất cả đơn hàng với thông tin bàn và user
+    // Hàm lấy tất cả đơn hàng với thông tin bàn, user và khuyến mãi
     function Donhang_getAll()
     {
-        $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
+        $sql = "SELECT d.*, bu.ten_ban, u.ten_user, km.tien_khuyen_mai as khuyen_mai_amount FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
+                    LEFT JOIN khuyen_mai km ON d.ma_khuyen_mai = km.ma_khuyen_mai
                     ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC";
         return mysqli_query($this->con, $sql);
     }
@@ -50,9 +68,10 @@ class Donhang_m extends connectDB
     // Hàm lấy chi tiết đơn hàng
     function Donhang_getById($ma_don_hang)
     {
-        $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
+        $sql = "SELECT d.*, bu.ten_ban, u.ten_user, km.tien_khuyen_mai as khuyen_mai_amount FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
+                    LEFT JOIN khuyen_mai km ON d.ma_khuyen_mai = km.ma_khuyen_mai
                     WHERE d.ma_don_hang = '$ma_don_hang'";
         return mysqli_query($this->con, $sql);
     }
@@ -82,9 +101,10 @@ class Donhang_m extends connectDB
     // Hàm lấy các đơn hàng cho nhân viên (theo user_id) với phân trang
     function getOrdersForEmployeeWithPagination($user_id, $limit, $offset)
     {
-        $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
+        $sql = "SELECT d.*, bu.ten_ban, u.ten_user, km.tien_khuyen_mai as khuyen_mai_amount FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
+                    LEFT JOIN khuyen_mai km ON d.ma_khuyen_mai = km.ma_khuyen_mai
                     WHERE d.ma_user = '$user_id'
                     ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC
                     LIMIT $limit OFFSET $offset";
@@ -95,9 +115,10 @@ class Donhang_m extends connectDB
     function getOrdersForKhachhangWithPagination($limit, $offset)
     {
         $user_id = $_SESSION['user_id'] ?? 0;
-        $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
+        $sql = "SELECT d.*, bu.ten_ban, u.ten_user, km.tien_khuyen_mai as khuyen_mai_amount FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
+                    LEFT JOIN khuyen_mai km ON d.ma_khuyen_mai = km.ma_khuyen_mai
                     WHERE d.ma_user = '$user_id'
                     ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC
                     LIMIT $limit OFFSET $offset";
@@ -186,18 +207,21 @@ class Donhang_m extends connectDB
     }
 
     // Hàm cập nhật đơn hàng với thông tin giảm giá
-    function updateOrderWithDiscount($ma_don_hang, $tien_khuyen_mai)
+    function updateOrderWithDiscount($ma_don_hang, $ma_khuyen_mai, $tien_khuyen_mai)
     {
-        $sql = "UPDATE don_hang SET tien_khuyen_mai = '$tien_khuyen_mai' WHERE ma_don_hang = '$ma_don_hang'";
+        $ma_khuyen_mai_sql = $ma_khuyen_mai ? "'$ma_khuyen_mai'" : "NULL";
+        // Also recalculate thanh_toan as tong_tien - tien_khuyen_mai
+        $sql = "UPDATE don_hang SET ma_khuyen_mai = $ma_khuyen_mai_sql, tien_khuyen_mai = '$tien_khuyen_mai', thanh_toan = tong_tien - '$tien_khuyen_mai' WHERE ma_don_hang = '$ma_don_hang'";
         return mysqli_query($this->con, $sql);
     }
 
     // Hàm lấy đơn hàng theo ID bao gồm cả thông tin giảm giá
     function Donhang_getByIdWithDiscount($ma_don_hang)
     {
-        $sql = "SELECT d.*, bu.ten_ban, u.ten_user FROM don_hang d
+        $sql = "SELECT d.*, bu.ten_ban, u.ten_user, km.tien_khuyen_mai as khuyen_mai_amount FROM don_hang d
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
+                    LEFT JOIN khuyen_mai km ON d.ma_khuyen_mai = km.ma_khuyen_mai
                     WHERE d.ma_don_hang = '$ma_don_hang'";
         return mysqli_query($this->con, $sql);
     }

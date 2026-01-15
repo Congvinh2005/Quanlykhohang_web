@@ -116,58 +116,7 @@ class Donhang extends controller
 
 
 
-    // Hiển thị form nhập Excel
-    function import_form()
-    {
-        $this->view('Master', [
-            'page' => 'Donhang_up_v'
-        ]);
-    }
 
-    function up_l()
-    {
-        if (!isset($_FILES['txtfile']) || $_FILES['txtfile']['error'] != 0) {
-            echo "<script>alert('Upload file lỗi')</script>";
-            return;
-        }
-
-        $file = $_FILES['txtfile']['tmp_name'];
-
-        $objReader = PHPExcel_IOFactory::createReaderForFile($file);
-        $objExcel  = $objReader->load($file);
-
-        $sheet     = $objExcel->getSheet(0);
-        $sheetData = $sheet->toArray(null, true, true, true);
-
-        for ($i = 2; $i <= count($sheetData); $i++) {
-
-            $ma_don_hang = trim($sheetData[$i]['A']);
-            $ma_ban      = trim($sheetData[$i]['B']);
-            $ma_user     = trim($sheetData[$i]['C']);
-            $tong_tien   = trim($sheetData[$i]['D']);
-            $trang_thai_thanh_toan = trim($sheetData[$i]['E']);
-            $ngay_tao    = trim($sheetData[$i]['F']);
-
-            if ($ma_don_hang == '') continue;
-
-            // ✅ CHECK TRÙNG MÃ
-            if ($this->dh->checktrungMaDonhang($ma_don_hang)) {
-                echo "<script>
-                    alert('Mã đơn hàng $ma_don_hang đã tồn tại! Vui lòng kiểm tra lại file.');
-                    window.location.href='" . $this->url('Donhang/import_form') . "';
-                </script>";
-                return;
-            }
-
-            // Insert
-            if (!$this->dh->Donhang_ins($ma_don_hang, $ma_ban, $ma_user, $tong_tien, $trang_thai_thanh_toan, $ngay_tao)) {
-                die(mysqli_error($this->dh->con));
-            }
-        }
-
-        echo "<script>alert('Upload đơn hàng thành công!')</script>";
-        $this->view('Master', ['page' => 'Donhang_up_v']);
-    }
 
     function xoa($ma_don_hang)
     {

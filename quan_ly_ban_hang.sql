@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th1 01, 2026 lúc 05:45 PM
+-- Thời gian đã tạo: Th1 15, 2026 lúc 05:09 PM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -46,7 +46,8 @@ INSERT INTO `ban_uong` (`ma_ban`, `ten_ban`, `so_cho_ngoi`, `trang_thai_ban`, `n
 ('B04', 'Bàn 4', 4, 'trong', '2025-12-28 00:29:07'),
 ('B05', 'Trong nhà kính', 8, 'trong', '2025-12-28 00:29:07'),
 ('B07', 'Ngoài trời vip', 4, 'trong', '2025-12-29 17:27:24'),
-('B08', 'Vip 1', 6, 'trong', '2025-12-29 12:22:43');
+('B08', 'Vip 1', 6, 'trong', '2025-12-29 12:22:43'),
+('Online', 'online', 0, 'trong', '2026-01-15 00:16:45');
 
 -- --------------------------------------------------------
 
@@ -69,9 +70,7 @@ CREATE TABLE `chi_tiet_don_hang` (
 --
 
 INSERT INTO `chi_tiet_don_hang` (`ma_ctdh`, `ma_don_hang`, `ma_thuc_don`, `so_luong`, `gia_tai_thoi_diem_dat`, `ghi_chu`, `ngay_tao`) VALUES
-('CT1', 'DH1', 'TD02', 1, '20000.00', '', '2026-01-01 23:33:35'),
-('CT2', 'DH1', 'TD03', 1, '30000.00', '', '2026-01-01 23:33:35'),
-('CT3', 'DH2', 'TD03', 1, '30000.00', '', '2026-01-01 23:44:15');
+('CT1', 'DH1', 'TD01', 1, '25000.00', '', '2026-01-15 22:11:26');
 
 -- --------------------------------------------------------
 
@@ -91,12 +90,13 @@ CREATE TABLE `danh_muc` (
 --
 
 INSERT INTO `danh_muc` (`ma_danh_muc`, `ten_danh_muc`, `image`, `ngay_tao`) VALUES
-('DM01', 'Cà phê', 'https://maccakimlien.com/vnt_upload/news/07_2025/ca_phe_3.jpg', '2025-12-28 00:29:07'),
-('DM02', 'Trà', 'https://vienhuyethoc.vn/wp-content/uploads/2023/01/tra-xanh-117.jpg', '2025-12-28 00:29:07'),
-('DM03', 'Sinh tố', 'https://elmich.vn/wp-content/uploads/2024/01/sinh-to-bo-xoai-5.jpg', '2025-12-28 00:29:07'),
-('DM04', 'Nước ép', 'https://congnghenhat.com/wp-content/uploads/2024/07/nuoc-ep-trai-cay-va-thuoc-6.jpg', '2025-12-28 00:29:07'),
-('DM05', 'Bánh ngọt ', '/qlsp/Public/Pictures/danhmuc/dm_DM05_1766897204.jpeg', '2025-12-28 00:29:07'),
-('DM06', 'Nước lọc', 'https://www.sonha.com.vn/wp-content/uploads/2020/12/nuoc-500.jpg', '2025-12-28 09:53:25');
+('DM01', 'Cà phê', 'capheden.jpg', '2025-12-28 00:29:07'),
+('DM02', 'Trà', 'tra_chanh.jpg', '2025-12-28 00:29:07'),
+('DM03', 'Sinh tố', 'sinhtoduahau.jpg', '2025-12-28 00:29:07'),
+('DM04', 'Nước ép', 'nuoc_cam.jpg', '2025-12-28 00:29:07'),
+('DM05', 'Bánh ngọt ', 'Sachertorte.jpg', '2025-12-28 00:29:07'),
+('DM06', 'Nước lọc', 'nuoc_lavie.jpg', '2025-12-28 09:53:25'),
+('DM07', 'Nước ngọt', 'coca.jpg', '2026-01-12 22:51:51');
 
 -- --------------------------------------------------------
 
@@ -111,18 +111,18 @@ CREATE TABLE `don_hang` (
   `ma_khuyen_mai` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tien_khuyen_mai` decimal(10,2) DEFAULT 0.00,
   `tong_tien` decimal(12,2) DEFAULT 0.00,
+  `thanh_toan` decimal(12,2) DEFAULT 0.00,
   `trang_thai_thanh_toan` enum('chua_thanh_toan','da_thanh_toan') DEFAULT 'chua_thanh_toan',
-  `ghi_chu` varchar(255) DEFAULT NULL,
-  `ngay_tao` datetime DEFAULT current_timestamp()
+  `ngay_tao` datetime DEFAULT current_timestamp(),
+  `ghi_chu` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `don_hang`
+-- Đang đổ dữ liệu cho bảng `don_hang1
 --
 
-INSERT INTO `don_hang` (`ma_don_hang`, `ma_ban`, `ma_user`, `ma_khuyen_mai`, `tien_khuyen_mai`, `tong_tien`, `trang_thai_thanh_toan`, `ngay_tao`) VALUES
-('DH1', 'B01', 'U02', NULL, '20000.00', '50000.00', 'da_thanh_toan', '2026-01-01 17:33:35'),
-('DH2', 'B02', 'U02', NULL, '20000.00', '30000.00', 'da_thanh_toan', '2026-01-01 17:44:15');
+INSERT INTO `don_hang` (`ma_don_hang`, `ma_ban`, `ma_user`, `ma_khuyen_mai`, `tien_khuyen_mai`, `tong_tien`, `thanh_toan`, `trang_thai_thanh_toan`, `ngay_tao`, `ghi_chu`) VALUES
+('DH1', 'Online', 'U05', 'KM1', '5000.00', '25000.00', '20000.00', 'da_thanh_toan', '2026-01-15 22:11:26', '');
 
 -- --------------------------------------------------------
 
@@ -142,10 +142,15 @@ CREATE TABLE `khuyen_mai` (
 --
 
 INSERT INTO `khuyen_mai` (`ma_khuyen_mai`, `ten_khuyen_mai`, `tien_khuyen_mai`, `ghi_chu`) VALUES
-('KM1', 'Giảm giá tết', '111111.00', 'lễ tết'),
-('KM2', 'xuân', '12000.00', 'vanvinh'),
-('KM3', 'Giảm 20%', '20000.00', 'Chương trình khuyến mãi tháng 1'),
-('KM4', 'Mua 1 tặng 1', '50000.00', 'Khuyến mãi đặc biệt cuối tuần');
+('KM1', 'Giảm giá Tết', '10000.00', 'Áp dụng dịp lễ Tết'),
+('KM2', 'Ưu đãi mùa xuân', '12000.00', 'Chương trình mùa xuân'),
+('KM3', 'Giảm tháng 1', '20000.00', 'Khuyến mãi tháng 1'),
+('KM4', 'Ưu đãi cuối tuần', '5000.00', 'Áp dụng Thứ 7 – CN'),
+('KM5', 'Giảm sinh viên', '8000.00', 'Áp dụng cho sinh viên'),
+('KM6', 'Giảm khách thân thiết', '15000.00', 'Khách hàng VIP'),
+('KM7', 'Giờ vàng buổi sáng', '5000.00', 'Áp dụng 7h – 9h sáng'),
+('KM8', 'Giảm cuối tháng', '10000.00', 'Tổng kết cuối tháng'),
+('KM9', 'Khuyến mãi khai trương', '20000.00', 'Áp dụng chi nhánh mới');
 
 -- --------------------------------------------------------
 
@@ -176,59 +181,9 @@ INSERT INTO `Nhacungcap` (`mancc`, `tenncc`, `diachi`, `dienthoai`) VALUES
 ('NCC5', 'ThaiLanfood', 'Hà Nội', '0123456789'),
 ('NCC7', 'Blaofood', 'Tây Nguyên', '0389783611'),
 ('NCC712', 'Bút Bi Thiên Long', '12', '12'),
+('NCC72', '12', '121', '0123456789'),
 ('NCC8', 'Đào Lạng Sơn', 'Lạng Sơn', '0369783618'),
 ('NCC9', 'Tân Cương', 'Thái Nguyên', '0389783612');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `Nhasanxuat`
---
-
-CREATE TABLE `Nhasanxuat` (
-  `Masx` varchar(30) NOT NULL,
-  `Tensx` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `Nhasanxuat`
---
-
-INSERT INTO `Nhasanxuat` (`Masx`, `Tensx`) VALUES
-('SX01', 'Nhà xuất bản Giáo Dục'),
-('SX02', 'Nhà xuất bản Trẻ'),
-('SX03', 'Nhà xuất bản Kim Đồng'),
-('SX04', 'Nhà xuất bản Lao Động'),
-('SX05', 'Nhà xuất bản Thống Kê');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `SANPHAM`
---
-
-CREATE TABLE `SANPHAM` (
-  `Masp` varchar(10) NOT NULL,
-  `Tensp` varchar(150) NOT NULL,
-  `Gia` varchar(30) NOT NULL,
-  `Soluong` varchar(30) NOT NULL,
-  `Tgbaohanh` varchar(30) DEFAULT NULL,
-  `Masx` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `SANPHAM`
---
-
-INSERT INTO `SANPHAM` (`Masp`, `Tensp`, `Gia`, `Soluong`, `Tgbaohanh`, `Masx`) VALUES
-('12', '12', '12.00', '12', '2025-12-07', 'SX03'),
-('123', '123', '123.00', '123', '2025-12-05', 'SX03'),
-('SP01', 'Kerm', '12.00', '1', '2025-12-07', 'SX02'),
-('SP02', 'Bún', '4.00', '3', '2025-12-07', 'SX01'),
-('SP03', 'Kerm', '12.00', '1', '2025-12-07', 'SX01'),
-('SP04', 'Bún', '4.00', '3', '2025-12-07', 'SX01'),
-('SP06', 'Sản phẩm 6', '1000000.00', '5', '2025-12-07', 'SX02'),
-('SP07', 'Sản phẩm 7', '2000000.00', '3', '2025-12-07', 'SX02');
 
 -- --------------------------------------------------------
 
@@ -252,6 +207,7 @@ INSERT INTO `sanpham2` (`masp`, `tensp`, `gia`, `soluong`, `mancc`) VALUES
 ('1', 'Bột Thái Xanh', '150000', '6', 'NCC5'),
 ('10', 'Bơ nguyên trái', '23000', '5', 'NCC7'),
 ('12', 'Bột Cà Phê', '56000', '10', 'NCC1'),
+('12123', '1', '1', '1', 'NCC3'),
 ('2', 'Nước lọc', '3000', '24', 'NCC2'),
 ('3', 'Trứng gà ', '4000', '100', 'NCC3'),
 ('4', 'Cốt đường mía', '45000', '3', 'NCC4'),
@@ -267,10 +223,10 @@ INSERT INTO `sanpham2` (`masp`, `tensp`, `gia`, `soluong`, `mancc`) VALUES
 CREATE TABLE `thuc_don` (
   `ma_thuc_don` varchar(50) NOT NULL,
   `ten_mon` varchar(150) NOT NULL,
+  `img_thuc_don` text DEFAULT NULL,
   `gia` decimal(12,2) NOT NULL,
   `so_luong` int(100) DEFAULT NULL,
   `ma_danh_muc` varchar(50) DEFAULT NULL,
-  `img_thuc_don` text DEFAULT NULL,
   `ngay_tao` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -278,14 +234,27 @@ CREATE TABLE `thuc_don` (
 -- Đang đổ dữ liệu cho bảng `thuc_don`
 --
 
-INSERT INTO `thuc_don` (`ma_thuc_don`, `ten_mon`, `gia`, `so_luong`, `ma_danh_muc`, `img_thuc_don`, `ngay_tao`) VALUES
-('TD01', 'Cà phê sữa', '25000.00', 0, 'DM01', 'https://sahaco.vn/wp-content/uploads/2024/12/top-nhung-hinh-anh-ly-ca-phe-sua-da-dep-nhat-6.webp', '2025-12-28 00:29:07'),
-('TD02', 'Cà phê đen', '20000.00', 1, 'DM01', 'https://cafefcdn.com/2017/photo-0-1498280500677.jpg', '2025-12-28 00:29:07'),
-('TD03', 'Trà đào', '30000.00', 1, 'DM02', 'https://horecavn.com/wp-content/uploads/2024/05/huong-dan-cong-thuc-tra-dao-cam-sa-hut-khach-ngon-kho-cuong_20240526180626.jpg', '2025-12-28 00:29:07'),
-('TD04', 'Sinh tố bơ', '35000.00', 2, 'DM03', 'https://png.pngtree.com/png-vector/20240731/ourmid/pngtree-avocado-smoothie-with-isolated-on-transparent-background-png-image_13317561.png', '2025-12-28 00:29:07'),
-('TD05', 'Bánh tiramisu', '40000.00', 1, 'DM05', 'https://chonchon.vn/wp-content/uploads/2020/11/013-01.jpg', '2025-12-28 00:29:07'),
-('TD06', 'Dasani', '5000.00', 1, 'DM06', 'https://www.lottemart.vn/media/catalog/product/cache/0x0/8/9/8935049510864.jpg.webp', '2025-12-31 00:18:31'),
-('TD07', 'Nước tạm', '0.00', 1, 'DM06', 'https://www.sonha.com.vn/wp-content/uploads/2020/12/nuoc-500.jpg', '2025-12-31 00:38:24');
+INSERT INTO `thuc_don` (`ma_thuc_don`, `ten_mon`, `img_thuc_don`, `gia`, `so_luong`, `ma_danh_muc`, `ngay_tao`) VALUES
+('TD01', 'Cà phê sữa', 'caphesua.jpg', '25000.00', 64, 'DM01', '2025-12-28 00:29:07'),
+('TD02', 'Cà phê đen', 'capheden.jpg', '20000.00', 79, 'DM01', '2025-12-28 00:29:07'),
+('TD03', 'Trà đào', 'tradao.jpg', '30000.00', 36, 'DM02', '2025-12-28 00:29:07'),
+('TD04', 'Sinh tố bơ', 'sinhtobo.jpg', '35000.00', 94, 'DM03', '2025-12-28 00:29:07'),
+('TD05', 'Bánh tiramisu', 'tiramisu.jpg', '40000.00', 90, 'DM05', '2025-12-28 00:29:07'),
+('TD06', 'Dasani', 'Danasi.jpg', '5000.00', 89, 'DM06', '2025-12-31 00:18:31'),
+('TD07', 'Capuchino', 'capuchino.jpg', '35000.00', 98, 'DM01', '2025-12-31 00:38:24'),
+('TD073', '11', 'tradao_1.jpg', '23000.00', 110, 'DM03', '2026-01-13 17:16:33'),
+('TD08', 'Pessi', 'pessi.jpg', '10000.00', 97, 'DM07', '2026-01-03 00:32:57'),
+('TD09', 'Coca_cola', 'coca.jpg', '10000.00', 97, 'DM07', '2026-01-12 22:53:35'),
+('TD10', 'Trà chanh', 'tra_chanh.jpg', '15000.00', 98, 'DM02', '2026-01-12 22:59:26'),
+('TD11', 'Bạc Xỉu', 'bac_xiu.jpg', '35000.00', 98, 'DM01', '2026-01-12 23:00:27'),
+('TD12', 'Trà Vải', 'tra_vai.jpg', '25000.00', 97, 'DM02', '2026-01-12 23:01:53'),
+('TD13', 'Nước ép dưa hấu', 'sinhtoduahau.jpg', '30000.00', 98, 'DM04', '2026-01-12 23:03:30'),
+('TD14', 'Nước cam', 'nuoc_cam.jpg', '30000.00', 98, 'DM04', '2026-01-12 23:04:44'),
+('TD15', 'Swedish Princess', 'Swedish_Princess.jpg', '30000.00', 98, 'DM05', '2026-01-12 23:06:44'),
+('TD16', 'Sachertorte', 'Sachertorte.jpg', '30000.00', 98, 'DM05', '2026-01-12 23:07:43'),
+('TD17', 'Fanta', 'fanta.jpg', '10000.00', 96, 'DM07', '2026-01-12 23:08:35'),
+('TD18', 'Lavie', 'nuoc_lavie.jpg', '4000.00', 95, 'DM06', '2026-01-12 23:09:51'),
+('TD19', 'Sinh tố dâu tây', 'sinhtodau.jpg', '30000.00', 97, 'DM03', '2026-01-12 23:13:55');
 
 -- --------------------------------------------------------
 
@@ -298,7 +267,7 @@ CREATE TABLE `users` (
   `ten_user` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `phan_quyen` enum('admin','nhan_vien') DEFAULT 'nhan_vien',
+  `phan_quyen` enum('admin','nhan_vien','khach_hang') DEFAULT 'nhan_vien',
   `ngay_tao` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -311,9 +280,9 @@ INSERT INTO `users` (`ma_user`, `ten_user`, `password`, `email`, `phan_quyen`, `
 ('U02', 'vinh', '123', 'a@gmail.com', 'nhan_vien', '2025-12-28 00:29:07'),
 ('U03', 'qa', '123', 'b@gmail.com', 'nhan_vien', '2025-12-28 00:29:07'),
 ('U04', 'thanh', '123', 'c@gmail.com', 'nhan_vien', '2025-12-28 00:29:07'),
-('U05', 'vanh', '123', 'd@gmail.com', 'nhan_vien', '2025-12-28 00:29:07'),
-('U06', 'quanly', '123', 'vinh@gmail.com', 'admin', '2025-12-28 21:23:03'),
-('U08', 'xuan', '123', 'daovinhgm2005@gmail.com', 'nhan_vien', '2025-12-28 10:09:04');
+('U05', 'vanh', '123', 'd@gmail.com', 'khach_hang', '2025-12-28 00:29:07'),
+('U06', 'vanvinh', '123', 'Daovinhgm2005@gmail.com', 'admin', '2026-01-13 23:41:40'),
+('U07', 'chuong', 'chuong', 'concac@gmail.com', 'khach_hang', '2026-01-14 21:07:03');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -361,19 +330,6 @@ ALTER TABLE `Nhacungcap`
   ADD PRIMARY KEY (`mancc`);
 
 --
--- Chỉ mục cho bảng `Nhasanxuat`
---
-ALTER TABLE `Nhasanxuat`
-  ADD PRIMARY KEY (`Masx`);
-
---
--- Chỉ mục cho bảng `SANPHAM`
---
-ALTER TABLE `SANPHAM`
-  ADD PRIMARY KEY (`Masp`),
-  ADD KEY `fk_sanpham_nhasx` (`Masx`);
-
---
 -- Chỉ mục cho bảng `sanpham2`
 --
 ALTER TABLE `sanpham2`
@@ -412,12 +368,6 @@ ALTER TABLE `don_hang`
   ADD CONSTRAINT `fk_donhang_ban` FOREIGN KEY (`ma_ban`) REFERENCES `ban_uong` (`ma_ban`),
   ADD CONSTRAINT `fk_donhang_khuyenmai` FOREIGN KEY (`ma_khuyen_mai`) REFERENCES `khuyen_mai` (`ma_khuyen_mai`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_donhang_user` FOREIGN KEY (`ma_user`) REFERENCES `users` (`ma_user`);
-
---
--- Các ràng buộc cho bảng `SANPHAM`
---
-ALTER TABLE `SANPHAM`
-  ADD CONSTRAINT `fk_sanpham_nhasx` FOREIGN KEY (`Masx`) REFERENCES `NHASANXUAT` (`Masx`) ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `sanpham2`

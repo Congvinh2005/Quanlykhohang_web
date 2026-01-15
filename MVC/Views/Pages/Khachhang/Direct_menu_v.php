@@ -555,7 +555,7 @@
                 if (data.success) {
                     alert('Tạo đơn hàng thành công!');
                     // Redirect to customer order detail page with the order ID
-                    window.location.href = 'http://localhost/QLSP/Banuong/order_detail/' + data.order_id;
+                    window.location.href = 'http://localhost/QLSP/Khachhang/order_detail_payment/' + data.order_id;
                 } else {
                     alert('Tạo đơn hàng thất bại: ' + data.message);
                 }
