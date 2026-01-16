@@ -60,7 +60,8 @@ class Users_m extends connectDB
 
     function validateUser($username, $password)
     {
-        $sql = "SELECT * FROM users WHERE ten_user = '$username' AND password = '$password'";
+        // Check login by username OR email
+        $sql = "SELECT * FROM users WHERE (ten_user = '$username' OR email = '$username') AND password = '$password'";
         $result = mysqli_query($this->con, $sql);
         return $result;
     }
@@ -84,7 +85,7 @@ class Users_m extends connectDB
     // lấy tên để check tên đăng nhập có tồn tại không
     function getUserByUsername($username)
     {
-        $sql = "SELECT * FROM users WHERE ten_user = '$username'";
+        $sql = "SELECT * FROM users WHERE ten_user = '$username' OR email = '$username'";
         $result = mysqli_query($this->con, $sql);
         if ($result && mysqli_num_rows($result) > 0) {
             return mysqli_fetch_assoc($result);
