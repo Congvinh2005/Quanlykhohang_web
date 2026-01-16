@@ -82,7 +82,7 @@ class Users_m extends connectDB
         return false;
     }
 
-    // lấy tên để check tên đăng nhập có tồn tại không
+    // lấy tên để check tên đăng nhập và email có tồn tại không
     function getUserByUsername($username)
     {
         $sql = "SELECT * FROM users WHERE ten_user = '$username' OR email = '$username'";
