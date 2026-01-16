@@ -562,4 +562,44 @@ class Staff extends controller
         // Xuất PDF
         $pdf->Output('HoaDon_' . $ma_don_hang . '.pdf', 'I'); // 'I' để hiển thị nội tuyến, 'D' để tải xuống
     }
+
+    // Hủy đơn hàng chưa thanh toán
+    function cancel_order($ma_don_hang)
+    {
+        // Kiểm tra xem đơn hàng có tồn tại và chưa thanh toán không
+        $order = $this->dh->Donhang_getById($ma_don_hang);
+
+        if ($order && mysqli_num_rows($order) > 0) {
+            $order_row = mysqli_fetch_array($order);
+
+            // Chỉ cho phép hủy đơn chưa thanh toán
+            if ($order_row['trang_thai_thanh_toan'] === 'chua_thanh_toan') {
+                // Khôi phục số lượng tồn kho
+                $thucdon_model = $this->model("Thucdon_m");
+                $thucdon_model->restoreInventory($ma_don_hang);
+
+                // Xóa đơn hàng
+                $delete_result = $this->dh->Donhang_delete($ma_don_hang);
+
+                if ($delete_result) {
+                    // Xóa giỏ hàng liên quan nếu có
+                    $ma_ban = $order_row['ma_ban'];
+                    $this->clearCartForTable($ma_ban);
+
+                    // Cập nhật trạng thái bàn nếu cần
+                    if ($ma_ban !== 'Online') {
+                        $this->updateTableStatus($ma_ban, 'trong');
+                    }
+
+                    echo "<script>alert('Hủy đơn hàng thành công!'); window.location.href='http://localhost/QLSP/Staff/orders';</script>";
+                } else {
+                    echo "<script>alert('Hủy đơn hàng thất bại!'); window.location.href='http://localhost/QLSP/Staff/orders';</script>";
+                }
+            } else {
+                echo "<script>alert('Chỉ có thể hủy đơn hàng chưa thanh toán!'); window.location.href='http://localhost/QLSP/Staff/orders';</script>";
+            }
+        } else {
+            echo "<script>alert('Đơn hàng không tồn tại!'); window.location.href='http://localhost/QLSP/Staff/orders';</script>";
+        }
+    }
 }

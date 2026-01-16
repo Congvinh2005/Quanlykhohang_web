@@ -165,38 +165,6 @@ class Khachhang extends controller
                     $order_row = mysqli_fetch_array($order);
                     $ma_ban = $order_row['ma_ban'];
 
-                    // Lấy chi tiết đơn hàng để giảm hàng tồn kho
-                    $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
-
-                    if ($order_details && !empty($order_details)) {
-                        // Giảm hàng tồn kho cho mỗi mặt hàng trong đơn hàng
-                        foreach ($order_details as $detail) {
-                            $ma_thuc_don = $detail['ma_thuc_don'];
-                            $so_luong_dat = $detail['so_luong'];
-
-                            // Lấy số lượng hiện tại từ cơ sở dữ liệu
-                            $thucdon_model = $this->model("Thucdon_m");
-                            $thucdon = $thucdon_model->Thucdon_getById($ma_thuc_don);
-
-                            if ($thucdon && mysqli_num_rows($thucdon) > 0) {
-                                $thucdon_row = mysqli_fetch_array($thucdon);
-                                $current_quantity = $thucdon_row['so_luong'];
-
-                                // Tính toán số lượng mới (giảm theo số lượng đã đặt)
-                                $new_quantity = $current_quantity - $so_luong_dat;
-
-                                // Đảm bảo số lượng không nhỏ hơn 0
-                                if ($new_quantity < 0) {
-                                    $new_quantity = 0;
-                                }
-
-                                // Cập nhật số lượng trong cơ sở dữ liệu
-                                $update_sql = "UPDATE thuc_don SET so_luong = $new_quantity WHERE ma_thuc_don = '$ma_thuc_don'";
-                                mysqli_query($thucdon_model->con, $update_sql);
-                            }
-                        }
-                    }
-
                     // Xóa giỏ hàng cho bàn này sau khi thanh toán
                     $this->clearCartForTable($ma_ban);
 
@@ -240,6 +208,46 @@ class Khachhang extends controller
         return mysqli_query($this->bu->con, $sql);
     }
 
+
+    // Hủy đơn hàng chưa thanh toán
+    function cancel_order($ma_don_hang)
+    {
+        // Kiểm tra xem đơn hàng có tồn tại và chưa thanh toán không
+        $order = $this->dh->Donhang_getById($ma_don_hang);
+
+        if ($order && mysqli_num_rows($order) > 0) {
+            $order_row = mysqli_fetch_array($order);
+
+            // Chỉ cho phép hủy đơn chưa thanh toán
+            if ($order_row['trang_thai_thanh_toan'] === 'chua_thanh_toan') {
+                // Khôi phục số lượng tồn kho
+                $thucdon_model = $this->model("Thucdon_m");
+                $thucdon_model->restoreInventory($ma_don_hang);
+
+                // Xóa đơn hàng
+                $delete_result = $this->dh->Donhang_delete($ma_don_hang);
+
+                if ($delete_result) {
+                    // Xóa giỏ hàng liên quan nếu có
+                    $ma_ban = $order_row['ma_ban'];
+                    $this->clearCartForTable($ma_ban);
+
+                    // Cập nhật trạng thái bàn nếu cần
+                    if ($ma_ban !== 'Online') {
+                        $this->updateTableStatus($ma_ban, 'trong');
+                    }
+
+                    echo "<script>alert('Hủy đơn hàng thành công!'); window.location.href='http://localhost/QLSP/Khachhang/orders';</script>";
+                } else {
+                    echo "<script>alert('Hủy đơn hàng thất bại!'); window.location.href='http://localhost/QLSP/Khachhang/orders';</script>";
+                }
+            } else {
+                echo "<script>alert('Chỉ có thể hủy đơn hàng chưa thanh toán!'); window.location.href='http://localhost/QLSP/Khachhang/orders';</script>";
+            }
+        } else {
+            echo "<script>alert('Đơn hàng không tồn tại!'); window.location.href='http://localhost/QLSP/Khachhang/orders';</script>";
+        }
+    }
 
     // Phương thức để xem chi tiết đơn hàng để thanh toán (đặc biệt cho các đơn hàng đã tồn tại)
     function order_detail_payment($ma_don_hang)

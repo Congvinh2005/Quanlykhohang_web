@@ -36,6 +36,10 @@
                                     <button class="btn-pay"
                                         onclick="window.location.href='http://localhost/QLSP/Khachhang/order_detail_payment/<?php echo urlencode($order['ma_don_hang']); ?>'">Thanh
                                         toán</button>
+                                    <button class="btn-cancel"
+                                        onclick="if(confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?'))
+                            window.location.href='http://localhost/QLSP/Khachhang/cancel_order/<?php echo urlencode($order['ma_don_hang']); ?>'">Huỷ
+                                        đơn</button>
                                 <?php else: ?>
                                     <button class="btn-view"
                                         onclick="window.location.href='http://localhost/QLSP/Khachhang/order_detail/<?php echo urlencode($order['ma_don_hang']); ?>'">Xem
@@ -153,19 +157,34 @@
             }
 
             .btn-pay {
-                background: #dc3545;
+                background: #28a745;
                 color: white;
                 border: none;
-                padding: 6px 12px;
+                padding: 6px 16px;
                 border-radius: 4px;
                 cursor: pointer;
                 transition: background 0.3s;
-                font-weight: bold;
             }
 
             .btn-pay:hover {
+                background: #218838;
+            }
+
+            .btn-cancel {
+                background: #dc3545;
+                color: white;
+                border: none;
+                padding: 6px 25px;
+                border-radius: 4px;
+                margin-left: 0px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+
+            .btn-cancel:hover {
                 background: #c82333;
             }
+
 
             .order-table th:nth-child(6),
             .order-table td:nth-child(6) {
@@ -173,6 +192,24 @@
                 word-break: break-word;
             }
         </style>
+        <script>
+            // Cập nhật màu nút Thanh toán thành màu xanh lá
+            document.addEventListener('DOMContentLoaded', function() {
+                var payButtons = document.querySelectorAll('.btn-pay');
+                payButtons.forEach(function(button) {
+                    button.style.background = '#28a745'; // Màu xanh lá
+                });
+
+                // Cập nhật hover effect cho nút Thanh toán
+                var style = document.createElement('style');
+                style.innerHTML = `
+                    .btn-pay:hover {
+                        background: #218838 !important;
+                    }
+                `;
+                document.head.appendChild(style);
+            });
+        </script>
         </body>
 
         </html>

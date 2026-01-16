@@ -79,15 +79,6 @@ class Thucdon_m extends connectDB
         return mysqli_query($this->con, $sql);
     }
 
-    // Hàm lấy tất cả thực đơn có sẵn (không hết bán) với thông tin danh mục
-    function Thucdon_getAvailable()
-    {
-        $sql = "SELECT t.*, d.ten_danh_muc FROM thuc_don t
-                    LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
-                    WHERE t.so_luong > 0
-                    ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
-        return mysqli_query($this->con, $sql);
-    }
 
     // Hàm lấy tất cả thực đơn (bao gồm cả những món có số lượng = 0) với thông tin danh mục
     function Thucdon_getAllWithQuantity()
@@ -96,5 +87,74 @@ class Thucdon_m extends connectDB
                     LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
                     ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
         return mysqli_query($this->con, $sql);
+    }
+
+    // Hàm giảm số lượng tồn kho của các món ăn trong đơn hàng
+    function reduceInventory($ma_don_hang)
+    {
+        // Lấy chi tiết đơn hàng
+        $sql = "SELECT c.ma_thuc_don, c.so_luong FROM chi_tiet_don_hang c
+                WHERE c.ma_don_hang = '$ma_don_hang'";
+        $result = mysqli_query($this->con, $sql);
+
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $ma_thuc_don = $row['ma_thuc_don'];
+                $so_luong_dat = $row['so_luong'];
+
+                // Lấy số lượng hiện tại từ cơ sở dữ liệu
+                $thucdon_sql = "SELECT so_luong FROM thuc_don WHERE ma_thuc_don = '$ma_thuc_don'";
+                $thucdon_result = mysqli_query($this->con, $thucdon_sql);
+
+                if ($thucdon_result && mysqli_num_rows($thucdon_result) > 0) {
+                    $thucdon_row = mysqli_fetch_assoc($thucdon_result);
+                    $current_quantity = $thucdon_row['so_luong'];
+
+                    // Tính toán số lượng mới (giảm theo số lượng đã đặt)
+                    $new_quantity = $current_quantity - $so_luong_dat;
+
+                    // Đảm bảo số lượng không nhỏ hơn 0
+                    if ($new_quantity < 0) {
+                        $new_quantity = 0;
+                    }
+
+                    // Cập nhật số lượng trong cơ sở dữ liệu
+                    $update_sql = "UPDATE thuc_don SET so_luong = $new_quantity WHERE ma_thuc_don = '$ma_thuc_don'";
+                    mysqli_query($this->con, $update_sql);
+                }
+            }
+        }
+    }
+
+    // Hàm hoàn tác giảm số lượng tồn kho của các món ăn trong đơn hàng (khi hủy đơn)
+    function restoreInventory($ma_don_hang)
+    {
+        // Lấy chi tiết đơn hàng
+        $sql = "SELECT c.ma_thuc_don, c.so_luong FROM chi_tiet_don_hang c
+                WHERE c.ma_don_hang = '$ma_don_hang'";
+        $result = mysqli_query($this->con, $sql);
+
+        if ($result) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $ma_thuc_don = $row['ma_thuc_don'];
+                $so_luong_dat = $row['so_luong'];
+
+                // Lấy số lượng hiện tại từ cơ sở dữ liệu
+                $thucdon_sql = "SELECT so_luong FROM thuc_don WHERE ma_thuc_don = '$ma_thuc_don'";
+                $thucdon_result = mysqli_query($this->con, $thucdon_sql);
+
+                if ($thucdon_result && mysqli_num_rows($thucdon_result) > 0) {
+                    $thucdon_row = mysqli_fetch_assoc($thucdon_result);
+                    $current_quantity = $thucdon_row['so_luong'];
+
+                    // Tính toán số lượng mới (tăng theo số lượng đã đặt)
+                    $new_quantity = $current_quantity + $so_luong_dat;
+
+                    // Cập nhật số lượng trong cơ sở dữ liệu
+                    $update_sql = "UPDATE thuc_don SET so_luong = $new_quantity WHERE ma_thuc_don = '$ma_thuc_don'";
+                    mysqli_query($this->con, $update_sql);
+                }
+            }
+        }
     }
 }

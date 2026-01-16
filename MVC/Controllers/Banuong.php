@@ -498,6 +498,10 @@ class Banuong extends controller
             $this->addOrderDetail($ma_don_hang, $ma_thuc_don, $so_luong, $gia_tai_thoi_diem_dat, $ghi_chu);
         }
 
+        // Giảm số lượng tồn kho sau khi tạo đơn hàng
+        $thucdon_model = $this->model("Thucdon_m");
+        $thucdon_model->reduceInventory($ma_don_hang);
+
         // Cập nhật trạng thái bàn thành đã chiếm chỗ chỉ cho đơn hàng bàn thường
         if (!$is_customer_order) {
             $this->updateTableStatus($ma_ban, 'dang_su_dung');

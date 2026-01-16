@@ -31,8 +31,21 @@
                             <td class="<?php echo $status_class; ?>"><?php echo $status_text; ?></td>
                             <td><?php echo isset($order['ngay_tao']) ? TimezoneHelper::formatForDisplay($order['ngay_tao'], 'H:i:s d/m/Y') : ''; ?>
                             </td>
-                            <td><button class="btn-view"
-                                    onclick="window.location.href='http://localhost/QLSP/Staff/order_detail/<?php echo urlencode($order['ma_don_hang']); ?>'">Xem</button>
+                            <td>
+                                <?php if ($order['trang_thai_thanh_toan'] === 'chua_thanh_toan'): ?>
+                                    <button class="btn-pay"
+                                        onclick="window.location.href='http://localhost/QLSP/Banuong/order_detail/<?php echo urlencode($order['ma_don_hang']); ?>'">Thanh
+                                        toán</button>
+
+                                    <button class="btn-cancel"
+                                        onclick="if(confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?'))
+                            window.location.href='http://localhost/QLSP/Staff/cancel_order/<?php echo urlencode($order['ma_don_hang']); ?>'">Huỷ
+                                        đơn</button>
+                                <?php else: ?>
+                                    <button class="btn-view"
+                                        onclick="window.location.href='http://localhost/QLSP/Staff/order_detail/<?php echo urlencode($order['ma_don_hang']); ?>'">Xem
+                                        chi tiết </button>
+                                <?php endif; ?>
                             </td>
                         </tr>
                 <?php
@@ -142,6 +155,42 @@
                 padding: 8px 4px;
                 display: flex;
                 align-items: center;
+            }
+
+            .btn-pay {
+                background: #28a745;
+                color: white;
+                border: none;
+                padding: 6px 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+
+            .btn-pay:hover {
+                background: #218838;
+            }
+
+            .btn-cancel {
+                background: #dc3545;
+                color: white;
+                border: none;
+                padding: 6px 25px;
+                border-radius: 4px;
+                margin-left: 0px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+
+            .btn-cancel:hover {
+                background: #c82333;
+            }
+
+
+            .order-table th:nth-child(7),
+            .order-table td:nth-child(7) {
+                max-width: 120px;
+                word-break: break-word;
             }
         </style>
         </body>
