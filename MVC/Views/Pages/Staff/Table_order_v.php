@@ -748,6 +748,8 @@
                 .then(data => {
                     if (data.success) {
                         alert('Tạo đơn hàng thành công!');
+
+
                         // Redirect to order detail page with the order ID
                         window.location.href = 'http://localhost/QLSP/Banuong/order_detail/' + data.order_id;
                     } else {

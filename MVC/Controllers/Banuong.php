@@ -255,9 +255,9 @@ class Banuong extends controller
         $danhmuc = $this->model("Danhmuc_m");
         $categories = $danhmuc->Danhmuc_getAll();
 
-        // Lấy chỉ các mục menu có sẵn (không hết hàng)
+        // Lấy tất cả các mục menu (bao gồm cả những món có số lượng = 0)
         $thucdon = $this->model("Thucdon_m");
-        $menu_items = $thucdon->Thucdon_getAvailable();
+        $menu_items = $thucdon->Thucdon_getAllWithQuantity();
 
         // Lấy giỏ hàng hiện tại từ phiên cho bàn này nếu tồn tại
         $current_cart = $this->getCartForTable($ma_ban);
@@ -297,9 +297,9 @@ class Banuong extends controller
         $danhmuc = $this->model("Danhmuc_m");
         $categories = $danhmuc->Danhmuc_getAll();
 
-        // Lấy chỉ các mục menu có sẵn (không hết hàng)
+        // Lấy tất cả các mục menu (bao gồm cả những món có số lượng = 0)
         $thucdon = $this->model("Thucdon_m");
-        $menu_items = $thucdon->Thucdon_getAvailable();
+        $menu_items = $thucdon->Thucdon_getAllWithQuantity();
 
         // Lấy giỏ hàng hiện tại từ phiên cho bàn này nếu tồn tại
         $current_cart = $this->getCartForTable($ma_ban);

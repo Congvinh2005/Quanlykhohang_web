@@ -43,6 +43,23 @@ class Thucdon_m extends connectDB
         return mysqli_query($this->con, $sql);
     }
 
+    // Hàm kiểm tra xem món ăn có đang trong đơn hàng chưa thanh toán nào không
+    function isMenuItemInActiveOrders($ma_thuc_don)
+    {
+        // Kiểm tra xem món ăn có trong bất kỳ chi tiết đơn hàng nào của đơn hàng chưa thanh toán không
+        $sql = "SELECT COUNT(*) as count FROM chi_tiet_don_hang c
+                INNER JOIN don_hang d ON c.ma_don_hang = d.ma_don_hang
+                WHERE c.ma_thuc_don = '$ma_thuc_don' AND d.trang_thai_thanh_toan = 'chua_thanh_toan'";
+        $result = mysqli_query($this->con, $sql);
+
+        if ($result) {
+            $row = mysqli_fetch_assoc($result);
+            return $row['count'] > 0;
+        }
+
+        return false;
+    }
+
     // Hàm lấy tất cả thực đơn với thông tin danh mục
     function Thucdon_getAll()
     {
@@ -68,6 +85,15 @@ class Thucdon_m extends connectDB
         $sql = "SELECT t.*, d.ten_danh_muc FROM thuc_don t
                     LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
                     WHERE t.so_luong > 0
+                    ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
+        return mysqli_query($this->con, $sql);
+    }
+
+    // Hàm lấy tất cả thực đơn (bao gồm cả những món có số lượng = 0) với thông tin danh mục
+    function Thucdon_getAllWithQuantity()
+    {
+        $sql = "SELECT t.*, d.ten_danh_muc FROM thuc_don t
+                    LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
                     ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
         return mysqli_query($this->con, $sql);
     }

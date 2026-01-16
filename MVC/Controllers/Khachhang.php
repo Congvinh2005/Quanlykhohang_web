@@ -22,7 +22,7 @@ class Khachhang extends controller
         $categories = $danhmuc->Danhmuc_getAll();
 
         $thucdon = $this->model("Thucdon_m");
-        $menu_items = $thucdon->Thucdon_getAvailable();
+        $menu_items = $thucdon->Thucdon_getAllWithQuantity();
 
         // Lấy giỏ hàng hiện tại từ phiên cho đơn hàng khách hàng
         $current_cart = $this->getCartForTable('Online');

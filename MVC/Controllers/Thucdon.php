@@ -382,10 +382,15 @@ class Thucdon extends controller
     }
     function xoa($ma_thuc_don)
     {
-        $kq = $this->td->Thucdon_delete($ma_thuc_don);
-        if ($kq)
-            echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>";
-        else
-            echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>";
+        // Kiểm tra xem món ăn có đang trong đơn hàng chưa thanh toán nào không
+        if ($this->td->isMenuItemInActiveOrders($ma_thuc_don)) {
+            echo "<script>alert('Món đang có trong đơn hàng không thể xóa!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>";
+        } else {
+            $kq = $this->td->Thucdon_delete($ma_thuc_don);
+            if ($kq)
+                echo "<script>alert('Xóa thành công!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>";
+            else
+                echo "<script>alert('Xóa thất bại!'); window.location='" . $this->url('Thucdon/danhsach') . "';</script>";
+        }
     }
 }
