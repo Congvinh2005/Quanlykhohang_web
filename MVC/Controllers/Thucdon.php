@@ -171,7 +171,9 @@ class Thucdon extends controller
     {
         $ma_thuc_don = $_POST['txtMathucdon'] ?? '';
         $ten_mon = $_POST['txtTenmon'] ?? '';
-        $result = $this->td->Thucdon_find($ma_thuc_don, $ten_mon);
+        $so_luong = $_POST['txtSoluong'] ?? '';
+
+        $result = $this->td->Thucdon_find($ma_thuc_don, $ten_mon, $so_luong);
 
         if (isset($_POST['btnXuatexcel'])) {
 
@@ -218,6 +220,7 @@ class Thucdon extends controller
             'page' => 'Danhsachthucdon_v',
             'ma_thuc_don' => $ma_thuc_don,
             'ten_mon' => $ten_mon,
+            'so_luong' => $so_luong,
             'dulieu' => $result
         ]);
     }
@@ -321,12 +324,20 @@ class Thucdon extends controller
             // Nếu không có file upload mới, giữ nguyên hình ảnh hiện tại (đã được lấy ở trên)
 
             $kq = $this->td->Thucdon_update($ma_thuc_don, $ten_mon, $gia, $so_luong, $ma_danh_muc, $img_thuc_don);
-            if ($kq)
+            if ($kq) {
                 echo "<script>alert('Cập nhật thành công!')</script>";
-            else
+                $this->Get_data();
+            } else {
                 echo "<script>alert('Cập nhật thất bại!')</script>";
-
-            $this->Get_data();
+                $result = $this->td->Thucdon_getById($ma_thuc_don);
+                $this->view('Master', [
+                    'page' => 'Thucdon_sua',
+                    'ma_thuc_don' => $ma_thuc_don,
+                    'ten_mon' => $ten_mon,
+                    'so_luong' => $so_luong,
+                    'dulieu' => $result
+                ]);
+            }
         }
     }
 

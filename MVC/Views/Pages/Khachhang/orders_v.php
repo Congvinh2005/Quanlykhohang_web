@@ -114,6 +114,18 @@
                 padding: 10px;
             }
 
+            /* .pagination {
+    max-height: 80px;
+    overflow-y: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+} */
+
             .pagination-info {
                 color: #c45050ff;
                 font-weight: bold;

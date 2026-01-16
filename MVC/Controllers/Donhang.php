@@ -54,10 +54,10 @@ class Donhang extends controller
         $ma_don_hang = $_POST['txtMadonhang'] ?? '';
         $ten_ban = $_POST['txtTenban'] ?? '';
         $ten_user = $_POST['txtTenuser'] ?? '';
+        // $thanh_toan = $_POST['txtThanhtoan'] ?? '';
 
         // 👉 LẤY DỮ LIỆU THEO MÃ ĐƠN HÀNG + MÃ BÀN
         $result = $this->dh->Donhang_find($ma_don_hang, $ten_ban, $ten_user);
-
         // ====== XUẤT EXCEL ======
         if (isset($_POST['btnXuatexcel'])) {
 
@@ -107,9 +107,10 @@ class Donhang extends controller
         // ====== HIỂN THỊ GIAO DIỆN ======
         $this->view('Master', [
             'page' => 'Danhsachdonhang_v',
-            'ma_don_hang' => $ma_don_hang, // Consistent with view variable name
+            'ma_don_hang' => $ma_don_hang,
             'ten_ban' => $ten_ban,
-            'ten_user' => $ten_user, // Consistent with view variable name
+            'ten_user' => $ten_user,
+            // 'thanh_toan' => $thanh_toan,
             'dulieu' => $result
         ]);
     }

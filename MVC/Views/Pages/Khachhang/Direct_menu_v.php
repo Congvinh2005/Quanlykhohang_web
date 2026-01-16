@@ -322,7 +322,6 @@
                 </div>
 
                 <div class="cart-items" id="cartItems">
-                    <!-- Cart items will be added here dynamically -->
                     <div id="emptyCartMessage" style="text-align: center; color: #595e68; padding: 20px;">Giỏ hàng trống
                     </div>
                 </div>
@@ -342,9 +341,6 @@
                 <div class="order-actions">
                     <button class="btn-reset" onclick="clearCart()">Làm mới</button>
                     <button class="btn-confirm" onclick="confirmOrder()">Tạo đơn hàng</button>
-                    <!-- <button class="btn-pay"
-                        onclick="window.location.href='http://localhost/QLSP/Khachhang/order_detail_payment/<?php echo urlencode($order['ma_don_hang']); ?>'">Thanh
-                        toán</button> -->
 
                 </div>
             </div>

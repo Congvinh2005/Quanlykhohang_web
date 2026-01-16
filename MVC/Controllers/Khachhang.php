@@ -37,7 +37,7 @@ class Khachhang extends controller
     // Quản lý đơn hàng cho khách hàng
     function orders($page = 1)
     {
-        $limit = 10; // Number of orders per page
+        $limit = 8; // Number of orders per page
         $offset = ($page - 1) * $limit;
 
         $total_orders = $this->dh->getTotalKhachhangOrdersCount();

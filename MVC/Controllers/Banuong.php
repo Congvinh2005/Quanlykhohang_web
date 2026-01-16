@@ -510,6 +510,7 @@ class Banuong extends controller
         echo json_encode(['success' => true, 'message' => 'Tạo đơn hàng thành công!', 'order_id' => $ma_don_hang]);
         exit;
     }
+
     // Phương thức trợ giúp để thêm chi tiết đơn hàng
     private function addOrderDetail($ma_don_hang, $ma_thuc_don, $so_luong, $gia, $ghi_chu)
     {

@@ -19,6 +19,25 @@ class Thucdon_m extends connectDB
     }
 
     // Hàm tìm kiếm thực đơn (kèm tên danh mục)
+    // function Thucdon_find($ma_thuc_don, $ten_mon, $ten_danh_muc, $gia, $so_luong)
+    // {
+    //     $sql = "SELECT t.*, d.ten_danh_muc FROM thuc_don t
+    //                 LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
+    //                 WHERE t.ma_thuc_don LIKE '%$ma_thuc_don%' AND t.ten_mon LIKE '%$ten_mon%' AND d.ten_danh_muc LIKE '%$ten_danh_muc%'
+    //                 AND t.gia LIKE '%$gia%' AND t.so_luong LIKE '%$so_luong%'
+    //                 ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
+    //     return mysqli_query($this->con, $sql);
+    // }
+
+    // function Thucdon_find($ma_thuc_don, $ten_mon, $so_luong)
+    // {
+    //     $sql = "SELECT t.*, d.ten_danh_muc FROM thuc_don t
+    //                 LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
+    //                 WHERE t.ma_thuc_don LIKE '%$ma_thuc_don%' AND t.ten_mon LIKE '%$ten_mon%' AND t.so_luong LIKE '%$so_luong%'
+    //                 ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
+    //     return mysqli_query($this->con, $sql);
+    // }
+
     function Thucdon_find($ma_thuc_don, $ten_mon)
     {
         $sql = "SELECT t.*, d.ten_danh_muc FROM thuc_don t
