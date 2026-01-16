@@ -34,7 +34,7 @@
                             <td>
                                 <?php if ($order['trang_thai_thanh_toan'] === 'chua_thanh_toan'): ?>
                                     <button class="btn-pay"
-                                        onclick="window.location.href='http://localhost/QLSP/Banuong/order_detail/<?php echo urlencode($order['ma_don_hang']); ?>'">Thanh
+                                        onclick="window.location.href='http://localhost/QLSP/Staff/order_detail_payment/<?php echo urlencode($order['ma_don_hang']); ?>'">Thanh
                                         toán</button>
 
                                     <button class="btn-cancel"

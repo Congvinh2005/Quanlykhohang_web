@@ -395,7 +395,7 @@ class Staff extends controller
 
         // Load the payment view (Chi_tiet_don_hang_v) instead of the view-only page
         $this->view('StaffMaster', [
-            'page' => 'StaffMaster/Chi_tiet_don_hang_v',
+            'page' => 'Staff/Chi_tiet_don_hang_v',
             'order' => $order_result, // Pass the mysqli_result as expected by the view
             'order_details' => $order_details,
             'discount_vouchers' => $discount_vouchers
