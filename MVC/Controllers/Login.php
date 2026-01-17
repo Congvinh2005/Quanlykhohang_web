@@ -63,6 +63,10 @@ class Login extends controller
 
     function register()
     {
+        // Only clear form data if there's no error (fresh registration page)
+        if (!isset($_SESSION['error'])) {
+            unset($_SESSION['form_data']);
+        }
         include_once __DIR__ . '/../Views/Pages/Register_v.php';
     }
 
@@ -74,6 +78,13 @@ class Login extends controller
             $confirm_password = $_POST['confirm_password'];
             $email = $_POST['email'] ?? '';
 
+            // Store form data in session to preserve values on validation errors
+            $_SESSION['form_data'] = [
+                'username' => $username,
+                'email' => $email,
+                'password' => $password,
+                'confirm_password' => $confirm_password
+            ];
 
             if ($password !== $confirm_password) {
                 $_SESSION['error'] = 'Mật khẩu xác nhận không khớp!';
@@ -81,11 +92,11 @@ class Login extends controller
                 exit;
             }
 
-            if (strlen($password) < 6) {
-                $_SESSION['error'] = 'Mật khẩu phải có ít nhất 6 ký tự!';
-                header('Location: ' . $this->url('Login/register'));
-                exit;
-            }
+            // if (strlen($password) < 6) {
+            //     $_SESSION['error'] = 'Mật khẩu phải có ít nhất 6 ký tự!';
+            //     header('Location: ' . $this->url('Login/register'));
+            //     exit;
+            // }
 
             $existing_user = $this->user->getUserByUsername($username);
             if ($existing_user) {
@@ -109,6 +120,9 @@ class Login extends controller
             $result = $this->user->createUser($username, $email, $password, 'khach_hang');
 
             if ($result) {
+                // Clear form data after successful registration
+                unset($_SESSION['form_data']);
+                unset($_SESSION['error']); // Also clear any error messages
                 echo '<script>alert("Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ."); window.location.href = "' . $this->url('Login') . '";</script>';
                 exit;
             } else {
@@ -118,7 +132,9 @@ class Login extends controller
                 exit;
             }
         } else {
-
+            // Clear form data if accessed without POST
+            unset($_SESSION['form_data']);
+            unset($_SESSION['error']);
             header('Location: ' . $this->url('Login/register'));
             exit;
         }

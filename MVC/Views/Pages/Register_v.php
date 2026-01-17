@@ -185,22 +185,33 @@
             <form method="post" action="http://localhost/QLSP/Login/process_register">
                 <div class="form-group">
                     <label>Tên đăng nhập</label>
-                    <input type="text" name="username" placeholder="Nhập tên đăng nhập" required>
+                    <!-- <input type="text" name="username" placeholder="Nhập tên đăng nhập" required> -->
+
+                    <input type="text" name="username" placeholder="Nhập tên đăng nhập" required
+                        value="<?php echo isset($_SESSION['form_data']['username']) ? htmlspecialchars($_SESSION['form_data']['username']) : ''; ?>">
                 </div>
 
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" name="email" placeholder="Nhập email" required>
+                    <!-- <input type="email" name="email" placeholder="Nhập email" required> -->
+
+                    <input type="email" name="email" placeholder="Nhập email" required
+                        value="<?php echo isset($_SESSION['form_data']['email']) ? htmlspecialchars($_SESSION['form_data']['email']) : ''; ?>">
                 </div>
 
                 <div class="form-group">
                     <label>Mật khẩu</label>
-                    <input type="password" name="password" placeholder="Nhập mật khẩu" required>
+                    <!-- <input type="password" name="password" placeholder="Nhập mật khẩu" required> -->
+                    <input type="password" name="password" placeholder="Nhập mật khẩu" required
+                        value="<?php echo isset($_SESSION['form_data']['password']) ? htmlspecialchars($_SESSION['form_data']['password']) : ''; ?>">
                 </div>
 
                 <div class="form-group">
                     <label>Nhập lại mật khẩu</label>
-                    <input type="password" name="confirm_password" placeholder="Nhập lại mật khẩu" required>
+                    <!-- <input type="password" name="confirm_password" placeholder="Nhập lại mật khẩu" required> -->
+
+                    <input type="password" name="confirm_password" placeholder="Nhập lại mật khẩu" required
+                        value="<?php echo isset($_SESSION['form_data']['confirm_password']) ? htmlspecialchars($_SESSION['form_data']['confirm_password']) : ''; ?>">
                 </div>
 
                 <?php if (isset($_SESSION['error'])): ?>
