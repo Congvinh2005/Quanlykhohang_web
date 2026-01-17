@@ -298,3 +298,7 @@ Dự án này được cấp phép theo giấy phép MIT - xem file [LICENSE](LI
 **Version**: 1.0.0  
 **Ngày phát hành**: [Ngày tháng năm]  
 **Ngôn ngữ lập trình**: PHP, MySQL, HTML, CSS, JavaScript
+
+
+
+code chuẩn nhánh payment_customer nhé !!!
