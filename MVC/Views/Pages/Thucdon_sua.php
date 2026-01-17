@@ -121,9 +121,10 @@
                     readonly />
             </div>
             <div>
-                <label>Tên món <span style="color:red">*</span></label>
-                <input type="text" name="txtTenmon" value="<?php echo htmlspecialchars($data['ten_mon']); ?>"
-                    required />
+                <label>Tên món
+                    <!-- <span style="color:red">*</span></label> -->
+                    <input type="text" name="txtTenmon" value="<?php echo htmlspecialchars($data['ten_mon']); ?>"
+                        required />
             </div>
             <div>
                 <label>Giá</label>
@@ -135,18 +136,19 @@
                     min="0" required />
             </div>
             <div>
-                <label>Danh mục <span style="color:red">*</span></label>
-                <select name="ddlDanhmuc" required>
-                    <option value="">-- Chọn danh mục --</option>
-                    <?php
-                    if (isset($data['dsdm'])) {
-                        while ($row = mysqli_fetch_array($data['dsdm'])) {
-                            $selected = ($data['ma_danh_muc'] == $row['ma_danh_muc']) ? 'selected' : '';
-                            echo '<option value="' . $row['ma_danh_muc'] . '" ' . $selected . '>' . htmlspecialchars($row['ten_danh_muc']) . '</option>';
+                <label>Danh mục
+                    <!-- <span style="color:red">*</span></label> -->
+                    <select name="ddlDanhmuc" required>
+                        <option value="">-- Chọn danh mục --</option>
+                        <?php
+                        if (isset($data['dsdm'])) {
+                            while ($row = mysqli_fetch_array($data['dsdm'])) {
+                                $selected = ($data['ma_danh_muc'] == $row['ma_danh_muc']) ? 'selected' : '';
+                                echo '<option value="' . $row['ma_danh_muc'] . '" ' . $selected . '>' . htmlspecialchars($row['ten_danh_muc']) . '</option>';
+                            }
                         }
-                    }
-                    ?>
-                </select>
+                        ?>
+                    </select>
             </div>
             <div>
                 <label>Hình ảnh</label>

@@ -161,7 +161,7 @@ class Donhang_m extends connectDB
                         COUNT(CASE WHEN trang_thai_thanh_toan = 'da_thanh_toan' THEN 1 END) as paid_orders,
                         COALESCE(SUM(CASE WHEN trang_thai_thanh_toan = 'da_thanh_toan' THEN tong_tien END), 0) as total_revenue,
                         COALESCE(SUM(CASE WHEN trang_thai_thanh_toan = 'da_thanh_toan' THEN tien_khuyen_mai END), 0) as total_discount,
-                        COALESCE(SUM(CASE WHEN trang_thai_thanh_toan = 'da_thanh_toan' THEN (tong_tien - tien_khuyen_mai) END), 0) as actual_revenue
+                        COALESCE(SUM(CASE WHEN trang_thai_thanh_toan = 'da_thanh_toan' THEN thanh_toan END), 0) as actual_revenue
                     FROM don_hang
                     WHERE ngay_tao BETWEEN '$tu_ngay 00:00:00' AND '$den_ngay 23:59:59'";
 
