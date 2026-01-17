@@ -113,6 +113,7 @@ CREATE TABLE `don_hang` (
   `tong_tien` decimal(12,2) DEFAULT 0.00,
   `thanh_toan` decimal(12,2) DEFAULT 0.00,
   `trang_thai_thanh_toan` enum('chua_thanh_toan','da_thanh_toan') DEFAULT 'chua_thanh_toan',
+  `phuong_thuc_thanh_toan` varchar(50) DEFAULT NULL,
   `ngay_tao` datetime DEFAULT current_timestamp(),
   `ghi_chu` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

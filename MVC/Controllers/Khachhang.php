@@ -156,7 +156,10 @@ class Khachhang extends controller
     function update_payment_status($ma_don_hang)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $result = $this->dh->update_order_status($ma_don_hang, 'da_thanh_toan');
+            $data = json_decode(file_get_contents('php://input'), true);
+            $payment_method = isset($data['payment_method']) ? $data['payment_method'] : null;
+
+            $result = $this->dh->update_order_status($ma_don_hang, 'da_thanh_toan', $payment_method);
 
             if ($result) {
                 // Lấy đơn hàng để tìm ID bàn

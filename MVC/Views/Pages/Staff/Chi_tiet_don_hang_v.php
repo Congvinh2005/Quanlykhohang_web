@@ -272,6 +272,16 @@
         color: #856404;
     }
 
+    .payment-method {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .payment-method-value {
+        color: #28a745;
+        font-weight: normal;
+    }
+
     /* Payment Modal Styles */
     .modal {
         display: none;
@@ -483,6 +493,28 @@
             </h1>
             <p class="status">Trạng thái: <span class="<?php echo $status_class; ?>"><?php echo $status_text; ?></span>
             </p>
+
+            <?php if (!empty($order['phuong_thuc_thanh_toan'])): ?>
+                <p class="payment-method">Phương thức thanh toán:
+                    <span class="payment-method-value">
+                        <?php
+                            switch($order['phuong_thuc_thanh_toan']) {
+                                case 'tien_mat':
+                                    echo 'Tiền mặt';
+                                    break;
+                                case 'the_ngan_hang':
+                                    echo 'Thẻ ngân hàng';
+                                    break;
+                                case 'quet_ma_qr':
+                                    echo 'Quét mã QR';
+                                    break;
+                                default:
+                                    echo htmlspecialchars($order['phuong_thuc_thanh_toan']);
+                            }
+                        ?>
+                    </span>
+                </p>
+            <?php endif; ?>
 
             <?php if (!empty($order['ghi_chu'])): ?>
             <div class="temp-order-note">
@@ -775,7 +807,10 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                            }
+                            },
+                            body: JSON.stringify({
+                                payment_method: 'tien_mat'
+                            })
                         })
                         .then(response => response.json())
                         .then(data => {
@@ -845,7 +880,10 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                            }
+                            },
+                            body: JSON.stringify({
+                                payment_method: 'the_ngan_hang'
+                            })
                         })
                         .then(response => response.json())
                         .then(data => {
@@ -904,7 +942,10 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                            }
+                            },
+                            body: JSON.stringify({
+                                payment_method: 'quet_ma_qr'
+                            })
                         })
                         .then(response => response.json())
                         .then(data => {

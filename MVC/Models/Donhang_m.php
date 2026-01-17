@@ -147,9 +147,13 @@ class Donhang_m extends connectDB
     }
 
     // Hàm cập nhật trạng thái đơn hàng
-    function update_order_status($ma_don_hang, $new_status)
+    function update_order_status($ma_don_hang, $new_status, $payment_method = null)
     {
-        $sql = "UPDATE don_hang SET trang_thai_thanh_toan = '$new_status' WHERE ma_don_hang = '$ma_don_hang'";
+        if ($payment_method) {
+            $sql = "UPDATE don_hang SET trang_thai_thanh_toan = '$new_status', phuong_thuc_thanh_toan = '$payment_method' WHERE ma_don_hang = '$ma_don_hang'";
+        } else {
+            $sql = "UPDATE don_hang SET trang_thai_thanh_toan = '$new_status' WHERE ma_don_hang = '$ma_don_hang'";
+        }
         return mysqli_query($this->con, $sql);
     }
 
