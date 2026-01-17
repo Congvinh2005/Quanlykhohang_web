@@ -961,6 +961,18 @@
                         const maKhuyenMai = selectedOption.value;
                         const discountAmount = parseFloat(selectedOption.getAttribute('data-amount'));
 
+                        // Lấy tổng gốc từ phần tử đầu tiên (Tổng tiền)
+                        const allTotalElements = document.querySelectorAll('.total');
+                        const firstTotalElement = allTotalElements[0];
+                        const firstTotalText = firstTotalElement.textContent;
+                        const originalTotal = parseInt(firstTotalText.match(/\d+/g).join('')) || 0;
+
+                        // Kiểm tra nếu tổng tiền nhỏ hơn số tiền khuyến mãi
+                        if (originalTotal < discountAmount) {
+                            alert('Giá trị đơn hàng không đủ điều kiện áp khuyến mại');
+                            return; // Dừng việc áp dụng khuyến mãi
+                        }
+
                         // Gửi yêu cầu AJAX để cập nhật đơn hàng với giảm giá
                         fetch(`http://localhost/QLSP/Khachhang/update_order_discount/${orderId}`, {
                                 method: 'POST',
@@ -978,15 +990,8 @@
                                     const discountElement = document.querySelector('.total-discount');
 
                                     // Cập nhật số tiền thanh toán cuối cùng (luôn là phần tử tổng cuối cùng)
-                                    const allTotalElements = document.querySelectorAll('.total');
                                     const finalPaymentElement = allTotalElements[allTotalElements
                                         .length - 1];
-
-                                    // Lấy tổng gốc từ phần tử đầu tiên (Tổng tiền)
-                                    const firstTotalElement = allTotalElements[0];
-                                    const firstTotalText = firstTotalElement.textContent;
-                                    const originalTotal = parseInt(firstTotalText.match(/\d+/g).join(
-                                        '')) || 0;
 
                                     if (data.tien_khuyen_mai > 0) {
                                         // Cập nhật nội dung phần tử giảm giá và hiển thị nó
