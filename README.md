@@ -280,9 +280,9 @@ Hệ thống quản lý quán ăn hoạt động theo luồng sau từ khi chọ
 
 ## 👨‍💻 Tác giả
 
-- **Developer**: [Tên bạn]
-- **Email**: [Email bạn]
-- **GitHub**: [Link GitHub]
+- **Developer**: [Đào Văn Vinh]
+- **Email**: [daovinhgm2005@gmai.com]
+- **GitHub**: [https://github.com/Congvinh2005]
 
 ## 📄 Giấy phép
 

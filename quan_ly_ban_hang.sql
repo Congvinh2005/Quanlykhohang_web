@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost
--- Thời gian đã tạo: Th1 15, 2026 lúc 05:09 PM
+-- Thời gian đã tạo: Th1 17, 2026 lúc 12:37 PM
 -- Phiên bản máy phục vụ: 10.4.27-MariaDB
 -- Phiên bản PHP: 7.4.33
 
@@ -40,14 +40,14 @@ CREATE TABLE `ban_uong` (
 --
 
 INSERT INTO `ban_uong` (`ma_ban`, `ten_ban`, `so_cho_ngoi`, `trang_thai_ban`, `ngay_tao`) VALUES
-('B01', 'Bàn 1', 4, 'trong', '2025-12-28 00:29:07'),
+('B01', 'Bàn 1', 4, 'dang_su_dung', '2025-12-28 00:29:07'),
 ('B02', 'Bàn 2', 2, 'trong', '2025-12-28 00:29:07'),
 ('B03', 'Bàn 3', 6, 'trong', '2025-12-28 00:29:07'),
 ('B04', 'Bàn 4', 4, 'trong', '2025-12-28 00:29:07'),
-('B05', 'Trong nhà kính', 8, 'trong', '2025-12-28 00:29:07'),
-('B07', 'Ngoài trời vip', 4, 'trong', '2025-12-29 17:27:24'),
+('B05', 'Trong nhà kính', 8, 'dang_su_dung', '2025-12-28 00:29:07'),
+('B07', 'Ngoài trời vip', 4, 'dang_su_dung', '2025-12-29 17:27:24'),
 ('B08', 'Vip 1', 6, 'trong', '2025-12-29 12:22:43'),
-('Online', 'online', 0, 'trong', '2026-01-15 00:16:45');
+('Online', 'online', 1, 'trong', '2026-01-16 01:29:33');
 
 -- --------------------------------------------------------
 
@@ -70,7 +70,40 @@ CREATE TABLE `chi_tiet_don_hang` (
 --
 
 INSERT INTO `chi_tiet_don_hang` (`ma_ctdh`, `ma_don_hang`, `ma_thuc_don`, `so_luong`, `gia_tai_thoi_diem_dat`, `ghi_chu`, `ngay_tao`) VALUES
-('CT1', 'DH1', 'TD01', 1, '25000.00', '', '2026-01-15 22:11:26');
+('CT1', 'DH1', 'TD03', 1, '30000.00', '', '2026-01-16 20:10:11'),
+('CT11', 'DH9', 'TD19', 1, '35000.00', '', '2026-01-16 22:38:00'),
+('CT14', 'DH12', 'TD02', 1, '20000.00', '', '2026-01-16 23:49:36'),
+('CT15', 'DH13', 'TD18', 1, '4000.00', '', '2026-01-16 23:57:06'),
+('CT17', 'DH15', 'TD03', 1, '30000.00', '', '2026-01-17 00:10:30'),
+('CT18', 'DH15', 'TD06', 1, '5000.00', '', '2026-01-17 00:10:30'),
+('CT19', 'DH16', 'TD01', 1, '25000.00', '', '2026-01-17 02:33:06'),
+('CT20', 'DH16', 'TD02', 1, '20000.00', '', '2026-01-17 02:33:06'),
+('CT21', 'DH16', 'TD03', 1, '30000.00', '', '2026-01-17 02:33:06'),
+('CT22', 'DH16', 'TD04', 1, '35000.00', '', '2026-01-17 02:33:06'),
+('CT23', 'DH16', 'TD05', 1, '40000.00', '', '2026-01-17 02:33:06'),
+('CT24', 'DH16', 'TD06', 1, '5000.00', '', '2026-01-17 02:33:06'),
+('CT28', 'DH19', 'TD02', 1, '20000.00', '', '2026-01-17 15:02:05'),
+('CT29', 'DH20', 'TD02', 1, '20000.00', '', '2026-01-17 15:05:45'),
+('CT30', 'DH20', 'TD03', 1, '30000.00', '', '2026-01-17 15:05:45'),
+('CT31', 'DH20', 'TD05', 1, '40000.00', '', '2026-01-17 15:05:45'),
+('CT32', 'DH20', 'TD06', 1, '5000.00', '', '2026-01-17 15:05:45'),
+('CT33', 'DH21', 'TD03', 1, '30000.00', '', '2026-01-17 16:34:21'),
+('CT34', 'DH21', 'TD02', 1, '20000.00', '', '2026-01-17 16:34:21'),
+('CT35', 'DH22', 'TD17', 1, '10000.00', '', '2026-01-17 16:41:03'),
+('CT36', 'DH22', 'TD06', 1, '5000.00', '', '2026-01-17 16:41:03'),
+('CT37', 'DH23', 'TD02', 2, '20000.00', '', '2026-01-17 17:59:55'),
+('CT38', 'DH23', 'TD03', 1, '30000.00', '', '2026-01-17 17:59:55'),
+('CT39', 'DH23', 'TD06', 2, '5000.00', '', '2026-01-17 17:59:55'),
+('CT40', 'DH23', 'TD05', 2, '40000.00', '', '2026-01-17 17:59:55'),
+('CT41', 'DH23', 'TD04', 2, '35000.00', '', '2026-01-17 17:59:55'),
+('CT42', 'DH24', 'TD02', 1, '20000.00', '', '2026-01-17 18:01:27'),
+('CT43', 'DH25', 'TD03', 1, '30000.00', '', '2026-01-17 18:02:38'),
+('CT44', 'DH26', 'TD02', 4, '20000.00', '', '2026-01-17 18:03:35'),
+('CT45', 'DH26', 'TD05', 2, '40000.00', '', '2026-01-17 18:03:35'),
+('CT46', 'DH26', 'TD06', 2, '5000.00', '', '2026-01-17 18:03:35'),
+('CT47', 'DH27', 'TD02', 1, '20000.00', '', '2026-01-17 18:11:42'),
+('CT7', 'DH5', 'TD15', 1, '30000.00', '', '2026-01-16 22:06:05'),
+('CT9', 'DH7', 'TD01', 1, '25000.00', '', '2026-01-16 22:08:21');
 
 -- --------------------------------------------------------
 
@@ -111,19 +144,34 @@ CREATE TABLE `don_hang` (
   `ma_khuyen_mai` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tien_khuyen_mai` decimal(10,2) DEFAULT 0.00,
   `tong_tien` decimal(12,2) DEFAULT 0.00,
-  `thanh_toan` decimal(12,2) DEFAULT 0.00,
+  `thanh_toan` decimal(12,2) NOT NULL,
   `trang_thai_thanh_toan` enum('chua_thanh_toan','da_thanh_toan') DEFAULT 'chua_thanh_toan',
-  `phuong_thuc_thanh_toan` varchar(50) DEFAULT NULL,
   `ngay_tao` datetime DEFAULT current_timestamp(),
   `ghi_chu` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `don_hang1
+-- Đang đổ dữ liệu cho bảng `don_hang`
 --
 
 INSERT INTO `don_hang` (`ma_don_hang`, `ma_ban`, `ma_user`, `ma_khuyen_mai`, `tien_khuyen_mai`, `tong_tien`, `thanh_toan`, `trang_thai_thanh_toan`, `ngay_tao`, `ghi_chu`) VALUES
-('DH1', 'Online', 'U05', 'KM1', '5000.00', '25000.00', '20000.00', 'da_thanh_toan', '2026-01-15 22:11:26', '');
+('DH1', 'Online', 'U05', NULL, '0.00', '30000.00', '30000.00', 'da_thanh_toan', '2026-01-16 20:10:11', ''),
+('DH12', 'B02', 'U02', NULL, '0.00', '20000.00', '20000.00', 'da_thanh_toan', '2026-01-16 23:49:36', ''),
+('DH13', 'B02', 'U02', 'KM2', '12000.00', '4000.00', '-8000.00', 'da_thanh_toan', '2026-01-16 23:57:06', ''),
+('DH15', 'Online', 'U05', 'KM2', '12000.00', '35000.00', '23000.00', 'da_thanh_toan', '2026-01-14 16:04:39', ''),
+('DH16', 'Online', 'U05', 'KM2', '12000.00', '155000.00', '143000.00', 'da_thanh_toan', '2026-01-17 02:33:06', '30% đường ,ít chua'),
+('DH19', 'B04', 'U02', NULL, '0.00', '20000.00', '20000.00', 'da_thanh_toan', '2026-01-17 15:02:05', ''),
+('DH20', 'B03', 'U02', 'KM9', '20000.00', '95000.00', '75000.00', 'da_thanh_toan', '2026-01-17 15:05:45', ''),
+('DH21', 'B02', 'U02', 'KM2', '12000.00', '50000.00', '38000.00', 'da_thanh_toan', '2026-01-17 16:34:21', 'ít đá'),
+('DH22', 'Online', 'U05', 'KM2', '12000.00', '15000.00', '3000.00', 'chua_thanh_toan', '2026-01-17 16:41:03', ''),
+('DH23', 'B03', 'U02', 'KM4', '5000.00', '230000.00', '225000.00', 'da_thanh_toan', '2026-01-17 17:59:55', ''),
+('DH24', 'B05', 'U02', 'KM4', '5000.00', '20000.00', '15000.00', 'chua_thanh_toan', '2026-01-17 18:01:27', ''),
+('DH25', 'B07', 'U02', NULL, '0.00', '30000.00', '30000.00', 'chua_thanh_toan', '2026-01-17 18:02:38', ''),
+('DH26', 'Online', 'U05', NULL, '0.00', '170000.00', '170000.00', 'chua_thanh_toan', '2026-01-17 18:03:35', ''),
+('DH27', 'Online', 'U02', NULL, '0.00', '20000.00', '20000.00', 'chua_thanh_toan', '2026-01-17 18:11:42', ''),
+('DH5', 'B04', 'U02', NULL, '0.00', '30000.00', '30000.00', 'da_thanh_toan', '2026-01-16 22:06:05', ''),
+('DH7', 'Online', 'U05', NULL, '0.00', '25000.00', '25000.00', 'da_thanh_toan', '2026-01-16 22:08:21', ''),
+('DH9', 'Online', 'U05', 'KM5', '8000.00', '305000.00', '27000.00', 'da_thanh_toan', '2026-01-16 22:38:00', '');
 
 -- --------------------------------------------------------
 
@@ -236,26 +284,25 @@ CREATE TABLE `thuc_don` (
 --
 
 INSERT INTO `thuc_don` (`ma_thuc_don`, `ten_mon`, `img_thuc_don`, `gia`, `so_luong`, `ma_danh_muc`, `ngay_tao`) VALUES
-('TD01', 'Cà phê sữa', 'caphesua.jpg', '25000.00', 64, 'DM01', '2025-12-28 00:29:07'),
-('TD02', 'Cà phê đen', 'capheden.jpg', '20000.00', 79, 'DM01', '2025-12-28 00:29:07'),
-('TD03', 'Trà đào', 'tradao.jpg', '30000.00', 36, 'DM02', '2025-12-28 00:29:07'),
-('TD04', 'Sinh tố bơ', 'sinhtobo.jpg', '35000.00', 94, 'DM03', '2025-12-28 00:29:07'),
-('TD05', 'Bánh tiramisu', 'tiramisu.jpg', '40000.00', 90, 'DM05', '2025-12-28 00:29:07'),
-('TD06', 'Dasani', 'Danasi.jpg', '5000.00', 89, 'DM06', '2025-12-31 00:18:31'),
+('TD01', 'Cà phê sữa', 'caphesua.jpg', '25000.00', 0, 'DM01', '2025-12-28 00:29:07'),
+('TD02', 'Cà phê đen', 'capheden.jpg', '20000.00', 50, 'DM01', '2025-12-28 00:29:07'),
+('TD03', 'Trà đào', 'tradao.jpg', '30000.00', 14, 'DM02', '2025-12-28 00:29:07'),
+('TD04', 'Sinh tố bơ', 'sinhtobo.jpg', '35000.00', 85, 'DM03', '2025-12-28 00:29:07'),
+('TD05', 'Bánh tiramisu', 'tiramisu.jpg', '40000.00', 79, 'DM05', '2025-12-28 00:29:07'),
+('TD06', 'Dasani', 'Danasi.jpg', '5000.00', 71, 'DM06', '2025-12-31 00:18:31'),
 ('TD07', 'Capuchino', 'capuchino.jpg', '35000.00', 98, 'DM01', '2025-12-31 00:38:24'),
-('TD073', '11', 'tradao_1.jpg', '23000.00', 110, 'DM03', '2026-01-13 17:16:33'),
-('TD08', 'Pessi', 'pessi.jpg', '10000.00', 97, 'DM07', '2026-01-03 00:32:57'),
-('TD09', 'Coca_cola', 'coca.jpg', '10000.00', 97, 'DM07', '2026-01-12 22:53:35'),
+('TD08', 'Pessi', 'pessi.jpg', '10000.00', 96, 'DM07', '2026-01-03 00:32:57'),
+('TD09', 'Coca_cola', 'coca.jpg', '10000.00', 95, 'DM07', '2026-01-12 22:53:35'),
 ('TD10', 'Trà chanh', 'tra_chanh.jpg', '15000.00', 98, 'DM02', '2026-01-12 22:59:26'),
-('TD11', 'Bạc Xỉu', 'bac_xiu.jpg', '35000.00', 98, 'DM01', '2026-01-12 23:00:27'),
-('TD12', 'Trà Vải', 'tra_vai.jpg', '25000.00', 97, 'DM02', '2026-01-12 23:01:53'),
-('TD13', 'Nước ép dưa hấu', 'sinhtoduahau.jpg', '30000.00', 98, 'DM04', '2026-01-12 23:03:30'),
+('TD11', 'Bạc Xỉu', 'bac_xiu_1768552807.jpg', '35000.00', 98, 'DM01', '2026-01-12 23:00:27'),
+('TD12', 'Trà Vải', 'tra_vai.jpg', '25000.00', 96, 'DM02', '2026-01-12 23:01:53'),
+('TD13', 'Nước ép dưa hấu', 'sinhtoduahau_1768556584.jpg', '30000.00', 98, 'DM04', '2026-01-12 23:03:30'),
 ('TD14', 'Nước cam', 'nuoc_cam.jpg', '30000.00', 98, 'DM04', '2026-01-12 23:04:44'),
-('TD15', 'Swedish Princess', 'Swedish_Princess.jpg', '30000.00', 98, 'DM05', '2026-01-12 23:06:44'),
+('TD15', 'Swedish Princess', 'Swedish_Princess.jpg', '30000.00', 97, 'DM05', '2026-01-12 23:06:44'),
 ('TD16', 'Sachertorte', 'Sachertorte.jpg', '30000.00', 98, 'DM05', '2026-01-12 23:07:43'),
-('TD17', 'Fanta', 'fanta.jpg', '10000.00', 96, 'DM07', '2026-01-12 23:08:35'),
-('TD18', 'Lavie', 'nuoc_lavie.jpg', '4000.00', 95, 'DM06', '2026-01-12 23:09:51'),
-('TD19', 'Sinh tố dâu tây', 'sinhtodau.jpg', '30000.00', 97, 'DM03', '2026-01-12 23:13:55');
+('TD17', 'Fanta', 'fanta.jpg', '10000.00', 0, 'DM07', '2026-01-12 23:08:35'),
+('TD18', 'Lavie', 'nuoc_lavie.jpg', '4000.00', 83, 'DM06', '2026-01-12 23:09:51'),
+('TD19', 'Sinh tố dâu tây ', 'sinhtodau_2.jpg', '35000.00', 10, 'DM03', '2026-01-16 20:04:29');
 
 -- --------------------------------------------------------
 
@@ -282,8 +329,10 @@ INSERT INTO `users` (`ma_user`, `ten_user`, `password`, `email`, `phan_quyen`, `
 ('U03', 'qa', '123', 'b@gmail.com', 'nhan_vien', '2025-12-28 00:29:07'),
 ('U04', 'thanh', '123', 'c@gmail.com', 'nhan_vien', '2025-12-28 00:29:07'),
 ('U05', 'vanh', '123', 'd@gmail.com', 'khach_hang', '2025-12-28 00:29:07'),
-('U06', 'vanvinh', '123', 'Daovinhgm2005@gmail.com', 'admin', '2026-01-13 23:41:40'),
-('U07', 'chuong', 'chuong', 'concac@gmail.com', 'khach_hang', '2026-01-14 21:07:03');
+('U06', 'vanvinh', '123', 'daovinhgm2005@gmail.com', 'admin', '2026-01-13 23:41:40'),
+('U07', 'chuong', 'chuong', 'chuong@gmail.com', 'khach_hang', '2026-01-14 21:07:03'),
+('U08', 'chuong1', '1234567', 'daovinhgm2001@gmail.com', 'khach_hang', '2026-01-17 11:32:38'),
+('U09', 'chuong12', '123455', 'daovinhgm20@gmail.com', 'khach_hang', '2026-01-17 11:40:40');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -335,7 +384,7 @@ ALTER TABLE `Nhacungcap`
 --
 ALTER TABLE `sanpham2`
   ADD PRIMARY KEY (`masp`),
-  ADD KEY `fk_sanpham_nhacungcap` (`mancc`);
+  ADD KEY `fk_sanpham_ncc` (`mancc`);
 
 --
 -- Chỉ mục cho bảng `thuc_don`
@@ -374,6 +423,7 @@ ALTER TABLE `don_hang`
 -- Các ràng buộc cho bảng `sanpham2`
 --
 ALTER TABLE `sanpham2`
+  ADD CONSTRAINT `fk_sanpham_ncc` FOREIGN KEY (`mancc`) REFERENCES `nhacungcap` (`mancc`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sanpham_nhacungcap` FOREIGN KEY (`mancc`) REFERENCES `nhacungcap` (`mancc`) ON UPDATE CASCADE;
 
 --
