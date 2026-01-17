@@ -156,10 +156,7 @@ class Khachhang extends controller
     function update_payment_status($ma_don_hang)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = json_decode(file_get_contents('php://input'), true);
-            $payment_method = isset($data['payment_method']) ? $data['payment_method'] : null;
-
-            $result = $this->dh->update_order_status($ma_don_hang, 'da_thanh_toan', $payment_method);
+            $result = $this->dh->update_order_status($ma_don_hang, 'da_thanh_toan');
 
             if ($result) {
                 // Lấy đơn hàng để tìm ID bàn
@@ -167,6 +164,38 @@ class Khachhang extends controller
                 if ($order && mysqli_num_rows($order) > 0) {
                     $order_row = mysqli_fetch_array($order);
                     $ma_ban = $order_row['ma_ban'];
+
+                    // Lấy chi tiết đơn hàng để giảm hàng tồn kho
+                    $order_details = $this->ctdh->Chitietdonhang_getByOrderId($ma_don_hang);
+
+                    if ($order_details && !empty($order_details)) {
+                        // Giảm hàng tồn kho cho mỗi mặt hàng trong đơn hàng
+                        foreach ($order_details as $detail) {
+                            $ma_thuc_don = $detail['ma_thuc_don'];
+                            $so_luong_dat = $detail['so_luong'];
+
+                            // Lấy số lượng hiện tại từ cơ sở dữ liệu
+                            $thucdon_model = $this->model("Thucdon_m");
+                            $thucdon = $thucdon_model->Thucdon_getById($ma_thuc_don);
+
+                            if ($thucdon && mysqli_num_rows($thucdon) > 0) {
+                                $thucdon_row = mysqli_fetch_array($thucdon);
+                                $current_quantity = $thucdon_row['so_luong'];
+
+                                // Tính toán số lượng mới (giảm theo số lượng đã đặt)
+                                $new_quantity = $current_quantity - $so_luong_dat;
+
+                                // Đảm bảo số lượng không nhỏ hơn 0
+                                if ($new_quantity < 0) {
+                                    $new_quantity = 0;
+                                }
+
+                                // Cập nhật số lượng trong cơ sở dữ liệu
+                                $update_sql = "UPDATE thuc_don SET so_luong = $new_quantity WHERE ma_thuc_don = '$ma_thuc_don'";
+                                mysqli_query($thucdon_model->con, $update_sql);
+                            }
+                        }
+                    }
 
                     // Xóa giỏ hàng cho bàn này sau khi thanh toán
                     $this->clearCartForTable($ma_ban);
@@ -182,6 +211,7 @@ class Khachhang extends controller
             exit;
         }
     }
+
 
     // Phương thức trợ giúp để lấy giỏ hàng từ phiên cho một bàn cụ thể
     private function getCartForTable($ma_ban)

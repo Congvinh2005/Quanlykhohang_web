@@ -234,17 +234,14 @@ class Staff extends controller
 
             $order_row = mysqli_fetch_array($order_data);
 
-            // Kiểm tra nếu đơn hàng thuộc về khách hàng (ma_ban = 'Online')
+            // Kiểm tra nếu đơn hàng thuộc về khách hàng (ma_ban = 'KHACH_HANG')
             // Nếu không phải đơn hàng khách, chỉ cho phép quản trị viên/nhân viên cập nhật trạng thái thanh toán
-            if ($order_row['ma_ban'] !== 'Online' && $_SESSION['user_role'] === 'khach_hang') {
+            if ($order_row['ma_ban'] !== 'KHACH_HANG' && $_SESSION['user_role'] === 'khach_hang') {
                 echo json_encode(['status' => 'error', 'message' => 'Bạn không có quyền truy cập đơn hàng này']);
                 exit;
             }
 
-            $data = json_decode(file_get_contents('php://input'), true);
-            $payment_method = isset($data['payment_method']) ? $data['payment_method'] : null;
-
-            $result = $this->dh->update_order_status($ma_don_hang, 'da_thanh_toan', $payment_method);
+            $result = $this->dh->update_order_status($ma_don_hang, 'da_thanh_toan');
 
             if ($result) {
                 // Lấy đơn hàng để tìm ID bàn
