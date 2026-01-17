@@ -73,7 +73,7 @@ class Donhang_m extends connectDB
                     LEFT JOIN ban_uong bu ON d.ma_ban = bu.ma_ban
                     LEFT JOIN users u ON d.ma_user = u.ma_user
                     LEFT JOIN khuyen_mai km ON d.ma_khuyen_mai = km.ma_khuyen_mai
-                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC";
+                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) DESC";
         return mysqli_query($this->con, $sql);
     }
 
@@ -118,7 +118,7 @@ class Donhang_m extends connectDB
                     LEFT JOIN users u ON d.ma_user = u.ma_user
                     LEFT JOIN khuyen_mai km ON d.ma_khuyen_mai = km.ma_khuyen_mai
                     WHERE d.ma_user = '$user_id'
-                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC
+                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) DESC
                     LIMIT $limit OFFSET $offset";
         return mysqli_query($this->con, $sql);
     }
@@ -132,7 +132,7 @@ class Donhang_m extends connectDB
                     LEFT JOIN users u ON d.ma_user = u.ma_user
                     LEFT JOIN khuyen_mai km ON d.ma_khuyen_mai = km.ma_khuyen_mai
                     WHERE d.ma_user = '$user_id'
-                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) ASC
+                    ORDER BY CAST(SUBSTRING(d.ma_don_hang, 3) AS UNSIGNED) DESC
                     LIMIT $limit OFFSET $offset";
         return mysqli_query($this->con, $sql);
     }

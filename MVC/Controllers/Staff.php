@@ -53,7 +53,7 @@ class Staff extends controller
     // Quản lý đơn hàng cho nhân viên
     function orders($page = 1)
     {
-        $limit = 10; // Number of orders per page
+        $limit = 8; // Number of orders per page
         $offset = ($page - 1) * $limit;
 
         $user_id = $_SESSION['user_id'];
@@ -90,7 +90,6 @@ class Staff extends controller
             // Kiểm tra quyền truy cập - nhân viên (admin/nhan_vien) nên có thể truy cập bất kỳ đơn hàng nào
             // Chỉ hạn chế truy cập nếu người dùng hiện tại là khách hàng và đơn hàng không phải của họ
             if ($_SESSION['user_role'] === 'khach_hang') {
-                // Với vai trò khách hàng, kiểm tra nếu đơn hàng thuộc về họ
                 if ($order_row['ma_ban'] !== 'Online' && $order_row['ma_user'] !== $_SESSION['user_id']) {
                     echo '<p>Bạn không có quyền truy cập đơn hàng này.</p>';
                     return;

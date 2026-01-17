@@ -80,13 +80,22 @@ class Thucdon_m extends connectDB
     }
 
     // Hàm lấy tất cả thực đơn với thông tin danh mục
+    // function Thucdon_getAll()
+    // {
+    //     $sql = "SELECT t.*, d.ten_danh_muc FROM thuc_don t
+    //                 LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
+    //                 ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
+    //     return mysqli_query($this->con, $sql);
+    // }
     function Thucdon_getAll()
     {
-        $sql = "SELECT t.*, d.ten_danh_muc FROM thuc_don t
-                    LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
-                    ORDER BY LENGTH(t.ma_thuc_don), t.ma_thuc_don";
+        $sql = "SELECT t.*, d.ten_danh_muc 
+            FROM thuc_don t
+            LEFT JOIN danh_muc d ON t.ma_danh_muc = d.ma_danh_muc
+            ORDER BY CAST(SUBSTRING(t.ma_thuc_don, 3) AS UNSIGNED) DESC";
         return mysqli_query($this->con, $sql);
     }
+
 
     // Hàm lấy chi tiết thực đơn
     function Thucdon_getById($ma_thuc_don)
